@@ -12,6 +12,7 @@ import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.recap.security.realm.SimpleAuthorizationRealm;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ import java.util.Map;
 public class ApacheShiroConfig {
 
 
+
     @ExceptionHandler(AuthorizationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleException(AuthorizationException e, Model model) {
@@ -49,7 +51,6 @@ public class ApacheShiroConfig {
 
         return "error";
     }
-
 
     @Bean
     public ModularRealmAuthenticator authenticator() {
@@ -75,6 +76,12 @@ public class ApacheShiroConfig {
         SecurityManager securityManager = new DefaultWebSecurityManager(new SimpleAuthorizationRealm());
         SecurityUtils.setSecurityManager(securityManager);
         return securityManager;
+    }
+
+    @Bean(name="subjectContext")
+    public DefaultWebSubjectContext getSubjectContext(){
+        DefaultWebSubjectContext webSubjectContext=new DefaultWebSubjectContext();
+        return webSubjectContext;
     }
 
 
