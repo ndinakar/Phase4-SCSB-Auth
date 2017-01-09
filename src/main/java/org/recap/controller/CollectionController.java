@@ -5,11 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.recap.model.UserDetailsForm;
+import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,18 +29,14 @@ import java.util.Map;
 @Api(value="collection authentication", description="To check the user for collection privilege", position = 2)
 public class CollectionController {
 
-    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    @Autowired
+    private AuthorizationServiceImpl authorizationService;
+
+    @RequestMapping(value = "/auth", method = RequestMethod.POST)
     @ApiOperation(value="collection authentication",notes="Used to Authenticate User",position = 0,consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "collection authentication success")})
-    public boolean collection(Model model) {
-        Subject subject = SecurityUtils.getSubject();
-        Map<Integer, String> permissions = UserManagement.getPermissions(subject);
-        if (subject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) ||
-                subject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
-            return true;
-        } else {
-            return UserManagement.unAuthorized(subject);
-        }
+    public Boolean collection(@RequestBody UsernamePasswordToken token) {
+        return authorizationService.checkCollectionPrivilege(token);
 
     }
 

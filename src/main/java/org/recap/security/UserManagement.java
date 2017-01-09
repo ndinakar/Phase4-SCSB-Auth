@@ -2,9 +2,9 @@ package org.recap.security;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.recap.model.jpa.UsersEntity;
 import org.recap.model.UserDetailsForm;
 import org.recap.model.UserForm;
+import org.recap.model.jpa.UsersEntity;
 
 import java.util.Map;
 
@@ -38,6 +38,10 @@ public enum UserManagement {
 
     public static final String REQUEST_PRIVILEGE="isRequestAllowed";
 
+    public static final String REQUEST_ALL_PRIVILEGE="isRequestAllAllowed";
+
+    public static final String REQUEST_ITEM_PRIVILEGE="isRequestItemAllowed";
+
     public static final String COLLECTION_PRIVILEGE="isCollectionAllowed";
 
     public static final String REPORTS_PRIVILEGE="isReportAllowed";
@@ -45,6 +49,14 @@ public enum UserManagement {
     public static final String SEARCH_PRIVILEGE = "isSearchAllowed";
 
     public static final String USER_ROLE_PRIVILEGE="isUserRoleAllowed";
+
+    public static final String BARCODE_RESTRICTED_PRIVILEGE="isBarcodeRestricted";
+
+    public static final String DEACCESSION_PRIVILEGE="isDeaccessionAllowed";
+
+    public static final String SUPER_ADMIN_USER="isSuperAdmin";
+
+    public static final String ReCAP_USER="isRecapUser";
 
     public static final String ROLE_ID="roleId";
 
@@ -109,11 +121,6 @@ public enum UserManagement {
         return values;
     }
 
-    public static boolean unAuthorized(Subject subject)
-    {
-        subject.logout();
-        return false;
-    }
 
 
     public static UserForm toUserForm(UsersEntity userEntity, UserForm userForm)throws Exception

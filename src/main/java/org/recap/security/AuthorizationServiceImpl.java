@@ -1,13 +1,21 @@
 package org.recap.security;
 
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.subject.Subject;
+import org.recap.controller.RequestController;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.UserDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dharmendrag on 21/12/16.
@@ -15,9 +23,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
 
+    Logger logger = LoggerFactory.getLogger(RequestController.class);
+
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
+    private static Map<String,Subject> tokenMap=new HashMap<String,Subject>();
+
+    public Subject getSubject(UsernamePasswordToken usernamePasswordToken)
+    {
+        return tokenMap.get(usernamePasswordToken.getUsername());
+    }
+
+    public void setSubject(UsernamePasswordToken usernamePasswordToken,Subject subject)
+    {
+        tokenMap.put(usernamePasswordToken.getUsername(),subject);
+    }
     public UserDetailsRepository getUserDetailsRepository() {
         return userDetailsRepository;
     }
@@ -49,4 +70,56 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         }
         return authorizationInfo;
     }
+
+    public void unAuthorized(UsernamePasswordToken token)
+    {
+        Subject subject=(Subject)tokenMap.get(token.getUsername());
+        tokenMap.remove(token.getUsername());
+        subject.logout();
+    }
+
+    public boolean checkPrivilege(UsernamePasswordToken token,Integer permissionId)
+    {
+        Subject subject=getSubject(token);
+        logger.debug("Authorization call for : "+permissionId);
+        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
+        boolean authorized=false;
+        authorized=subject.isPermitted(permissions.get(permissionId));
+
+        if(!authorized)
+        {
+            unAuthorized(token);
+        }
+
+        return authorized;
+    }
+
+    public boolean checkRequestPrivilege(UsernamePasswordToken token)
+    {
+        Subject subject=getSubject(token);
+        logger.info("Authorization for request "+subject.getPrincipal());
+        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
+        if(subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
+                subject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
+            return true;
+
+        }else{
+            unAuthorized(token);
+            return false;
+        }
+    }
+
+    public boolean checkCollectionPrivilege(UsernamePasswordToken token)
+    {
+        Subject subject=getSubject(token);
+        logger.info("Authorization for request "+subject.getPrincipal());
+        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
+        if(subject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))){
+            return true;
+        }else{
+            unAuthorized(token);
+            return false;
+        }
+    }
+
 }
