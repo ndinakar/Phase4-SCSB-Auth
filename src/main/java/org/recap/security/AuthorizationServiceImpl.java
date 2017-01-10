@@ -1,5 +1,6 @@
 package org.recap.security;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -8,11 +9,13 @@ import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.UserDetailsRepository;
+import org.recap.security.realm.SCSBUserRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,16 +30,26 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    private static Map<String,Subject> tokenMap=new HashMap<String,Subject>();
+    private static Map<String,SCSBUserRealm> tokenMap=new HashMap<String,SCSBUserRealm>();
 
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken)
     {
+        SCSBUserRealm scsbUserRealm = tokenMap.get(usernamePasswordToken.getUsername());
+        return scsbUserRealm.getSubject();
+    }
+
+    public SCSBUserRealm getSCSBUserRealm(UsernamePasswordToken usernamePasswordToken){
         return tokenMap.get(usernamePasswordToken.getUsername());
     }
 
     public void setSubject(UsernamePasswordToken usernamePasswordToken,Subject subject)
     {
-        tokenMap.put(usernamePasswordToken.getUsername(),subject);
+
+        SCSBUserRealm scsbUserRealm = new SCSBUserRealm();
+        scsbUserRealm.setSubject(subject);
+        scsbUserRealm.setLoggedInTime(new Date(System.currentTimeMillis()));
+
+        tokenMap.put(usernamePasswordToken.getUsername(), scsbUserRealm);
     }
     public UserDetailsRepository getUserDetailsRepository() {
         return userDetailsRepository;
@@ -123,11 +136,20 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public boolean checkCollectionPrivilege(UsernamePasswordToken token)
     {
-        Subject subject=getSubject(token);
+        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
+        Subject currentSubject = scsbUserRealm.getSubject();
+        Date loggedInTime = scsbUserRealm.getLoggedInTime();
+        Date currentTime = new Date(System.currentTimeMillis());
+
+        if((currentTime.getTime()-loggedInTime.getTime()) < currentSubject.getSession().getTimeout()){
+            currentSubject.getSession().touch();
+        }
+
+
         try {
-            logger.info("Authorization for request " + subject.getPrincipal());
-            Map<Integer, String> permissions = UserManagement.getPermissions(subject);
-            if (subject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
+            logger.info("Authorization for request " + currentSubject.getPrincipal());
+            Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
+            if (currentSubject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
                 return true;
             } else {
                 unAuthorized(token);

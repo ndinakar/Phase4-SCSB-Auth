@@ -102,7 +102,7 @@ public class LoginController {
             authMap.put(UserManagement.ReCAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
             Session session=subject.getSession();
-            session.setTimeout(1800000);//30 minutes
+            session.setTimeout(10000);
             session.setAttribute(UserManagement.permissionsMap,permissionMap);
             session.setAttribute(UserManagement.USER_ID,subject.getPrincipal());
         }
