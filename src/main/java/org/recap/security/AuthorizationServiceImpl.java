@@ -4,7 +4,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
-import org.recap.controller.RequestController;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-    Logger logger = LoggerFactory.getLogger(RequestController.class);
+    Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
@@ -73,22 +72,30 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public void unAuthorized(UsernamePasswordToken token)
     {
+        System.out.println("Session Time Out Call");
         Subject subject=(Subject)tokenMap.get(token.getUsername());
         tokenMap.remove(token.getUsername());
+        if(subject!=null && subject.getSession()!=null)
+        {
         subject.logout();
+        }
     }
 
     public boolean checkPrivilege(UsernamePasswordToken token,Integer permissionId)
     {
         Subject subject=getSubject(token);
-        logger.debug("Authorization call for : "+permissionId);
+        logger.debug("Authorization call for : "+permissionId+" & User "+token);
         Map<Integer,String> permissions= UserManagement.getPermissions(subject);
         boolean authorized=false;
-        authorized=subject.isPermitted(permissions.get(permissionId));
+        try {
+            authorized = subject.isPermitted(permissions.get(permissionId));
 
-        if(!authorized)
+            if (!authorized) {
+                unAuthorized(token);
+            }
+        }catch(Exception sessionExcp)
         {
-            unAuthorized(token);
+            timeOutExceptionCatch(token);
         }
 
         return authorized;
@@ -97,29 +104,44 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public boolean checkRequestPrivilege(UsernamePasswordToken token)
     {
         Subject subject=getSubject(token);
-        logger.info("Authorization for request "+subject.getPrincipal());
-        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
-        if(subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
-                subject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
-            return true;
+        try {
+            logger.info("Authorization for request " + subject.getPrincipal());
+            Map<Integer, String> permissions = UserManagement.getPermissions(subject);
+            if (subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
+                    subject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
+                return true;
 
-        }else{
-            unAuthorized(token);
-            return false;
+            } else {
+                unAuthorized(token);
+            }
+        }catch(Exception exp)
+        {
+            timeOutExceptionCatch(token);
         }
+        return false;
     }
 
     public boolean checkCollectionPrivilege(UsernamePasswordToken token)
     {
         Subject subject=getSubject(token);
-        logger.info("Authorization for request "+subject.getPrincipal());
-        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
-        if(subject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))){
-            return true;
-        }else{
-            unAuthorized(token);
-            return false;
+        try {
+            logger.info("Authorization for request " + subject.getPrincipal());
+            Map<Integer, String> permissions = UserManagement.getPermissions(subject);
+            if (subject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
+                return true;
+            } else {
+                unAuthorized(token);
+            }
+        }catch(Exception sessionExcp)
+        {
+            timeOutExceptionCatch(token);
         }
+        return false;
+    }
+
+    private void timeOutExceptionCatch(UsernamePasswordToken token){
+        logger.debug("Time out Exception thrown for token "+token);
+        unAuthorized(token);
     }
 
 }
