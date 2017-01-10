@@ -102,6 +102,7 @@ public class LoginController {
             authMap.put(UserManagement.ReCAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
             Session session=subject.getSession();
+            session.setTimeout(1800000);//30 minutes
             session.setAttribute(UserManagement.permissionsMap,permissionMap);
             session.setAttribute(UserManagement.USER_ID,subject.getPrincipal());
         }
@@ -109,7 +110,6 @@ public class LoginController {
         {
             logger.debug("Authentication exception");
             logger.error("Exception in authentication : "+e.getMessage());
-            error.rejectValue("wrongCredentials","error.invalid.credentials","Invalid Credentials");
             authMap.put(UserManagement.USER_AUTHENTICATION,false);
         }
         catch(Exception e)
