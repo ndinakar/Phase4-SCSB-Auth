@@ -30,20 +30,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    private static Map<String,SCSBUserRealm> tokenMap=new HashMap<String,SCSBUserRealm>();
+    private static Map<String, SCSBUserRealm> tokenMap = new HashMap<String, SCSBUserRealm>();
 
-    public Subject getSubject(UsernamePasswordToken usernamePasswordToken)
-    {
+    public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
         SCSBUserRealm scsbUserRealm = tokenMap.get(usernamePasswordToken.getUsername());
         return scsbUserRealm.getSubject();
     }
 
-    public SCSBUserRealm getSCSBUserRealm(UsernamePasswordToken usernamePasswordToken){
+    public SCSBUserRealm getSCSBUserRealm(UsernamePasswordToken usernamePasswordToken) {
         return tokenMap.get(usernamePasswordToken.getUsername());
     }
 
-    public void setSubject(UsernamePasswordToken usernamePasswordToken,Subject subject)
-    {
+    public void setSubject(UsernamePasswordToken usernamePasswordToken, Subject subject) {
 
         SCSBUserRealm scsbUserRealm = new SCSBUserRealm();
         scsbUserRealm.setSubject(subject);
@@ -51,6 +49,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         tokenMap.put(usernamePasswordToken.getUsername(), scsbUserRealm);
     }
+
     public UserDetailsRepository getUserDetailsRepository() {
         return userDetailsRepository;
     }
@@ -59,20 +58,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         this.userDetailsRepository = userDetailsRepository;
     }
 
-    public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId)
-    {
+    public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
         UsersEntity usersEntity = userDetailsRepository.findByUserId(loginId);
-        String spliter= UserManagement.TOKEN_SPLITER.getValue();
-        String institution=null;
+        String spliter = UserManagement.TOKEN_SPLITER.getValue();
+        String institution = null;
         if (usersEntity == null) {
             return null;
         } else {
             for (RoleEntity role : usersEntity.getUserRole()) {
-                institution=usersEntity.getInstitutionEntity().getInstitutionCode();
+                institution = usersEntity.getInstitutionEntity().getInstitutionCode();
                 authorizationInfo.addRole(role.getRoleName());
-                if(role.getRoleName().equals(UserManagement.ReCAP.getValue()))
-                {
-                    institution="*";
+                if (role.getRoleName().equals(UserManagement.ReCAP.getValue())) {
+                    institution = "*";
                 }
                 for (PermissionEntity permissionEntity : role.getPermissions()) {
                     //authorizationInfo.addStringPermission(permissionEntity.getPermissionName()+spliter+institution);
@@ -83,40 +80,35 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return authorizationInfo;
     }
 
-    public void unAuthorized(UsernamePasswordToken token)
-    {
+    public void unAuthorized(UsernamePasswordToken token) {
         System.out.println("Session Time Out Call");
-        Subject subject=(Subject)tokenMap.get(token.getUsername());
+        Subject subject = (Subject) tokenMap.get(token.getUsername());
         tokenMap.remove(token.getUsername());
-        if(subject!=null && subject.getSession()!=null)
-        {
-        subject.logout();
+        if (subject != null && subject.getSession() != null) {
+            subject.logout();
         }
     }
 
-    public boolean checkPrivilege(UsernamePasswordToken token,Integer permissionId)
-    {
-        Subject subject=getSubject(token);
-        logger.debug("Authorization call for : "+permissionId+" & User "+token);
-        Map<Integer,String> permissions= UserManagement.getPermissions(subject);
-        boolean authorized=false;
+    public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
+        Subject subject = getSubject(token);
+        logger.debug("Authorization call for : " + permissionId + " & User " + token);
+        Map<Integer, String> permissions = UserManagement.getPermissions(subject);
+        boolean authorized = false;
         try {
             authorized = subject.isPermitted(permissions.get(permissionId));
 
             if (!authorized) {
                 unAuthorized(token);
             }
-        }catch(Exception sessionExcp)
-        {
+        } catch (Exception sessionExcp) {
             timeOutExceptionCatch(token);
         }
 
         return authorized;
     }
 
-    public boolean checkRequestPrivilege(UsernamePasswordToken token)
-    {
-        Subject subject=getSubject(token);
+    public boolean checkRequestPrivilege(UsernamePasswordToken token) {
+        Subject subject = getSubject(token);
         try {
             logger.info("Authorization for request " + subject.getPrincipal());
             Map<Integer, String> permissions = UserManagement.getPermissions(subject);
@@ -127,24 +119,16 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             } else {
                 unAuthorized(token);
             }
-        }catch(Exception exp)
-        {
+        } catch (Exception exp) {
             timeOutExceptionCatch(token);
         }
         return false;
     }
 
-    public boolean checkCollectionPrivilege(UsernamePasswordToken token)
-    {
+    public boolean checkCollectionPrivilege(UsernamePasswordToken token) {
         SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
         Subject currentSubject = scsbUserRealm.getSubject();
-        Date loggedInTime = scsbUserRealm.getLoggedInTime();
-        Date currentTime = new Date(System.currentTimeMillis());
-
-        if((currentTime.getTime()-loggedInTime.getTime()) < currentSubject.getSession().getTimeout()){
-            currentSubject.getSession().touch();
-        }
-
+        currentSubject.getSession().touch();
 
         try {
             logger.info("Authorization for request " + currentSubject.getPrincipal());
@@ -154,15 +138,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             } else {
                 unAuthorized(token);
             }
-        }catch(Exception sessionExcp)
-        {
+        } catch (Exception sessionExcp) {
             timeOutExceptionCatch(token);
         }
         return false;
     }
 
-    private void timeOutExceptionCatch(UsernamePasswordToken token){
-        logger.debug("Time out Exception thrown for token "+token);
+    private void timeOutExceptionCatch(UsernamePasswordToken token) {
+        logger.debug("Time out Exception thrown for token " + token);
         unAuthorized(token);
     }
 
