@@ -1,6 +1,5 @@
 package org.recap.security;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -60,19 +59,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
         UsersEntity usersEntity = userDetailsRepository.findByUserId(loginId);
-        String spliter = UserManagement.TOKEN_SPLITER.getValue();
-        String institution = null;
         if (usersEntity == null) {
             return null;
         } else {
             for (RoleEntity role : usersEntity.getUserRole()) {
-                institution = usersEntity.getInstitutionEntity().getInstitutionCode();
                 authorizationInfo.addRole(role.getRoleName());
-                if (role.getRoleName().equals(UserManagement.ReCAP.getValue())) {
-                    institution = "*";
-                }
                 for (PermissionEntity permissionEntity : role.getPermissions()) {
-                    //authorizationInfo.addStringPermission(permissionEntity.getPermissionName()+spliter+institution);
                     authorizationInfo.addStringPermission(permissionEntity.getPermissionName());
                 }
             }
@@ -81,21 +73,46 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     public void unAuthorized(UsernamePasswordToken token) {
-        System.out.println("Session Time Out Call");
-        Subject subject = (Subject) tokenMap.get(token.getUsername());
+        logger.debug("Session Time Out Call");
+        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
+        Subject currentSubject = scsbUserRealm.getSubject();
         tokenMap.remove(token.getUsername());
-        if (subject != null && subject.getSession() != null) {
-            subject.logout();
+        if (currentSubject != null && currentSubject.getSession() != null) {
+            currentSubject.logout();
         }
     }
 
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
-        Subject subject = getSubject(token);
+        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
+        Subject currentSubject = scsbUserRealm.getSubject();
         logger.debug("Authorization call for : " + permissionId + " & User " + token);
-        Map<Integer, String> permissions = UserManagement.getPermissions(subject);
+        Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
         boolean authorized = false;
         try {
-            authorized = subject.isPermitted(permissions.get(permissionId));
+            currentSubject.getSession().touch();
+            switch(permissionId){
+
+                case UserManagement.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
+                    if (currentSubject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
+                        authorized=true;
+                    }
+                    break;
+                }
+
+                case UserManagement.REQUEST_PLACE_ID:{//to check Request
+                    if (currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
+                            currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
+                        authorized=true;
+                    }
+                    break;
+                }
+
+                default:{
+                    authorized = currentSubject.isPermitted(permissions.get(permissionId));
+                    break;
+                }
+
+            }
 
             if (!authorized) {
                 unAuthorized(token);
@@ -105,43 +122,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         }
 
         return authorized;
-    }
-
-    public boolean checkRequestPrivilege(UsernamePasswordToken token) {
-        Subject subject = getSubject(token);
-        try {
-            logger.info("Authorization for request " + subject.getPrincipal());
-            Map<Integer, String> permissions = UserManagement.getPermissions(subject);
-            if (subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || subject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
-                    subject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
-                return true;
-
-            } else {
-                unAuthorized(token);
-            }
-        } catch (Exception exp) {
-            timeOutExceptionCatch(token);
-        }
-        return false;
-    }
-
-    public boolean checkCollectionPrivilege(UsernamePasswordToken token) {
-        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
-        Subject currentSubject = scsbUserRealm.getSubject();
-        currentSubject.getSession().touch();
-
-        try {
-            logger.info("Authorization for request " + currentSubject.getPrincipal());
-            Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
-            if (currentSubject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
-                return true;
-            } else {
-                unAuthorized(token);
-            }
-        } catch (Exception sessionExcp) {
-            timeOutExceptionCatch(token);
-        }
-        return false;
     }
 
     private void timeOutExceptionCatch(UsernamePasswordToken token) {
