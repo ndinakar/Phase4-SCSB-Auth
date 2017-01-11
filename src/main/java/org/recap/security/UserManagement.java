@@ -60,6 +60,10 @@ public enum UserManagement {
 
     public static final String ROLE_ID="roleId";
 
+    public static final int REQUEST_PLACE_ID=4;
+
+    public static final int EDIT_CGD_ID=2;
+
     private String value;
 
     private int integerValues;

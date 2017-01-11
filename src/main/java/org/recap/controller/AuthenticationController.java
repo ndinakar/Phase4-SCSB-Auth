@@ -35,14 +35,14 @@ public class AuthenticationController {
     @ApiOperation(value="request authentication",notes="Used to Authenticate User",position = 0,consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "request authentication success")})
     public Boolean request(@RequestBody UsernamePasswordToken token) {
-        return authorizationService.checkRequestPrivilege(token);
+        return authorizationService.checkPrivilege(token, UserManagement.REQUEST_PLACE_ID);
     }
 
     @RequestMapping(value = "/collection", method = RequestMethod.POST)
     @ApiOperation(value="collection authentication",notes="Used to Authenticate User",position = 0,consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "collection authentication success")})
     public Boolean collection(@RequestBody UsernamePasswordToken token) {
-        return authorizationService.checkCollectionPrivilege(token);
+        return authorizationService.checkPrivilege(token, UserManagement.EDIT_CGD_ID);
 
     }
     @RequestMapping(value="/reports",method= RequestMethod.POST)
