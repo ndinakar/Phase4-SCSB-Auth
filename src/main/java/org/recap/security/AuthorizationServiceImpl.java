@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by dharmendrag on 21/12/16.
@@ -29,7 +29,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    private static Map<String, SCSBUserRealm> tokenMap = new HashMap<String, SCSBUserRealm>();
+    private static Map<String, SCSBUserRealm> tokenMap = new ConcurrentHashMap<String, SCSBUserRealm>();
 
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
         SCSBUserRealm scsbUserRealm = tokenMap.get(usernamePasswordToken.getUsername());
