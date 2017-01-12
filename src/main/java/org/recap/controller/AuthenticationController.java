@@ -53,5 +53,13 @@ public class AuthenticationController {
 
     }
 
+    @RequestMapping(value="/userRoles",method= RequestMethod.POST)
+    @ApiOperation(value="reports authentication",notes="Used to Authorizer User for Users & Roles",position = 0,consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "User & Role authentication success")})
+    public boolean userRoles(@RequestBody UsernamePasswordToken usernamePasswordToken) {
+        return authorizationService.checkPrivilege(usernamePasswordToken,UserManagement.CREATE_USER.getPermissionId());
+
+    }
+
 
 }
