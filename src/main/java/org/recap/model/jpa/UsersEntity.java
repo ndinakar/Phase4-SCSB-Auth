@@ -31,6 +31,16 @@ public class UsersEntity implements Serializable{
     @JoinColumn(name = "user_institution", insertable = false, updatable = false)
     private InstitutionEntity institutionEntity;
 
+    @Column(name="user_emailid")
+    private String emailId;
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public Integer getUserId() {
         return userId;

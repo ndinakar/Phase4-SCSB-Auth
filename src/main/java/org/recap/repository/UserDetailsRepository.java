@@ -25,6 +25,8 @@ public interface UserDetailsRepository extends JpaRepository<UsersEntity,Integer
 
     UsersEntity findByUserId(Integer userId);
 
+    UsersEntity findByEmailIdAndInstitutionEntity(String emailId,InstitutionEntity institutionId);
+
     @Query(value = "select userT.passwrd from user_master_t userT where userT.login_id=:loginId",nativeQuery = true)
     String validateUser(@Param("loginId") String loginId);
 
