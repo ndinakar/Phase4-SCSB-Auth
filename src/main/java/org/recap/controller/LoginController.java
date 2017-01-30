@@ -110,11 +110,13 @@ public class LoginController {
             logger.debug("Authentication exception");
             logger.error("Exception in authentication : "+e.getMessage());
             authMap.put(UserManagement.USER_AUTHENTICATION,false);
+            authMap.put(UserManagement.USER_AUTH_ERRORMSG,e.getMessage());
         }
         catch(Exception e)
         {
             logger.error("Exception occured in authentication : "+e.getLocalizedMessage());
             authMap.put(UserManagement.USER_AUTHENTICATION,false);
+            authMap.put(UserManagement.USER_AUTH_ERRORMSG,e.getMessage());
         }
 
             return authMap;

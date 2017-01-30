@@ -54,21 +54,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<InstitutionEntity> institutionEntityList= (List<InstitutionEntity>)institutionDetailsRepository.findAll();
         InstitutionEntity institutionEntity=new InstitutionEntity();
         institutionEntity.setInstitutionId(institution);
-        if(institutionEntityList.get(0).getInstitutionId().equals(institution))
-        {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
-        }else if(institutionEntityList.get(1).getInstitutionId().equals(institution))
-        {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
-
-        }else if(institutionEntityList.get(2).getInstitutionId().equals(institution))
-        {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
-        }
-
+        userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
+        userForm.setPasswordMatcher(true);
         return userForm;
     }
 
