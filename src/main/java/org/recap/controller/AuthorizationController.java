@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthorizationController {
     @Autowired
     private AuthorizationServiceImpl authorizationService;
 
