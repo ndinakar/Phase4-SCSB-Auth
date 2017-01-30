@@ -64,6 +64,8 @@ public enum UserManagement {
 
     public static final int EDIT_CGD_ID=2;
 
+    public static final String USER_AUTH_ERRORMSG="authErrorMsg";
+
     private String value;
 
     private int integerValues;

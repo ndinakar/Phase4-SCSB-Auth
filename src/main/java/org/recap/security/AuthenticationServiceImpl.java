@@ -8,8 +8,6 @@ import org.recap.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static org.recap.security.UserManagement.userAndInstitution;
 
 /**
@@ -51,24 +49,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private UserForm getCredential(Integer institution,String username,UserForm userForm) throws Exception {
-        List<InstitutionEntity> institutionEntityList= (List<InstitutionEntity>)institutionDetailsRepository.findAll();
-        InstitutionEntity institutionEntity=new InstitutionEntity();
-        institutionEntity.setInstitutionId(institution);
-        if(institutionEntityList.get(0).getInstitutionId().equals(institution))
-        {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
+        try {
+            InstitutionEntity institutionEntity = new InstitutionEntity();
+            institutionEntity.setInstitutionId(institution);
+            userForm = UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
             userForm.setPasswordMatcher(true);
-        }else if(institutionEntityList.get(1).getInstitutionId().equals(institution))
+        }catch(Exception e)
         {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
-
-        }else if(institutionEntityList.get(2).getInstitutionId().equals(institution))
-        {
-            userForm=UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username,institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
+            throw new Exception(username+":"+institution+" was not available in SCSB database");
         }
-
         return userForm;
     }
 
