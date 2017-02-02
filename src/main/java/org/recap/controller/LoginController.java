@@ -59,7 +59,6 @@ public class LoginController {
     public Map<String,Object> createSession(@RequestBody UsernamePasswordToken token, HttpServletRequest request, BindingResult error){
         UserForm userForm=new UserForm();
         Map<String,Object> authMap=new HashMap<String,Object>();
-        Map<Object,Object> tokenMap=new HashMap<Object,Object>();
         boolean superAdminUser=false;
         boolean recapUser=false;
         Map<Integer,String> permissionMap=null;
@@ -130,7 +129,7 @@ public class LoginController {
     }
 
 
-    public void getPermissionsForUI(Subject subject,Map<String,Object> authMap,Map<Integer,String> permissionMap){
+    private void getPermissionsForUI(Subject subject,Map<String,Object> authMap,Map<Integer,String> permissionMap){
         authMap.put(UserManagement.REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(UserManagement.REQUEST_PLACE.getPermissionId())));
         authMap.put(UserManagement.COLLECTION_PRIVILEGE,subject.isPermitted(permissionMap.get(UserManagement.WRITE_GCD.getPermissionId())));
         authMap.put(UserManagement.REPORTS_PRIVILEGE,subject.isPermitted(permissionMap.get(UserManagement.VIEW_PRINT_REPORTS.getPermissionId())));

@@ -1,8 +1,7 @@
 package org.recap.security;
 
-import org.apache.shiro.SecurityUtils;
-import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.UserForm;
+import org.recap.model.jpa.PermissionEntity;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.PermissionsRepository;
 import org.recap.repository.UserDetailsRepository;
@@ -59,24 +58,6 @@ public class UserServiceImpl implements UserService{
         return UserManagement.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
     }
 
-
-    public UserForm getCurrentUser()
-    {
-        final Integer currentUserId=(Integer) SecurityUtils.getSubject().getPrincipal();
-        try {
-            if (currentUserId != null) {
-                return findUserById(currentUserId);
-            }
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public UserForm findUserById(Integer userId) throws Exception {
-        return UserManagement.toUserForm(userDetailsRepository.findByUserId(userId),new UserForm());
-    }
 
     public Map<Integer,String> getPermissions()
     {
