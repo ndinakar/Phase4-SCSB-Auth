@@ -29,29 +29,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PermissionsRepository permissionsRepository;
 
-    public PermissionsRepository getPermissionsRepository() {
-        return permissionsRepository;
-    }
-
-    public void setPermissionsRepository(PermissionsRepository permissionsRepository) {
-        this.permissionsRepository = permissionsRepository;
-    }
-
-    public InstitutionDetailsRepository getInstitutionDetailsRepository() {
-        return institutionDetailsRepository;
-    }
-
-    public void setInstitutionDetailsRepository(InstitutionDetailsRepository institutionDetailsRepository) {
-        this.institutionDetailsRepository = institutionDetailsRepository;
-    }
-
-    public UserDetailsRepository getUserDetails() {
-        return userDetailsRepository;
-    }
-
-    public void setUserDetails(UserDetailsRepository userDetails) {
-        this.userDetailsRepository = userDetails;
-    }
 
     public UserForm findUser(String loginId,UserForm userForm)throws Exception
     {

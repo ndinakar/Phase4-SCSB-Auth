@@ -23,22 +23,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
-    public UserDetailsRepository getUserDetailsRepository() {
-        return userDetailsRepository;
-    }
-
-    public void setUserDetailsRepository(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
-    }
-
-    public InstitutionDetailsRepository getInstitutionDetailsRepository() {
-        return institutionDetailsRepository;
-    }
-
-    public void setInstitutionDetailsRepository(InstitutionDetailsRepository institutionDetailsRepository) {
-        this.institutionDetailsRepository = institutionDetailsRepository;
-    }
-
     public UserForm doAuthentication(UsernamePasswordToken token) throws Exception {
         UserForm userForm = new UserForm();
         String[] user = userAndInstitution(token.getUsername());
