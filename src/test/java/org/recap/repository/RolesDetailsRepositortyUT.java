@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
+import org.recap.model.jpa.UsersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
@@ -39,6 +40,11 @@ public class RolesDetailsRepositortyUT extends BaseTestCase {
        roleEntity.setCreatedBy("superadmin");
        roleEntity.setLastUpdatedDate(new Date());
        roleEntity.setLastUpdatedBy("superadmin");
+       Set<UsersEntity> users=new HashSet<UsersEntity>();
+       UsersEntity usersEntity=new UsersEntity();
+       usersEntity.setUserId(1);
+       users.add(usersEntity);
+       roleEntity.setUsers(users);
 
 
        PermissionEntity permissionEntity = getPermissionEntity();
@@ -51,6 +57,11 @@ public class RolesDetailsRepositortyUT extends BaseTestCase {
        RoleEntity savedRoleEntity = rolesDetailsRepositorty.save(roleEntity);
        assertEquals(roleEntity.getRoleName(),savedRoleEntity.getRoleName());
        assertEquals(roleEntity.getRoleDescription(),savedRoleEntity.getRoleDescription());
+       assertEquals(roleEntity.getCreatedDate(),savedRoleEntity.getCreatedDate());
+       assertEquals(roleEntity.getCreatedBy(),savedRoleEntity.getCreatedBy());
+       assertEquals(roleEntity.getLastUpdatedBy(),savedRoleEntity.getLastUpdatedBy());
+       assertEquals(roleEntity.getLastUpdatedDate(),savedRoleEntity.getLastUpdatedDate());
+       assertEquals(roleEntity.getUsers(),savedRoleEntity.getUsers());
    }
 
 
