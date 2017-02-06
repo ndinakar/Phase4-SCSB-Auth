@@ -26,23 +26,6 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
     @Autowired
     private AuthorizationService authorizationService;
 
-    public AuthenticationService getAuthenticationService() {
-        return authenticationService;
-    }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
-
-    public AuthorizationService getAuthorizationService() {
-        return authorizationService;
-    }
-
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
-
-
 
     public SimpleAuthorizationRealm(){
         setName("simpleAuthRealm");

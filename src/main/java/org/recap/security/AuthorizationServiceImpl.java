@@ -38,14 +38,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         tokenMap.put(usernamePasswordToken.getUsername(), subject);
     }
 
-    public UserDetailsRepository getUserDetailsRepository() {
-        return userDetailsRepository;
-    }
-
-    public void setUserDetailsRepository(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
-    }
-
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
         UsersEntity usersEntity = userDetailsRepository.findByUserId(loginId);
         if (usersEntity == null) {
