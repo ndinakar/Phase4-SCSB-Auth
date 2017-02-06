@@ -1,7 +1,5 @@
 package org.recap.security;
 
-import org.recap.model.UserForm;
-
 import java.util.Map;
 
 /**
@@ -11,14 +9,6 @@ import java.util.Map;
 public interface UserService {
 
 
-
-    UserForm findUser(String loginId, UserForm userForm)throws Exception;
-
     Map<Integer,String> getPermissions();
-
-
-
-
-
 
 }

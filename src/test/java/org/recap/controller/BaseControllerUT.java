@@ -2,6 +2,7 @@ package org.recap.controller;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -51,5 +52,10 @@ public class BaseControllerUT extends BaseTestCase {
     protected Object jsonToObject(String json, Class clazz) throws IOException {
         MockHttpInputMessage mockHttpInputMessage = new MockHttpInputMessage(json.getBytes());
         return this.mappingJackson2HttpMessageConverter.read(clazz, mockHttpInputMessage);
+    }
+
+    @Test
+    public void loadContexts() {
+        System.out.println();
     }
 }

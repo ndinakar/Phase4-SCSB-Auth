@@ -1,12 +1,9 @@
 package org.recap;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +16,7 @@ public class ShiroTest extends BaseTestCase {
     public void loginSingleUser() throws Exception {
 
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("jhon:2", "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("john:2", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -45,7 +42,7 @@ public class ShiroTest extends BaseTestCase {
     @Test
     public void loginConcurrentUser() throws Exception {
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("jhon:2", "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("john:2", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -65,14 +62,9 @@ public class ShiroTest extends BaseTestCase {
         boolean loggedInSubject1Authenticated = loggedInSubject1.isAuthenticated();
         assertTrue(loggedInSubject1Authenticated);
 
-        boolean permitted = loggedInSubject1.isPermitted("RequestPlace");
-        assertTrue(permitted);
 
         boolean loggedInSubject2Authenticated = loggedInSubject2.isAuthenticated();
         assertTrue(loggedInSubject2Authenticated);
-
-        boolean permitted2 = loggedInSubject2.isPermitted("RequestPlace");
-        assertFalse(permitted2);
 
 
     }

@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Table(name="permissions_t",schema="recap",catalog="")
 public class PermissionEntity implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="permission_id")
     private int permissionId;
 
