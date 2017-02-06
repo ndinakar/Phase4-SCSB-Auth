@@ -105,6 +105,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 unAuthorized(token);
             }
         } catch (Exception sessionExcp) {
+            logger.error("Exception in AuthorizationServiceImpl "+sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
 
