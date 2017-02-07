@@ -2,7 +2,6 @@ package org.recap.security;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.recap.model.UserDetailsForm;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.UsersEntity;
 
@@ -28,7 +27,7 @@ public enum UserManagement {
     REQUEST_ITEMS(10,"Ability to request items from any institution"),
     REQUEST_CANCEL_ALL(11,"Ability to cancel any request");
 
-    public static final String permissionsMap="permissionsMap";
+    public static final String PERMISSION_MAP="permissionsMap";
 
     public static final String USER_AUTHENTICATION="isAuthenticated";
 
@@ -150,18 +149,8 @@ public enum UserManagement {
 
     public static Map<Integer,String> getPermissions(Subject subject){
         Session session=subject.getSession();
-        return (Map<Integer,String>)session.getAttribute(permissionsMap);
+        return (Map<Integer,String>)session.getAttribute(PERMISSION_MAP);
     }
-
-    public static UserDetailsForm getRequestAccess(Subject subject){
-        UserDetailsForm userDetailsForm=new UserDetailsForm();
-        Session session=subject.getSession();
-        Integer userId=(Integer)session.getAttribute(USER_ID);
-        userDetailsForm.setSuperAdmin(userId.equals(SUPER_ADMIN.getIntegerValues()));
-        userDetailsForm.setLoginInstitutionId((Integer) session.getAttribute(USER_INSTITUTION));
-        return userDetailsForm;
-    }
-
 
 
 }

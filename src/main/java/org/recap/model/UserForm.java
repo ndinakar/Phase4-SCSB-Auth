@@ -21,8 +21,6 @@ public class UserForm {
     @ApiModelProperty(name="password",value="password for login",position = 2)
     private String password;
 
-    private boolean rememberMe;
-
     private String wrongCredentials;
 
     private boolean passwordMatcher;
@@ -70,14 +68,6 @@ public class UserForm {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isRememberMe() {
-        return rememberMe;
-    }
-
-    public void setRememberMe(boolean rememberMe) {
-        this.rememberMe = rememberMe;
     }
 
     public Integer getUserId() {

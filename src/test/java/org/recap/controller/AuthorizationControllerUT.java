@@ -75,7 +75,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
         Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
         authorizationService.setSubject(usernamePasswordToken,loggedInSubject);
         Session session=loggedInSubject.getSession();
-        session.setAttribute(UserManagement.permissionsMap,permissionMap);
+        session.setAttribute(UserManagement.PERMISSION_MAP,permissionMap);
     }
 
 
