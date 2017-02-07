@@ -33,6 +33,10 @@ public class AuthenticationServiceImplUT extends BaseTestCase{
         UserForm returnForm=authenticationService.doAuthentication(token);
 
         assertEquals(Integer.valueOf(1),returnForm.getUserId());
+        assertEquals(userForm.getUsername(),returnForm.getUsername());
+        assertEquals(userForm.getInstitution(),returnForm.getInstitution());
+        assertEquals(userForm.getWrongCredentials(),returnForm.getWrongCredentials());
+        assertEquals(userForm.getPermissions(),returnForm.getPermissions());
 
 
     }

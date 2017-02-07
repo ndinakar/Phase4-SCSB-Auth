@@ -101,7 +101,7 @@ public class LoginController {
             authMap.put(UserManagement.ReCAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
             Session session=subject.getSession();
-            session.setAttribute(UserManagement.permissionsMap,permissionMap);
+            session.setAttribute(UserManagement.PERMISSION_MAP,permissionMap);
             session.setAttribute(UserManagement.USER_ID,subject.getPrincipal());
         }
         catch(AuthenticationException e)
