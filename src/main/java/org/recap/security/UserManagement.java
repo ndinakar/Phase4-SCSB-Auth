@@ -73,20 +73,12 @@ public enum UserManagement {
         return integerValues;
     }
 
-    public void setIntegerValues(int integerValues) {
-        this.integerValues = integerValues;
-    }
-
     private Integer permissionId;
 
     private String permissionDesc;
 
     public Integer getPermissionId(){
         return this.permissionId;
-    }
-
-    public String getPermissionDesc(){
-        return this.permissionDesc;
     }
 
     UserManagement(String value)
