@@ -27,7 +27,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    private static Map<String, Subject> tokenMap = new ConcurrentHashMap<String, Subject>();
+    private static Map<String, Subject> tokenMap = new ConcurrentHashMap<>();
 
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
         return tokenMap.get(usernamePasswordToken.getUsername());
@@ -38,6 +38,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         tokenMap.put(usernamePasswordToken.getUsername(), subject);
     }
 
+    @Override
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
         UsersEntity usersEntity = userDetailsRepository.findByUserId(loginId);
         if (usersEntity == null) {
@@ -64,7 +65,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
         Subject currentSubject = getSubject(token);
-        logger.debug("Authorization call for : " + permissionId + " & User " + token);
+        logger.debug("Authorization call for : ",permissionId," & User ",token);
         Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
         boolean authorized = false;
         try {
@@ -97,6 +98,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 unAuthorized(token);
             }
         } catch (Exception sessionExcp) {
+            logger.error("Exception in AuthorizationServiceImpl "+sessionExcp);
             logger.error("Exception in AuthorizationServiceImpl "+sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
@@ -105,7 +107,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private void timeOutExceptionCatch(UsernamePasswordToken token) {
-        logger.debug("Time out Exception thrown for token " + token);
+        logger.debug("Time out Exception thrown for token ",token);
         unAuthorized(token);
     }
 

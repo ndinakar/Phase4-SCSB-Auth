@@ -36,6 +36,26 @@ public class UsersEntity implements Serializable{
     @Column(name="user_institution")
     private Integer institutionId;
 
+    @Column(name="user_description")
+    private String userDescription;
+
+    @Column(name="user_emailid")
+    private String emailId;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
+
+    @Column(name = "CREATED_BY")
+    private String createdBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "LAST_UPDATED_DATE")
+    private Date lastUpdatedDate;
+
+    @Column(name = "LAST_UPDATED_BY")
+    private String lastUpdatedBy;
+
     public Integer getInstitutionId() {
         return institutionId;
     }
@@ -91,26 +111,6 @@ public class UsersEntity implements Serializable{
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
-
-    @Column(name="user_description")
-    private String userDescription;
-
-    @Column(name="user_emailid")
-    private String emailId;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_DATE")
-    private Date createdDate;
-
-    @Column(name = "CREATED_BY")
-    private String createdBy;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "LAST_UPDATED_DATE")
-    private Date lastUpdatedDate;
-
-    @Column(name = "LAST_UPDATED_BY")
-    private String lastUpdatedBy;
 
     public Integer getUserId() {
         return userId;

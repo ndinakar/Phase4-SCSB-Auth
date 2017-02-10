@@ -69,17 +69,9 @@ public enum UserManagement {
 
     private int integerValues;
 
-    public int getIntegerValues() {
-        return integerValues;
-    }
-
     private Integer permissionId;
 
     private String permissionDesc;
-
-    public Integer getPermissionId(){
-        return this.permissionId;
-    }
 
     UserManagement(String value)
     {
@@ -98,6 +90,14 @@ public enum UserManagement {
 
     }
 
+    public int getIntegerValues() {
+        return integerValues;
+    }
+
+    public Integer getPermissionId(){
+        return this.permissionId;
+    }
+
     public String getValue()
     {
         return this.value;
@@ -113,7 +113,7 @@ public enum UserManagement {
             values=token.split(tokenSeperator);
         }else
         {
-            return null;
+            return new String[0];
         }
         return values;
     }

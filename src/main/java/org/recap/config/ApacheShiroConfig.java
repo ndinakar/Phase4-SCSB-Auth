@@ -14,6 +14,8 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.recap.security.realm.SimpleAuthorizationRealm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +37,8 @@ import java.util.Map;
 @ControllerAdvice
 public class ApacheShiroConfig {
 
+    Logger logger = LoggerFactory.getLogger(ApacheShiroConfig.class);
+
     @Value("${users.session.timeout}")
     private String sessionTimeOut;//in milliseconds
 
@@ -48,7 +52,7 @@ public class ApacheShiroConfig {
         // resource at that location)
         //log.debug("AuthorizationException was thrown", e);
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("status", HttpStatus.FORBIDDEN.value());
         map.put("message", "No message available");
         model.addAttribute("errors", map);
@@ -58,14 +62,12 @@ public class ApacheShiroConfig {
 
     @Bean
     public ModularRealmAuthenticator authenticator() {
-        ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
-        return authenticator;
+        return new ModularRealmAuthenticator();
     }
 
     @Bean
     public ModularRealmAuthorizer authorizer() {
-        ModularRealmAuthorizer authorizer = new ModularRealmAuthorizer();
-        return authorizer;
+        return new ModularRealmAuthorizer();
     }
 
     @Bean
@@ -85,14 +87,13 @@ public class ApacheShiroConfig {
 
     @Bean(name="subjectContext")
     public DefaultWebSubjectContext getSubjectContext(){
-        DefaultWebSubjectContext webSubjectContext=new DefaultWebSubjectContext();
-        return webSubjectContext;
+        return new DefaultWebSubjectContext();
     }
 
 
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-        Map<String, String> filterChainsMap = new HashMap<String, String>();
+        Map<String, String> filterChainsMap = new HashMap<>();
         filterChainsMap.put("/", "authc");
         filterChainsMap.put("/logout", "logout");
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
@@ -116,7 +117,9 @@ public class ApacheShiroConfig {
         Subject subject=null;
         try{
             subject=SecurityUtils.getSubject();
-        }catch(Exception e){}
+        }catch(Exception e){
+            logger.error("error-->",e);
+        }
         return subject;
     }
 

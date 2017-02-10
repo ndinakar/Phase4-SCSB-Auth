@@ -20,7 +20,7 @@ public class SwaggerInterceptor implements HandlerInterceptor {
         boolean continueExport = false;
         String date = new Date().toString();
         String key = request.getHeader("api_key");
-        if (key != null && key.equalsIgnoreCase("recap")) {
+        if (key != null && "recap".equalsIgnoreCase(key)) {
             continueExport = true;
         } else {
             continueExport = false;
@@ -33,12 +33,12 @@ public class SwaggerInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
+        //Do nothing
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+        //Do nothing
     }
 }
 
