@@ -22,7 +22,7 @@ apply plugin: 'jacoco'
 
 sonarqube {
 	properties {
-		property "sonar.jacoco.reportPath", "${project.buildDir}/jacocoHtml"
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
 	}
 }
 //added to accept systemproperties while executing gradlew test cmd
