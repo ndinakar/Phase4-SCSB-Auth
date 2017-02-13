@@ -22,6 +22,8 @@ apply plugin: 'jacoco'
 
 sonarqube {
 	properties {
+		property "sonar.projectName", "sonar-scsb-shiro"
+		property "sonar.projectKey", "org.sonarqube:java-gradle"
 		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
 	}
 }
