@@ -19,6 +19,11 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 
+sonarqube {
+	properties {
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+	}
+}
 //added to accept systemproperties while executing gradlew test cmd
 test {
 	systemProperties = System.properties
