@@ -24,7 +24,7 @@ sonarqube {
 	properties {
 		property "sonar.projectName", "sonar-scsb-shiro"
 		property "sonar.projectKey", "org.sonarqube:java-gradle"
-		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+		property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
 	}
 }
 //added to accept systemproperties while executing gradlew test cmd
@@ -68,6 +68,11 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('junit:junit:4.12')
+}
+
+jacoco {
+	reportsDir = file("build/tmp/jacoco.exec")
 }
 
 jacocoTestReport {
