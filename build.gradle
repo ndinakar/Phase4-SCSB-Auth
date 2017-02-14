@@ -12,7 +12,6 @@ buildscript {
 
 plugins {
 	id "org.sonarqube" version "2.0.1"
-	id "jacoco"
 }
 
 apply plugin: 'java'
@@ -20,13 +19,6 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 
-sonarqube {
-	properties {
-		property "sonar.projectName", "sonar-scsb-shiro"
-		property "sonar.projectKey", "org.sonarqube:java-gradle"
-		property "sonar.jacoco.reportPath", "build/jacoco/test.exec"
-	}
-}
 //added to accept systemproperties while executing gradlew test cmd
 test {
 	systemProperties = System.properties
@@ -68,11 +60,6 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('junit:junit:4.12')
-}
-
-jacoco {
-	reportsDir = file("build/tmp/jacoco.exec")
 }
 
 jacocoTestReport {
