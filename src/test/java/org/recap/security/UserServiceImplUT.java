@@ -21,7 +21,7 @@ public class UserServiceImplUT extends BaseTestCase{
     public void testPermissions(){
         Map<Integer,String> permissionsMap=userService.getPermissions();
         assertTrue(permissionsMap.containsKey(1));
-        assertTrue(permissionsMap.containsValue("CreateUser"));
-        assertEquals(permissionsMap.get(1),"CreateUser");
+        assertTrue(permissionsMap.containsValue("Create User"));
+        assertEquals(permissionsMap.get(1),"Create User");
     }
 }
