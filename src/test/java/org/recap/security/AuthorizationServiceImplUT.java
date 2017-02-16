@@ -47,7 +47,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,1);
         Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
-        assertTrue(permissions.contains("CreateUser"));
+        assertTrue(permissions.contains("Create User"));
 
     }
 
