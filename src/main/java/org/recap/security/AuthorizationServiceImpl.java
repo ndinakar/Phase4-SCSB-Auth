@@ -65,7 +65,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
         Subject currentSubject = getSubject(token);
-        logger.debug("Authorization call for : ",permissionId," & User ",token);
+        logger.debug("Authorization call for : {} & User {}",permissionId,token);
         Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
         boolean authorized = false;
         try {
@@ -98,8 +98,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 unAuthorized(token);
             }
         } catch (Exception sessionExcp) {
-            logger.error("Exception in AuthorizationServiceImpl "+sessionExcp);
-            logger.error("Exception in AuthorizationServiceImpl "+sessionExcp.getMessage());
+            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp);
+            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
 

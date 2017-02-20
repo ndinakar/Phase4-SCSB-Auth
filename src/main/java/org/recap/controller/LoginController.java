@@ -107,7 +107,7 @@ public class LoginController {
             authMap.put(UserManagement.USER_AUTHENTICATION, false);
             authMap.put(UserManagement.USER_AUTH_ERRORMSG, e.getMessage());
         } catch (Exception e) {
-            logger.error("Exception occured in authentication : " + e);
+            logger.error("Exception occured in authentication : ",e);
             authMap.put(UserManagement.USER_AUTHENTICATION, false);
             authMap.put(UserManagement.USER_AUTH_ERRORMSG, e.getMessage());
         }
