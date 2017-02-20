@@ -50,7 +50,6 @@ public class ApacheShiroConfig {
 
         // you could return a 404 here instead (this is how github handles 403, so the user does NOT know there is a
         // resource at that location)
-        //log.debug("AuthorizationException was thrown", e);
 
         Map<String, Object> map = new HashMap<>();
         map.put("status", HttpStatus.FORBIDDEN.value());
