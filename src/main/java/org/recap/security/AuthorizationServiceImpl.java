@@ -4,6 +4,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
+import org.recap.RecapConstants;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
@@ -26,6 +27,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
+
+    @Autowired
+    UserManagementService userManagementService;
 
     private static Map<String, Subject> tokenMap = new ConcurrentHashMap<String, Subject>();
 
@@ -65,22 +69,22 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
         Subject currentSubject = getSubject(token);
         logger.debug("Authorization call for : " + permissionId + " & User " + token);
-        Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
+        Map<Integer, String> permissions = UserManagementService.getPermissions(currentSubject);
         boolean authorized = false;
         try {
             currentSubject.getSession().touch();
             switch(permissionId){
 
-                case UserManagement.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
-                    if (currentSubject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
+                case RecapConstants.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION)))) {
                         authorized=true;
                     }
                     break;
                 }
 
-                case UserManagement.REQUEST_PLACE_ID:{//to check Request
-                    if (currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
-                            currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
+                case RecapConstants.REQUEST_PLACE_ID:{//to check Request
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))) ||
+                            currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS)))) {
                         authorized=true;
                     }
                     break;
