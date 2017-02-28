@@ -8,5 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PermissionsRepository extends JpaRepository<PermissionEntity,Integer> {
 
+    PermissionEntity findByPermissionName(String permissionName);
+
 
 }

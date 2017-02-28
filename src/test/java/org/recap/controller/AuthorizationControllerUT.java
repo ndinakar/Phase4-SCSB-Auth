@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
+import org.recap.RecapConstants;
 import org.recap.config.ApacheShiroConfig;
 import org.recap.security.AuthorizationServiceImpl;
-import org.recap.security.UserManagement;
 import org.recap.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -75,7 +75,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
         Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
         authorizationService.setSubject(usernamePasswordToken,loggedInSubject);
         Session session=loggedInSubject.getSession();
-        session.setAttribute(UserManagement.PERMISSION_MAP,permissionMap);
+        session.setAttribute(RecapConstants.PERMISSION_MAP,permissionMap);
     }
 
 

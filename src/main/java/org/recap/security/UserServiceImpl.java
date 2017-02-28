@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService{
 
     public UserForm findUser(String loginId,UserForm userForm)throws Exception
     {
-        return UserManagement.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
+        return UserManagementService.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
     }
 
 

@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.recap.security.UserManagement.userAndInstitution;
-
 /**
  * Created by dharmendrag on 21/12/16.
  */
@@ -24,12 +22,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserDetailsRepository userDetailsRepository;
 
     @Autowired
+    UserManagementService userManagementService;
+
+    @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
     @Override
     public UserForm doAuthentication(UsernamePasswordToken token) throws Exception {
         UserForm userForm = new UserForm();
-        String[] user = userAndInstitution(token.getUsername());
+        String[] user = userManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
         userForm.setInstitution(Integer.valueOf(user[1]));
         userForm = getCredential(Integer.valueOf(user[1]), user[0], userForm);
@@ -40,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             InstitutionEntity institutionEntity = new InstitutionEntity();
             institutionEntity.setInstitutionId(institution);
-            userForm = UserManagement.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
+            userForm = UserManagementService.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
             userForm.setPasswordMatcher(true);
         }catch(Exception e)
         {
