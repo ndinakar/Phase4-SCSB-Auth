@@ -26,23 +26,6 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
     @Autowired
     private AuthorizationService authorizationService;
 
-    public AuthenticationService getAuthenticationService() {
-        return authenticationService;
-    }
-
-    public void setAuthenticationService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
-
-    public AuthorizationService getAuthorizationService() {
-        return authorizationService;
-    }
-
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
-
-
 
     public SimpleAuthorizationRealm(){
         setName("simpleAuthRealm");
@@ -62,16 +45,15 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
-        UsernamePasswordToken token=(UsernamePasswordToken)authToken;
-        UserForm userForm=null;
         try {
-            userForm=authenticationService.doAuthentication(token);
+            UsernamePasswordToken token = (UsernamePasswordToken) authToken;
+            UserForm userForm = authenticationService.doAuthentication(token);
+            if (userForm != null && userForm.isPasswordMatcher()) {
+                return new SimpleAuthenticationInfo(userForm.getUserId(), token.getPassword(), getName());
+            }
         }catch(Exception e)
         {
-            e.printStackTrace();
-        }
-        if(userForm!=null && userForm.isPasswordMatcher()){
-            return new SimpleAuthenticationInfo(userForm.getUserId(),token.getPassword(),getName());
+            throw new AuthenticationException(e);
         }
         return null;
     }

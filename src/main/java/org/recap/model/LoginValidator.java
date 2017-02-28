@@ -21,7 +21,6 @@ public class LoginValidator implements Validator {
         {
             errors.rejectValue("institution","error.username.notselected","Please select your institution");
         }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "error.password.empty", "Please specify a password.");
 
     }
 }

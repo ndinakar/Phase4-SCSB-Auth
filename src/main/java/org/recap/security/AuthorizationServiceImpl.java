@@ -4,17 +4,16 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
+import org.recap.RecapConstants;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.UserDetailsRepository;
-import org.recap.security.realm.SCSBUserRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,32 +28,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
-    private static Map<String, SCSBUserRealm> tokenMap = new ConcurrentHashMap<String, SCSBUserRealm>();
+    @Autowired
+    UserManagementService userManagementService;
+
+    private static Map<String, Subject> tokenMap = new ConcurrentHashMap<String, Subject>();
 
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
-        SCSBUserRealm scsbUserRealm = tokenMap.get(usernamePasswordToken.getUsername());
-        return scsbUserRealm.getSubject();
-    }
-
-    public SCSBUserRealm getSCSBUserRealm(UsernamePasswordToken usernamePasswordToken) {
         return tokenMap.get(usernamePasswordToken.getUsername());
     }
 
     public void setSubject(UsernamePasswordToken usernamePasswordToken, Subject subject) {
 
-        SCSBUserRealm scsbUserRealm = new SCSBUserRealm();
-        scsbUserRealm.setSubject(subject);
-        scsbUserRealm.setLoggedInTime(new Date(System.currentTimeMillis()));
-
-        tokenMap.put(usernamePasswordToken.getUsername(), scsbUserRealm);
-    }
-
-    public UserDetailsRepository getUserDetailsRepository() {
-        return userDetailsRepository;
-    }
-
-    public void setUserDetailsRepository(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
+        tokenMap.put(usernamePasswordToken.getUsername(), subject);
     }
 
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
@@ -74,8 +59,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     public void unAuthorized(UsernamePasswordToken token) {
         logger.debug("Session Time Out Call");
-        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
-        Subject currentSubject = scsbUserRealm.getSubject();
+        Subject currentSubject = getSubject(token);
         tokenMap.remove(token.getUsername());
         if (currentSubject != null && currentSubject.getSession() != null) {
             currentSubject.logout();
@@ -83,25 +67,24 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
-        SCSBUserRealm scsbUserRealm = getSCSBUserRealm(token);
-        Subject currentSubject = scsbUserRealm.getSubject();
+        Subject currentSubject = getSubject(token);
         logger.debug("Authorization call for : " + permissionId + " & User " + token);
-        Map<Integer, String> permissions = UserManagement.getPermissions(currentSubject);
+        Map<Integer, String> permissions = UserManagementService.getPermissions(currentSubject);
         boolean authorized = false;
         try {
             currentSubject.getSession().touch();
             switch(permissionId){
 
-                case UserManagement.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
-                    if (currentSubject.isPermitted(permissions.get(UserManagement.WRITE_GCD.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.DEACCESSION.getPermissionId()))) {
+                case RecapConstants.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION)))) {
                         authorized=true;
                     }
                     break;
                 }
 
-                case UserManagement.REQUEST_PLACE_ID:{//to check Request
-                    if (currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE.getPermissionId())) || currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_PLACE_ALL.getPermissionId())) ||
-                            currentSubject.isPermitted(permissions.get(UserManagement.REQUEST_ITEMS.getPermissionId()))) {
+                case RecapConstants.REQUEST_PLACE_ID:{//to check Request
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))) ||
+                            currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS)))) {
                         authorized=true;
                     }
                     break;
@@ -118,6 +101,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 unAuthorized(token);
             }
         } catch (Exception sessionExcp) {
+            logger.error("Exception in AuthorizationServiceImpl "+sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
 

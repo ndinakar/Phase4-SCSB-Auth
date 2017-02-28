@@ -1,8 +1,7 @@
 package org.recap.security;
 
-import org.apache.shiro.SecurityUtils;
-import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.UserForm;
+import org.recap.model.jpa.PermissionEntity;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.PermissionsRepository;
 import org.recap.repository.UserDetailsRepository;
@@ -30,53 +29,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PermissionsRepository permissionsRepository;
 
-    public PermissionsRepository getPermissionsRepository() {
-        return permissionsRepository;
-    }
-
-    public void setPermissionsRepository(PermissionsRepository permissionsRepository) {
-        this.permissionsRepository = permissionsRepository;
-    }
-
-    public InstitutionDetailsRepository getInstitutionDetailsRepository() {
-        return institutionDetailsRepository;
-    }
-
-    public void setInstitutionDetailsRepository(InstitutionDetailsRepository institutionDetailsRepository) {
-        this.institutionDetailsRepository = institutionDetailsRepository;
-    }
-
-    public UserDetailsRepository getUserDetails() {
-        return userDetailsRepository;
-    }
-
-    public void setUserDetails(UserDetailsRepository userDetails) {
-        this.userDetailsRepository = userDetails;
-    }
 
     public UserForm findUser(String loginId,UserForm userForm)throws Exception
     {
-        return UserManagement.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
+        return UserManagementService.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
     }
 
-
-    public UserForm getCurrentUser()
-    {
-        final Integer currentUserId=(Integer) SecurityUtils.getSubject().getPrincipal();
-        try {
-            if (currentUserId != null) {
-                return findUserById(currentUserId);
-            }
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public UserForm findUserById(Integer userId) throws Exception {
-        return UserManagement.toUserForm(userDetailsRepository.findByUserId(userId),new UserForm());
-    }
 
     public Map<Integer,String> getPermissions()
     {
