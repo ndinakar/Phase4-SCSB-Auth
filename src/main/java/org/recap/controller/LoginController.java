@@ -13,10 +13,12 @@ import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.recap.RecapConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
+import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.UserDetailsRepository;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.recap.security.UserService;
+import org.recap.util.HelperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class LoginController {
 
     Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    @Autowired
+    private InstitutionDetailsRepository institutionDetailsRepository;
+
     private LoginValidator loginValidator=new LoginValidator();
 
     @Autowired
@@ -60,6 +65,8 @@ public class LoginController {
     @Autowired
     UserManagementService userManagementService;
 
+    @Autowired
+    HelperUtil helperUtil;
 
 
     @RequestMapping(value="/authService",method= RequestMethod.POST)
@@ -80,8 +87,8 @@ public class LoginController {
             String[] values = UserManagementService.userAndInstitution(token.getUsername());
             if (values != null) {
                 userForm.setUsername(values[0]);
-                userForm.setInstitution(Integer.valueOf(values[1]));
-                userForm.setPassword(String.valueOf(token.getPassword()));
+                Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(values[1]);
+                userForm.setInstitution(institutionIdByCode);
                 loginValidator.validate(userForm, error);
             }
 

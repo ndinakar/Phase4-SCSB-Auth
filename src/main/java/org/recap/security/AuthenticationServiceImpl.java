@@ -5,6 +5,7 @@ import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.UserDetailsRepository;
+import org.recap.util.HelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
+    @Autowired
+    private HelperUtil helperUtil;
+
     public UserForm doAuthentication(UsernamePasswordToken token) throws Exception {
         UserForm userForm = new UserForm();
         String[] user = userManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
-        userForm.setInstitution(Integer.valueOf(user[1]));
-        userForm = (getCredential(Integer.valueOf(user[1]), user[0], userForm));
+        Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(user[1]);
+        userForm.setInstitution(institutionIdByCode);
+        userForm = (getCredential(institutionIdByCode, user[0], userForm));
         return userForm;
     }
 
