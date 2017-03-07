@@ -43,7 +43,7 @@ import java.util.Map;
 @Api(value = "userAuth", description = "To authenticate user", position = 1)
 public class LoginController {
 
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;

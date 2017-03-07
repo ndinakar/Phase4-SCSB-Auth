@@ -37,7 +37,7 @@ import java.util.Map;
 @ControllerAdvice
 public class ApacheShiroConfig {
 
-    Logger logger = LoggerFactory.getLogger(ApacheShiroConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApacheShiroConfig.class);
 
     @Value("${users.session.timeout}")
     private String sessionTimeOut;//in milliseconds

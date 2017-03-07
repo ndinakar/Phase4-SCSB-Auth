@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-    Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;

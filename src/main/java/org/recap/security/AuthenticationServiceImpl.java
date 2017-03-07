@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
