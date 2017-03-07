@@ -39,16 +39,16 @@ import java.util.Map;
  * Created by dharmendrag on 25/11/16.
  */
 @RestController
-@RequestMapping(value="/userAuth")
-@Api(value="userAuth", description="To authenticate user", position = 1)
+@RequestMapping(value = "/userAuth")
+@Api(value = "userAuth", description = "To authenticate user", position = 1)
 public class LoginController {
 
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
-    private LoginValidator loginValidator=new LoginValidator();
+    private LoginValidator loginValidator = new LoginValidator();
 
     @Autowired
     private UserService userService;
@@ -68,18 +68,16 @@ public class LoginController {
     @Autowired
     HelperUtil helperUtil;
 
-
-    @RequestMapping(value="/authService",method= RequestMethod.POST)
-    @ApiOperation(value="authService",notes="Used to Authenticate User",position = 0,consumes = "application/json")
+    @RequestMapping(value = "/authService", method = RequestMethod.POST)
+    @ApiOperation(value = "authService", notes = "Used to Authenticate User", position = 0, consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Session created successfully")})
-    public Map<String,Object> createSession(@RequestBody UsernamePasswordToken token, HttpServletRequest request, BindingResult error){
-        UserForm userForm=new UserForm();
-        Map<String,Object> authMap=new HashMap<String,Object>();
-        boolean superAdminUser=false;
-        boolean recapUser=false;
-        Map<Integer,String> permissionMap=null;
-        try
-        {
+    public Map<String, Object> createSession(@RequestBody UsernamePasswordToken token, HttpServletRequest request, BindingResult error) {
+        UserForm userForm = new UserForm();
+        Map<String, Object> authMap = new HashMap<>();
+        boolean superAdminUser = false;
+        boolean recapUser = false;
+        Map<Integer, String> permissionMap = null;
+        try {
             if (token == null) {
                 authMap.put(RecapConstants.USER_AUTHENTICATION, false);
                 throw new AuthenticationException("User Name Password token is empty");
@@ -104,14 +102,14 @@ public class LoginController {
             if (!subject.isAuthenticated()) {
                 throw new AuthenticationException("Subject Authtentication Failed");
             }
-            authorizationService.setSubject(token,subject);
-            permissionMap= userService.getPermissions();
-            getPermissionsForUI(subject,authMap,permissionMap);
+            authorizationService.setSubject(token, subject);
+            permissionMap = userService.getPermissions();
+            getPermissionsForUI(subject, authMap, permissionMap);
             authMap.put(RecapConstants.USER_AUTHENTICATION, true);
             authMap.put("userName", userForm.getUsername());
             authMap.put(RecapConstants.USER_INSTITUTION, userForm.getInstitution());
             authMap.put(RecapConstants.USER_ID, subject.getPrincipal());
-            List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
+            List<Integer> roleId = userManagementService.getRolesForUser((Integer)subject.getPrincipal() );
             if(roleId.contains(1)){
                 superAdminUser = true;
             }
@@ -119,44 +117,40 @@ public class LoginController {
             authMap.put(RecapConstants.SUPER_ADMIN_USER, superAdminUser);
             authMap.put(RecapConstants.ReCAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
-            Session session=subject.getSession();
-            session.setAttribute(RecapConstants.PERMISSION_MAP,permissionMap);
-            session.setAttribute(RecapConstants.USER_ID,subject.getPrincipal());
-        }
-        catch(AuthenticationException e)
-        {
+            Session session = subject.getSession();
+            session.setAttribute(RecapConstants.PERMISSION_MAP, permissionMap);
+            session.setAttribute(RecapConstants.USER_ID, subject.getPrincipal());
+        } catch (AuthenticationException e) {
             logger.debug("Authentication exception");
-            logger.error("Exception in authentication : "+e.getMessage());
-            authMap.put(RecapConstants.USER_AUTHENTICATION,false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG,e.getMessage());
+            logger.error("Exception in authentication : ", e);
+            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, e.getMessage());
+        } catch (Exception e) {
+            logger.error("Exception occured in authentication : ",e);
+            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, e.getMessage());
         }
-        catch(Exception e)
-        {
-            logger.error("Exception occured in authentication : "+e.getLocalizedMessage());
-            authMap.put(RecapConstants.USER_AUTHENTICATION,false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG,e.getMessage());
-        }
-
-            return authMap;
-
+        return authMap;
     }
 
-    @RequestMapping(value="/logout",method=RequestMethod.POST)
-    public void logoutUser(@RequestBody UsernamePasswordToken token){
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public void logoutUser(@RequestBody UsernamePasswordToken token) {
         logger.info("Subject Logged out");
         authorizationService.unAuthorized(token);
     }
 
-    private void getPermissionsForUI(Subject subject,Map<String,Object> authMap,Map<Integer,String> permissionMap) {
-        authMap.put(RecapConstants.REQUEST_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))));
-        authMap.put(RecapConstants.COLLECTION_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))));
-        authMap.put(RecapConstants.REPORTS_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.VIEW_PRINT_REPORTS))));
-        authMap.put(RecapConstants.SEARCH_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT))));
-        authMap.put(RecapConstants.USER_ROLE_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.CREATE_USER))));
-        authMap.put(RecapConstants.REQUEST_ALL_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))));
-        authMap.put(RecapConstants.REQUEST_ITEM_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS))));
-        authMap.put(RecapConstants.BARCODE_RESTRICTED_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED))));
-        authMap.put(RecapConstants.DEACCESSION_PRIVILEGE, subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION))));
+
+    private void getPermissionsForUI(Subject subject,Map<String,Object> authMap,Map<Integer,String> permissionMap){
+        authMap.put(RecapConstants.REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))));
+        authMap.put(RecapConstants.COLLECTION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))));
+        authMap.put(RecapConstants.REPORTS_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.VIEW_PRINT_REPORTS))));
+        authMap.put(RecapConstants.SEARCH_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT))));
+        authMap.put(RecapConstants.USER_ROLE_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.CREATE_USER))));
+        authMap.put(RecapConstants.REQUEST_ALL_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))));
+        authMap.put(RecapConstants.REQUEST_ITEM_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS))));
+        authMap.put(RecapConstants.BARCODE_RESTRICTED_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED))));
+        authMap.put(RecapConstants.DEACCESSION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION))));
 
     }
+
 }

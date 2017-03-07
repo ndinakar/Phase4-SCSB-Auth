@@ -6,6 +6,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 /**
  * Created by dharmendrag on 21/12/16.
  */
+@FunctionalInterface
 public interface AuthorizationService {
 
     AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId);

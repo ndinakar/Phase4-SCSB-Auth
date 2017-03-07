@@ -36,9 +36,10 @@ public class UserServiceImpl implements UserService{
     }
 
 
+    @Override
     public Map<Integer,String> getPermissions()
     {
-        Map<Integer,String> permissionsMap=new HashMap<Integer,String>();
+        Map<Integer,String> permissionsMap=new HashMap<>();
         List<PermissionEntity> permissions=permissionsRepository.findAll();
 
         for(PermissionEntity permissionEntity:permissions)

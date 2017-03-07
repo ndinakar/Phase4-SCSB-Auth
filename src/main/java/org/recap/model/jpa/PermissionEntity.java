@@ -20,6 +20,9 @@ public class PermissionEntity implements Serializable{
     @Column(name="permission_name")
     private String permissionName;
 
+    @Column(name="permission_description")
+    private String permissionDesc;
+
     public int getPermissionId() {
         return permissionId;
     }
@@ -43,11 +46,4 @@ public class PermissionEntity implements Serializable{
     public void setPermissionDesc(String permissionDesc) {
         this.permissionDesc = permissionDesc;
     }
-
-    @Column(name="permission_description")
-
-    private String permissionDesc;
-
-
-
 }

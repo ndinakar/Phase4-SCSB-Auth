@@ -5,6 +5,8 @@ import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.UserDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.recap.util.HelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
@@ -28,13 +31,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private HelperUtil helperUtil;
 
+    @Override
     public UserForm doAuthentication(UsernamePasswordToken token) throws Exception {
         UserForm userForm = new UserForm();
         String[] user = userManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
         Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(user[1]);
         userForm.setInstitution(institutionIdByCode);
-        userForm = (getCredential(institutionIdByCode, user[0], userForm));
+        userForm = getCredential(institutionIdByCode, user[0], userForm);
         return userForm;
     }
 
@@ -46,6 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userForm.setPasswordMatcher(true);
         }catch(Exception e)
         {
+            logger.error("error-->",e);
             throw new Exception(username+":"+institution+" was not available in SCSB database");
         }
         return userForm;
