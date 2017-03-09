@@ -30,7 +30,7 @@ public class AuthenticationServiceImplUT extends BaseTestCase{
         userForm.setUsername("superadmin");
         userForm.setInstitution(1);
         userForm.setPassword("12345");
-        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ RecapConstants.TOKEN_SPLITER+userForm.getInstitution(),userForm.getPassword(),true);
+        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ RecapConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
         UserForm returnForm=authenticationService.doAuthentication(token);
 
         assertEquals(Integer.valueOf(1),returnForm.getUserId());
