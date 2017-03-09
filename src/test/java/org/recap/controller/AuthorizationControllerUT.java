@@ -68,7 +68,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("john:2", "123");
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);

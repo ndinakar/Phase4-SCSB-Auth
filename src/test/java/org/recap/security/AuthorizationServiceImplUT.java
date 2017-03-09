@@ -30,7 +30,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
     @Test
     public void setSubject(){
-        String loginUser="superadmin:1";
+        String loginUser="superadmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
 
         loginSubject(loginUser);
@@ -42,7 +42,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
     @Test
     public void authorizationinfo(){
-        String loginUser="superadmin:1";
+        String loginUser="superadmin:PUL";
         Subject loggedInSubject = loginSubject(loginUser);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,1);
