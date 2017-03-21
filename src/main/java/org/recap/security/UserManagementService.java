@@ -1,5 +1,6 @@
 package org.recap.security;
 
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.recap.RecapConstants;
@@ -58,22 +59,16 @@ public class UserManagementService {
     }
 
 
-    public static UserForm toUserForm(UsersEntity userEntity, UserForm userForm)throws Exception
-    {
-        try
-        {
-            if(userForm==null)
-            {
-                userForm=new UserForm();
-            }
-            userForm.setUserId(userEntity.getUserId());
-            userForm.setUsername(userEntity.getLoginId());
-            userForm.setInstitution(userEntity.getInstitutionEntity().getInstitutionId());
-
-        }catch (Exception e)
-        {
-            throw new Exception(e);
+    public static UserForm toUserForm(UsersEntity userEntity, UserForm userForm) {
+        if (userEntity == null) {
+            throw new UnknownAccountException(RecapConstants.ERROR_USER_NOT_AVAILABLE);
         }
+        if (userForm == null) {
+            userForm = new UserForm();
+        }
+        userForm.setUserId(userEntity.getUserId());
+        userForm.setUsername(userEntity.getLoginId());
+        userForm.setInstitution(userEntity.getInstitutionEntity().getInstitutionId());
         return userForm;
     }
 

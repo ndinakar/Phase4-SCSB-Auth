@@ -23,18 +23,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    UserManagementService userManagementService;
-
-    @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
     @Autowired
     private HelperUtil helperUtil;
 
     @Override
-    public UserForm doAuthentication(UsernamePasswordToken token) throws Exception {
+    public UserForm doAuthentication(UsernamePasswordToken token) {
+        logger.info(token.getUsername());
         UserForm userForm = new UserForm();
-        String[] user = userManagementService.userAndInstitution(token.getUsername());
+        String[] user = UserManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
         Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(user[1]);
         userForm.setInstitution(institutionIdByCode);
@@ -42,17 +40,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userForm;
     }
 
-    private UserForm getCredential(Integer institution,String username,UserForm userForm) throws Exception {
-        try {
-            InstitutionEntity institutionEntity = new InstitutionEntity();
-            institutionEntity.setInstitutionId(institution);
-            userForm = UserManagementService.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
-            userForm.setPasswordMatcher(true);
-        }catch(Exception e)
-        {
-            logger.error("error-->",e);
-            throw new Exception(username+":"+institution+" was not available in SCSB database");
-        }
+    private UserForm getCredential(Integer institution, String username, UserForm userForm) {
+        InstitutionEntity institutionEntity = new InstitutionEntity();
+        institutionEntity.setInstitutionId(institution);
+        userForm = UserManagementService.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
+        userForm.setPasswordMatcher(true);
         return userForm;
     }
 
