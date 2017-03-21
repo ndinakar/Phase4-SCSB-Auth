@@ -9,6 +9,6 @@ import org.recap.model.UserForm;
 @FunctionalInterface
 public interface AuthenticationService {
 
-    UserForm doAuthentication(UsernamePasswordToken token) throws Exception;
+    UserForm doAuthentication(UsernamePasswordToken token);
 
 }

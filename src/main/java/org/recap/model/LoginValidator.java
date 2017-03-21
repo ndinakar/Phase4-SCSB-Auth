@@ -1,26 +1,16 @@
 package org.recap.model;
 
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by dharmendrag on 7/12/16.
  */
-public class LoginValidator implements Validator {
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return UserForm.class.isAssignableFrom(clazz);
-    }
+public class LoginValidator {
 
-    @Override
-    public void validate(Object target, Errors errors) {
-        UserForm userForm=(UserForm) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "error.username.empty", "Please specify a username.");
-        if(userForm.getInstitution()==0)
-        {
-            errors.rejectValue("institution","error.username.notselected","Please select your institution");
+    public boolean validate(UserForm userForm) {
+        if (StringUtils.isBlank(userForm.getUsername()) || userForm.getInstitution() == 0) {
+            return false;
         }
-
+        return true;
     }
 }

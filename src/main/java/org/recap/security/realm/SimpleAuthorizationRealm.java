@@ -44,16 +44,11 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
-        try {
-            UsernamePasswordToken token = (UsernamePasswordToken) authToken;
-            UserForm userForm = authenticationService.doAuthentication(token);
-            if (userForm != null && userForm.isPasswordMatcher()) {
-                return new SimpleAuthenticationInfo(userForm.getUserId(), token.getPassword(), getName());
-            }
-        }catch(Exception e)
-        {
-            throw new AuthenticationException(e);
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) {
+        UsernamePasswordToken token = (UsernamePasswordToken) authToken;
+        UserForm userForm = authenticationService.doAuthentication(token);
+        if (userForm != null && userForm.isPasswordMatcher()) {
+            return new SimpleAuthenticationInfo(userForm.getUserId(), token.getPassword(), getName());
         }
         return null;
     }

@@ -5,8 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
@@ -40,7 +39,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/userAuth")
-@Api(value = "userAuth", description = "To authenticate user", position = 1)
+@Api(value = "userAuth")
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -69,64 +68,69 @@ public class LoginController {
     HelperUtil helperUtil;
 
     @RequestMapping(value = "/authService", method = RequestMethod.POST)
-    @ApiOperation(value = "authService", notes = "Used to Authenticate User", position = 0, consumes = "application/json")
+    @ApiOperation(value = "authService", notes = "Used to Authenticate User", consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Session created successfully")})
     public Map<String, Object> createSession(@RequestBody UsernamePasswordToken token, HttpServletRequest request, BindingResult error) {
         UserForm userForm = new UserForm();
         Map<String, Object> authMap = new HashMap<>();
-        boolean superAdminUser = false;
-        boolean recapUser = false;
-        Map<Integer, String> permissionMap = null;
         try {
             if (token == null) {
-                authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-                throw new AuthenticationException("User Name Password token is empty");
+                throw new CredentialsException(RecapConstants.ERROR_USER_TOKEN_EMPTY);
             }
             String[] values = UserManagementService.userAndInstitution(token.getUsername());
+            boolean isValid = false;
             if (values != null) {
                 userForm.setUsername(values[0]);
                 Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(values[1]);
                 userForm.setInstitution(institutionIdByCode);
-                loginValidator.validate(userForm, error);
+                isValid = loginValidator.validate(userForm);
             }
-
-            if (error.hasErrors()) {
-                logger.debug("Login Screen validation failed");
-                authMap.put("authentication", false);
-                throw new AuthenticationException("User Name Password token validation fails");
+            if (!isValid) {
+                throw new IncorrectCredentialsException(RecapConstants.ERROR_USER_TOKEN_VALIDATION_FAILED);
             }
-
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
-
             if (!subject.isAuthenticated()) {
-                throw new AuthenticationException("Subject Authtentication Failed");
+                throw new AuthenticationException(RecapConstants.ERROR_SUBJECT_AUTHENTICATION_FAILED);
             }
             authorizationService.setSubject(token, subject);
-            permissionMap = userService.getPermissions();
+            Map<Integer, String> permissionMap = userService.getPermissions();
             getPermissionsForUI(subject, authMap, permissionMap);
             authMap.put(RecapConstants.USER_AUTHENTICATION, true);
-            authMap.put("userName", userForm.getUsername());
+            authMap.put(RecapConstants.USER_NAME, userForm.getUsername());
             authMap.put(RecapConstants.USER_INSTITUTION, userForm.getInstitution());
             authMap.put(RecapConstants.USER_ID, subject.getPrincipal());
-            List<Integer> roleId = userManagementService.getRolesForUser((Integer)subject.getPrincipal() );
-            if(roleId.contains(1)){
-                superAdminUser = true;
-            }
-            recapUser=subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED)));
+            List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
+            boolean superAdminUser = roleId.contains(1) ? Boolean.TRUE : Boolean.FALSE;
+            boolean recapUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED)));
             authMap.put(RecapConstants.SUPER_ADMIN_USER, superAdminUser);
             authMap.put(RecapConstants.ReCAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
             Session session = subject.getSession();
             session.setAttribute(RecapConstants.PERMISSION_MAP, permissionMap);
             session.setAttribute(RecapConstants.USER_ID, subject.getPrincipal());
-        } catch (AuthenticationException e) {
-            logger.debug("Authentication exception");
-            logger.error("Exception in authentication : ", e);
+        } catch (UnknownAccountException uae) {
+            logger.debug("Unknown Account Exception");
+            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, uae);
             authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, e.getMessage());
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_MESSAGE_USER_NOT_AVAILABLE);
+        } catch (IncorrectCredentialsException ice) {
+            logger.debug("Unknown Account Exception");
+            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ice);
+            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
+        } catch (CredentialsException ce) {
+            logger.debug("Credentials exception");
+            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ce);
+            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
+        } catch (AuthenticationException ae) {
+            logger.debug("Authentication exception");
+            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ae);
+            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
+            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (Exception e) {
-            logger.error("Exception occured in authentication : ",e);
+            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, e);
             authMap.put(RecapConstants.USER_AUTHENTICATION, false);
             authMap.put(RecapConstants.USER_AUTH_ERRORMSG, e.getMessage());
         }
