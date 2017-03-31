@@ -63,7 +63,7 @@ public class RecapConstants {
     public static final String ERROR_USER_TOKEN_VALIDATION_FAILED = "User Name Password token validation fails";
     public static final String ERROR_USER_NOT_AVAILABLE = "User is not available in database";
     public static final String ERROR_SUBJECT_AUTHENTICATION_FAILED = "Subject Authentication Failed";
-    public static final String ERROR_MESSAGE_USER_NOT_AVAILABLE = "User is not available in SCSB system. Please contact the administrator or send an email to recap-support@htcindia.com";
+    public static final String ERROR_MESSAGE_USER_NOT_AVAILABLE = "User is not available in SCSB system. Please contact the administrator or send an email to <br/><a href=\"mailto:{0}\">{1}</a>";
     public static final String EXCEPTION_IN_AUTHENTICATION = "Exception occurred in authentication : ";
 
 
