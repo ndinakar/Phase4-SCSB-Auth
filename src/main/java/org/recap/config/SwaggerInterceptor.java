@@ -17,7 +17,7 @@ public class SwaggerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        boolean continueExport = false;
+        boolean continueExport;
         String date = new Date().toString();
         String key = request.getHeader("api_key");
         if (key != null && "recap".equalsIgnoreCase(key)) {

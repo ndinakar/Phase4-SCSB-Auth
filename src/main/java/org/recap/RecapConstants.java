@@ -33,7 +33,7 @@ public class RecapConstants {
 
     public static final String SUPER_ADMIN_USER = "isSuperAdmin";
 
-    public static final String ReCAP_USER = "isRecapUser";
+    public static final String RECAP_USER = "isRecapUser";
 
     public static final String ROLE_ID = "roleId";
 

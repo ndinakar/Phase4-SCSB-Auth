@@ -34,9 +34,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserForm userForm = new UserForm();
         String[] user = UserManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
-        Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(user[1]);
-        userForm.setInstitution(institutionIdByCode);
-        userForm = getCredential(institutionIdByCode, user[0], userForm);
+        InstitutionEntity institutionEntity = helperUtil.getInstitutionIdByCode(user[1]);
+        userForm.setInstitution(institutionEntity.getInstitutionId());
+        userForm = getCredential(institutionEntity.getInstitutionId(), user[0], userForm);
         return userForm;
     }
 
