@@ -24,6 +24,8 @@ public class UserForm {
     @ApiModelProperty(name="institution",value="User's Institution",position = 3 , allowableValues = "1,2,3")
     private int institution;
 
+    private String userInstitution;
+
     private Set<String> permissions=new HashSet<>();
 
     private String wrongCredentials;
@@ -84,5 +86,13 @@ public class UserForm {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserInstitution() {
+        return userInstitution;
+    }
+
+    public void setUserInstitution(String userInstitution) {
+        this.userInstitution = userInstitution;
     }
 }

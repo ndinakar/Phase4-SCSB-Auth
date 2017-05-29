@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -12,6 +13,7 @@ import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.recap.RecapConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
+import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.UserDetailsRepository;
 import org.recap.security.AuthorizationServiceImpl;
@@ -30,10 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -48,6 +47,9 @@ public class LoginController {
 
     @Value("${recap.assist.email.to}")
     private String recapAssistanceEmailTo;
+
+    @Value("${superadmin.permission.institution}")
+    private String superAdminPermissionForInstitution;
 
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
@@ -86,8 +88,9 @@ public class LoginController {
             boolean isValid = false;
             if (values != null) {
                 userForm.setUsername(values[0]);
-                Integer institutionIdByCode = helperUtil.getInstitutionIdByCode(values[1]);
-                userForm.setInstitution(institutionIdByCode);
+                InstitutionEntity institutionEntity = helperUtil.getInstitutionIdByCode(values[1]);
+                userForm.setInstitution(institutionEntity.getInstitutionId());
+                userForm.setUserInstitution(institutionEntity.getInstitutionCode());
                 isValid = loginValidator.validate(userForm);
             }
             if (!isValid) {
@@ -106,10 +109,10 @@ public class LoginController {
             authMap.put(RecapConstants.USER_INSTITUTION, userForm.getInstitution());
             authMap.put(RecapConstants.USER_ID, subject.getPrincipal());
             List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
-            boolean superAdminUser = roleId.contains(1) ? Boolean.TRUE : Boolean.FALSE;
+            boolean superAdminUser = (roleId.contains(1) && superAdminPermissionForInstitution.contains(userForm.getUserInstitution())) ? Boolean.TRUE : Boolean.FALSE;
             boolean recapUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED)));
             authMap.put(RecapConstants.SUPER_ADMIN_USER, superAdminUser);
-            authMap.put(RecapConstants.ReCAP_USER, recapUser);
+            authMap.put(RecapConstants.RECAP_USER, recapUser);
             Collections.unmodifiableMap(authMap);
             Session session = subject.getSession();
             session.setAttribute(RecapConstants.PERMISSION_MAP, permissionMap);
