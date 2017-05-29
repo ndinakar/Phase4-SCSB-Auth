@@ -69,6 +69,7 @@ public class UserManagementService {
         userForm.setUserId(userEntity.getUserId());
         userForm.setUsername(userEntity.getLoginId());
         userForm.setInstitution(userEntity.getInstitutionEntity().getInstitutionId());
+        userForm.setUserInstitution(userEntity.getInstitutionEntity().getInstitutionCode());
         return userForm;
     }
 
