@@ -14,10 +14,10 @@ public class HelperUtil {
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
-    public Integer getInstitutionIdByCode(String value) {
-        InstitutionEntity byInstitutionCode = institutionDetailsRepository.findByInstitutionCode(value);
-        if(null != byInstitutionCode) {
-            return byInstitutionCode.getInstitutionId();
+    public InstitutionEntity getInstitutionIdByCode(String value) {
+        InstitutionEntity institutionEntity = institutionDetailsRepository.findByInstitutionCode(value);
+        if(null != institutionEntity) {
+            return institutionEntity;
         }
         return null;
     }
