@@ -23,26 +23,56 @@ public class PermissionEntity implements Serializable{
     @Column(name="permission_description")
     private String permissionDesc;
 
+    /**
+     * Gets permission id.
+     *
+     * @return the permission id
+     */
     public int getPermissionId() {
         return permissionId;
     }
 
+    /**
+     * Sets permission id.
+     *
+     * @param permissionId the permission id
+     */
     public void setPermissionId(int permissionId) {
         this.permissionId = permissionId;
     }
 
+    /**
+     * Gets permission name.
+     *
+     * @return the permission name
+     */
     public String getPermissionName() {
         return permissionName;
     }
 
+    /**
+     * Sets permission name.
+     *
+     * @param permissionName the permission name
+     */
     public void setPermissionName(String permissionName) {
         this.permissionName = permissionName;
     }
 
+    /**
+     * Gets permission desc.
+     *
+     * @return the permission desc
+     */
     public String getPermissionDesc() {
         return permissionDesc;
     }
 
+    /**
+     * Sets permission desc.
+     *
+     * @param permissionDesc the permission desc
+     */
     public void setPermissionDesc(String permissionDesc) {
         this.permissionDesc = permissionDesc;
     }
