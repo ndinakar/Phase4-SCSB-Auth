@@ -32,66 +32,146 @@ public class UserForm {
 
     private boolean passwordMatcher;
 
+    /**
+     * Is password matcher boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPasswordMatcher() {
         return passwordMatcher;
     }
 
+    /**
+     * Sets password matcher.
+     *
+     * @param passwordMatcher the password matcher
+     */
     public void setPasswordMatcher(boolean passwordMatcher) {
         this.passwordMatcher = passwordMatcher;
     }
 
+    /**
+     * Gets wrong credentials.
+     *
+     * @return the wrong credentials
+     */
     public String getWrongCredentials() {
         return wrongCredentials;
     }
 
+    /**
+     * Sets wrong credentials.
+     *
+     * @param wrongCredentials the wrong credentials
+     */
     public void setWrongCredentials(String wrongCredentials) {
         this.wrongCredentials = wrongCredentials;
     }
 
+    /**
+     * Gets permissions.
+     *
+     * @return the permissions
+     */
     public Set<String> getPermissions() {
         return permissions;
     }
 
+    /**
+     * Sets permissions.
+     *
+     * @param permissions the permissions
+     */
     public void setPermissions(Set<String> permissions) {
         this.permissions = permissions;
     }
 
+    /**
+     * Gets institution.
+     *
+     * @return the institution
+     */
     public int getInstitution() {
         return institution;
     }
 
+    /**
+     * Sets institution.
+     *
+     * @param institution the institution
+     */
     public void setInstitution(int institution) {
         this.institution = institution;
     }
 
+    /**
+     * Gets password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets password.
+     *
+     * @param password the password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public Integer getUserId() {
         return userId;
     }
 
+    /**
+     * Sets user id.
+     *
+     * @param userId the user id
+     */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
+    /**
+     * Gets username.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets username.
+     *
+     * @param username the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets user institution.
+     *
+     * @return the user institution
+     */
     public String getUserInstitution() {
         return userInstitution;
     }
 
+    /**
+     * Sets user institution.
+     *
+     * @param userInstitution the user institution
+     */
     public void setUserInstitution(String userInstitution) {
         this.userInstitution = userInstitution;
     }

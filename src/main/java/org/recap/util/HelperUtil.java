@@ -14,6 +14,12 @@ public class HelperUtil {
     @Autowired
     private InstitutionDetailsRepository institutionDetailsRepository;
 
+    /**
+     * To get institution entity for the given institution code.
+     *
+     * @param value the value
+     * @return the institution id by code
+     */
     public InstitutionEntity getInstitutionIdByCode(String value) {
         InstitutionEntity institutionEntity = institutionDetailsRepository.findByInstitutionCode(value);
         if(null != institutionEntity) {
