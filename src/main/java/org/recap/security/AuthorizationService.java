@@ -9,5 +9,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 @FunctionalInterface
 public interface AuthorizationService {
 
+    /**
+     * Get the AuthorizationInfo for the loginId.
+     *
+     * @param authorizationInfo the authorization info
+     * @param loginId           the login id
+     * @return the authorization info
+     */
     AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId);
 }

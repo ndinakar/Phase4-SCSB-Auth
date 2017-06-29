@@ -9,6 +9,11 @@ import java.util.Map;
 public interface UserService {
 
 
+    /**
+     * Gets permissions.
+     *
+     * @return the permissions
+     */
     Map<Integer,String> getPermissions();
 
 }

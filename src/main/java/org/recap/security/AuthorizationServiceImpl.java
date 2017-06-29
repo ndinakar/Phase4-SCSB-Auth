@@ -28,15 +28,30 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     private UserDetailsRepository userDetailsRepository;
 
+    /**
+     * The User management service.
+     */
     @Autowired
     UserManagementService userManagementService;
 
     private static Map<String, Subject> tokenMap = new ConcurrentHashMap<>();
 
+    /**
+     * Get the subject for the giving usernamePasswordToken.
+     *
+     * @param usernamePasswordToken the username password token
+     * @return the subject
+     */
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
         return tokenMap.get(usernamePasswordToken.getUsername());
     }
 
+    /**
+     * Sets subject.
+     *
+     * @param usernamePasswordToken the username password token
+     * @param subject               the subject
+     */
     public void setSubject(UsernamePasswordToken usernamePasswordToken, Subject subject) {
 
         tokenMap.put(usernamePasswordToken.getUsername(), subject);
@@ -58,6 +73,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return authorizationInfo;
     }
 
+    /**
+     * Un authorized the given user.
+     *
+     * @param token the token
+     */
     public void unAuthorized(UsernamePasswordToken token) {
         logger.debug("Session Time Out Call");
         Subject currentSubject = getSubject(token);
@@ -67,6 +87,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         }
     }
 
+    /**
+     * Check privilege of the user based on the permission id.
+     *
+     * @param token        the token
+     * @param permissionId the permission id
+     * @return the boolean
+     */
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
         Subject currentSubject = getSubject(token);
         logger.debug("Authorization call for : {} & User {}",permissionId,token);
