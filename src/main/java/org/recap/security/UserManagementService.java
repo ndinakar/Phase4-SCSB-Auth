@@ -23,12 +23,24 @@ import java.util.Map;
 @Service
 public class UserManagementService {
 
+    /**
+     * The User details repository.
+     */
     @Autowired
     UserDetailsRepository userDetailsRepository;
 
+    /**
+     * The Permissions repository.
+     */
     @Autowired
     PermissionsRepository permissionsRepository;
 
+    /**
+     * Get roles for user Id.
+     *
+     * @param userId the user id
+     * @return the list of role ids
+     */
     public List<Integer> getRolesForUser(Integer userId){
         List<Integer> roleIds = new ArrayList<>();
         UsersEntity usersEntity = userDetailsRepository.findByUserId(userId);
@@ -40,11 +52,23 @@ public class UserManagementService {
         return roleIds;
     }
 
+    /**
+     * Get permission id integer.
+     *
+     * @param permissionName the permission name
+     * @return the permission id
+     */
     public Integer getPermissionId(String permissionName){
         PermissionEntity permissionEntity = permissionsRepository.findByPermissionName(permissionName);
         return  permissionEntity.getPermissionId();
     }
 
+    /**
+     * Split the User and institution from the token.
+     *
+     * @param token the token
+     * @return the array with the value of user and institution.
+     */
     public static final String[] userAndInstitution(String token)
     {
         String[] values=new String[2];
@@ -59,6 +83,13 @@ public class UserManagementService {
     }
 
 
+    /**
+     * Create UserForm with details.
+     *
+     * @param userEntity the user entity
+     * @param userForm   the user form
+     * @return the UserForm
+     */
     public static UserForm toUserForm(UsersEntity userEntity, UserForm userForm) {
         if (userEntity == null) {
             throw new UnknownAccountException(RecapConstants.ERROR_USER_NOT_AVAILABLE);
@@ -73,6 +104,12 @@ public class UserManagementService {
         return userForm;
     }
 
+    /**
+     * Get permissions details
+     *
+     * @param subject the subject
+     * @return the map of permission values
+     */
     public static Map<Integer,String> getPermissions(Subject subject){
         Session session=subject.getSession();
         return (Map<Integer,String>)session.getAttribute(RecapConstants.PERMISSION_MAP);
