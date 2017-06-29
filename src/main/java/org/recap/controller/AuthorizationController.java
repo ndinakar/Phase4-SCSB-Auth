@@ -27,10 +27,20 @@ public class AuthorizationController {
     @Autowired
     private AuthorizationServiceImpl authorizationService;
 
+    /**
+     * The User management service.
+     */
     @Autowired
     UserManagementService userManagementService;
 
 
+    /**
+     * Check the privilege for the search record screen
+     *
+     * @param request the request
+     * @param token   the token
+     * @return the boolean
+     */
     @RequestMapping(value="/search",method= RequestMethod.POST)
     @ApiOperation(value="search authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "search authentication success")})
@@ -38,6 +48,12 @@ public class AuthorizationController {
         return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT));
     }
 
+    /**
+     * Check the privilege for the request screen
+     *
+     * @param token the token
+     * @return the boolean
+     */
     @RequestMapping(value="/request",method= RequestMethod.POST)
     @ApiOperation(value="request authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "request authentication success")})
@@ -45,6 +61,12 @@ public class AuthorizationController {
         return authorizationService.checkPrivilege(token,userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE));
     }
 
+    /**
+     * Check the privilege for the collection screen
+     *
+     * @param token the token
+     * @return the boolean
+     */
     @RequestMapping(value = "/collection", method = RequestMethod.POST)
     @ApiOperation(value="collection authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "collection authentication success")})
@@ -52,6 +74,13 @@ public class AuthorizationController {
         return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(RecapConstants.WRITE_GCD));
 
     }
+
+    /**
+     * Check the privilege for the report screen
+     *
+     * @param usernamePasswordToken the username password token
+     * @return the boolean
+     */
     @RequestMapping(value="/reports",method= RequestMethod.POST)
     @ApiOperation(value="reports authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "reports authentication success")})
@@ -60,6 +89,12 @@ public class AuthorizationController {
 
     }
 
+    /**
+     * Check the privilege for the user screen
+     *
+     * @param usernamePasswordToken the username password token
+     * @return the boolean
+     */
     @RequestMapping(value="/userRoles",method= RequestMethod.POST)
     @ApiOperation(value="user authentication",notes="Used to Authorizer User for Users",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User & Role authentication success")})
@@ -68,6 +103,12 @@ public class AuthorizationController {
 
     }
 
+    /**
+     * Check the privilege for the roles screen
+     *
+     * @param usernamePasswordToken the username password token
+     * @return the boolean
+     */
     @RequestMapping(value="/roles",method= RequestMethod.POST)
     @ApiOperation(value="roles authentication",notes="Used to Authorizer User for Roles",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Role authentication success")})

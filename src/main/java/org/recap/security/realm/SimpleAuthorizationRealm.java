@@ -27,6 +27,9 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
     private AuthorizationService authorizationService;
 
 
+    /**
+     * Instantiates a new SimpleAuthorizationRealm.
+     */
     public SimpleAuthorizationRealm(){
         setName("simpleAuthRealm");
         setCredentialsMatcher(new SimpleCredentialsMatcher());

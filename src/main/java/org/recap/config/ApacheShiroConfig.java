@@ -32,7 +32,6 @@ import java.util.Map;
 /**
  * Created by dharmendrag on 25/11/16.
  */
-
 @Configuration
 @ControllerAdvice
 public class ApacheShiroConfig {
@@ -43,7 +42,13 @@ public class ApacheShiroConfig {
     private String sessionTimeOut;//in milliseconds
 
 
-
+    /**
+     * Handling the exception for the Swagger .
+     *
+     * @param e     the e
+     * @param model the model
+     * @return the string
+     */
     @ExceptionHandler(AuthorizationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleException(AuthorizationException e, Model model) {
@@ -59,16 +64,31 @@ public class ApacheShiroConfig {
         return "error";
     }
 
+    /**
+     * Register ModularRealmAuthenticator.
+     *
+     * @return the ModularRealmAuthenticator instance
+     */
     @Bean
     public ModularRealmAuthenticator authenticator() {
         return new ModularRealmAuthenticator();
     }
 
+    /**
+     * Register ModularRealmAuthorizer
+     *
+     * @return the ModularRealmAuthorizer instance
+     */
     @Bean
     public ModularRealmAuthorizer authorizer() {
         return new ModularRealmAuthorizer();
     }
 
+    /**
+     * Register DefaultWebSessionManager and set the session timeout
+     *
+     * @return the DefaultWebSessionManager instance
+     */
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
@@ -77,6 +97,11 @@ public class ApacheShiroConfig {
     }
 
 
+    /**
+     * Register SecurityManager
+     *
+     * @return the instance of SecurityManager
+     */
     @Bean(name = "securityManager")
     public SecurityManager securityManager() {
         SecurityManager securityManager = new DefaultWebSecurityManager(new SimpleAuthorizationRealm());
@@ -84,12 +109,22 @@ public class ApacheShiroConfig {
         return securityManager;
     }
 
+    /**
+     * Register DefaultWebSubjectContext
+     *
+     * @return the instance of DefaultWebSubjectContext
+     */
     @Bean(name="subjectContext")
     public DefaultWebSubjectContext getSubjectContext(){
         return new DefaultWebSubjectContext();
     }
 
 
+    /**
+     * Register ShiroFilterChainDefinitions and set the filter path mappings
+     *
+     * @return the instance of ShiroFilterChainDefinition
+     */
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         Map<String, String> filterChainsMap = new HashMap<>();
@@ -100,6 +135,12 @@ public class ApacheShiroConfig {
         return chainDefinition;
     }
 
+    /**
+     * Register ShiroFilterFactoryBean and set the urls
+     *
+     * @param securityManager the security manager
+     * @return the instance of ShiroFilterFactoryBean
+     */
     @Bean(name = "shiroFilterFactoryBean")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -111,6 +152,11 @@ public class ApacheShiroConfig {
     }
 
 
+    /**
+     * Register Subject
+     *
+     * @return the instance of Subject
+     */
     @ModelAttribute(name = "subject")
     public Subject subject() {
         Subject subject=null;

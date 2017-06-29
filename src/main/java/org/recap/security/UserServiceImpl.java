@@ -30,6 +30,14 @@ public class UserServiceImpl implements UserService{
     private PermissionsRepository permissionsRepository;
 
 
+    /**
+     * Get the UserForm based on the loginId.
+     *
+     * @param loginId  the login id
+     * @param userForm the user form
+     * @return the user form
+     * @throws Exception the exception
+     */
     public UserForm findUser(String loginId,UserForm userForm)throws Exception
     {
         return UserManagementService.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);

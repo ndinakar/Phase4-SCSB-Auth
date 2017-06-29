@@ -65,15 +65,32 @@ public class LoginController {
     @Autowired
     private DefaultWebSubjectContext defaultWebSubjectContext;
 
+    /**
+     * The User details repository.
+     */
     @Autowired
     UserDetailsRepository userDetailsRepository;
 
+    /**
+     * The User management service.
+     */
     @Autowired
     UserManagementService userManagementService;
 
+    /**
+     * The Helper util.
+     */
     @Autowired
     HelperUtil helperUtil;
 
+    /**
+     * Create session for the requested user
+     *
+     * @param token   the token
+     * @param request the request
+     * @param error   the error
+     * @return the map of the authorization values
+     */
     @RequestMapping(value = "/authService", method = RequestMethod.POST)
     @ApiOperation(value = "authService", notes = "Used to Authenticate User", consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Session created successfully")})
@@ -145,6 +162,11 @@ public class LoginController {
         return authMap;
     }
 
+    /**
+     * Logout user from the Shiro.
+     *
+     * @param token the token
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void logoutUser(@RequestBody UsernamePasswordToken token) {
         logger.info("Subject Logged out");

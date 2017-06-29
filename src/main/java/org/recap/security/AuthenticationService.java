@@ -9,6 +9,12 @@ import org.recap.model.UserForm;
 @FunctionalInterface
 public interface AuthenticationService {
 
+    /**
+     * Do authentication for the given UsernamePasswordToken.
+     *
+     * @param token the token
+     * @return the UserForm
+     */
     UserForm doAuthentication(UsernamePasswordToken token);
 
 }
