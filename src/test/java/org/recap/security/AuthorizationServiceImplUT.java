@@ -2,22 +2,22 @@ package org.recap.security;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
+import org.recap.repository.PermissionsRepository;
 import org.recap.repository.RolesDetailsRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,13 +31,16 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
 
     @Autowired
-    public AuthorizationService authorizationService;
+    private AuthorizationService authorizationService;
 
     @Autowired
-    public AuthorizationServiceImpl authorizationServiceimpl;
+    private AuthorizationServiceImpl authorizationServiceimpl;
 
     @Autowired
-    RolesDetailsRepositorty rolesDetailsRepositorty;
+    private RolesDetailsRepositorty rolesDetailsRepositorty;
+
+    @Autowired
+    private PermissionsRepository permissionsRepository;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -61,9 +64,9 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         String loginUser="HtcSuperAdmin:PUL";
         Subject loggedInSubject = loginSubject(loginUser);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,1);
+        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getUserId());
         Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
-        assertTrue(permissions.contains("Create User"));
+        assertTrue(permissions.contains("EditUser"));
 
     }
 
@@ -104,6 +107,9 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
 
     private void userRoles(UsersEntity usersEntity){
+        PermissionEntity permissionEntity = getPermissionEntity();
+        Set<PermissionEntity> permissionEntitySet = new HashSet<>();
+        permissionEntitySet.add(permissionEntity);
         List<RoleEntity> roleList=new ArrayList<RoleEntity>();
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setRoleName("patron");
@@ -112,10 +118,20 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         roleEntity.setCreatedBy("superadmin");
         roleEntity.setLastUpdatedDate(new Date());
         roleEntity.setLastUpdatedBy("superadmin");
+        roleEntity.setPermissions(permissionEntitySet);
         RoleEntity savedRole=rolesDetailsRepositorty.saveAndFlush(roleEntity);
         entityManager.refresh(savedRole);
         roleList.add(savedRole);
         usersEntity.setUserRole(roleList);
 
+    }
+
+    private PermissionEntity getPermissionEntity(){
+        PermissionEntity permissionEntity = new PermissionEntity();
+        permissionEntity.setPermissionDesc("Permission to edit user");
+        permissionEntity.setPermissionName("EditUser");
+        PermissionEntity savedPermission = permissionsRepository.saveAndFlush(permissionEntity);
+        entityManager.refresh(savedPermission);
+        return savedPermission;
     }
 }
