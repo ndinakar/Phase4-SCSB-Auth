@@ -35,9 +35,8 @@ public class UserDetailsRepositoryUT extends BaseTestCase {
         UsersEntity usersEntity=new UsersEntity();
         usersEntity.setLoginId("julius");
         usersEntity.setEmailId("julius@example.org");
-        InstitutionEntity newInstitution=getInstitution();
         usersEntity.setUserDescription("test User");
-        usersEntity.setInstitutionId(newInstitution.getInstitutionId());
+        usersEntity.setInstitutionId(1);
         usersEntity.setCreatedBy("superadmin");
         usersEntity.setCreatedDate(new Date());
         usersEntity.setLastUpdatedBy("superadmin");
@@ -59,15 +58,6 @@ public class UserDetailsRepositoryUT extends BaseTestCase {
         assertEquals(usersEntity.getLastUpdatedBy(),byLoginId.getLastUpdatedBy());
         assertEquals(usersEntity.getUserRole().get(0),byLoginId.getUserRole().get(0));
 
-    }
-
-    private InstitutionEntity getInstitution(){
-        InstitutionEntity institutionEntity=new InstitutionEntity();
-        institutionEntity.setInstitutionCode("CAM");
-        institutionEntity.setInstitutionName("Cambridge");
-        InstitutionEntity savedInstitution=institutionDetailsRepository.saveAndFlush(institutionEntity);
-        entityManager.refresh(savedInstitution);
-        return savedInstitution;
     }
 
     private void userRoles(UsersEntity usersEntity){
