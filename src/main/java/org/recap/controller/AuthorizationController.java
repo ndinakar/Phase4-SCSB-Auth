@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.subject.Subject;
 import org.recap.RecapConstants;
 import org.recap.security.AuthorizationServiceImpl;
@@ -117,5 +118,25 @@ public class AuthorizationController {
         subject.login(usernamePasswordToken);
         List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
         return roleId.contains(1);
+    }
+
+    /**
+     * Check the privilege for the roles screen
+     *
+     * @param usernamePasswordToken the username password token
+     * @return the boolean
+     */
+    @RequestMapping(value="/touchExistingSession",method= RequestMethod.POST)
+    @ApiOperation(value="touch existing session",notes="Used to touch existing session for the user",consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully extended the session")})
+    public boolean touchExistingSession(@RequestBody UsernamePasswordToken usernamePasswordToken) {
+        Subject subject = authorizationService.getSubject(usernamePasswordToken);
+        try {
+            subject.getSession().touch();
+            return true;
+        } catch (InvalidSessionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
