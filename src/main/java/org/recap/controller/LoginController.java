@@ -184,6 +184,7 @@ public class LoginController {
         authMap.put(RecapConstants.REQUEST_ITEM_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS))));
         authMap.put(RecapConstants.BARCODE_RESTRICTED_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED))));
         authMap.put(RecapConstants.DEACCESSION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION))));
+        authMap.put(RecapConstants.BULK_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BULK_REQUEST))));
 
     }
 
