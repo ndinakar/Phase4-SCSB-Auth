@@ -66,5 +66,8 @@ public class RecapConstants {
     public static final String ERROR_MESSAGE_USER_NOT_AVAILABLE = "User is not available in SCSB system. Please contact the administrator or send an email to <br/><a href=\"mailto:{0}\">{1}</a>";
     public static final String EXCEPTION_IN_AUTHENTICATION = "Exception occurred in authentication : ";
 
+    public static final String BULK_REQUEST_PRIVILEGE = "isBulkRequestAllowed";
+    public static final String BULK_REQUEST = "Bulk Request";
+
 
 }
