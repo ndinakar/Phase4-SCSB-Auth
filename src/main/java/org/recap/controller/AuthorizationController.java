@@ -139,4 +139,10 @@ public class AuthorizationController {
         }
         return false;
     }
+
+    @RequestMapping(value="/bulkRequest",method= RequestMethod.POST)
+    public boolean bulkRequest(@RequestBody UsernamePasswordToken usernamePasswordToken) {
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.BULK_REQUEST));
+
+    }
 }
