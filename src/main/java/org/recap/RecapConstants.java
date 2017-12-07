@@ -69,5 +69,7 @@ public class RecapConstants {
     public static final String BULK_REQUEST_PRIVILEGE = "isBulkRequestAllowed";
     public static final String BULK_REQUEST = "Bulk Request";
 
+    public static final String RESUBMIT_REQUEST_PRIVILEGE = "isReSubmitRequestAllowed";
+    public static final String RESUBMIT_REQUEST = "ReSubmit Request";
 
 }
