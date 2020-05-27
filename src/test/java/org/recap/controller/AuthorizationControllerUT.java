@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.config.ApacheShiroConfig;
+import org.recap.config.ApacheShiroCustomConfig;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
     HttpSession session;
 
     @Mock
-    ApacheShiroConfig apacheShiroConfig;
+    ApacheShiroCustomConfig apacheShiroConfig;
 
     @Autowired
     AuthorizationController authorizationController;
