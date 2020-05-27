@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.recap.config.ApacheShiroConfig;
+import org.recap.config.ApacheShiroCustomConfig;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.PermissionsRepository;
 import org.recap.repository.RolesDetailsRepositorty;
@@ -51,7 +51,7 @@ public class BaseTestCase {
     protected SecurityManager securityManager;
 
     @Autowired
-    public ApacheShiroConfig shiroConfig;
+    public ApacheShiroCustomConfig shiroConfig;
 
     @Autowired
     public SimpleAuthorizationRealm simpleAuthorizationRealm;
