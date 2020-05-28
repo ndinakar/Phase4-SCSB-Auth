@@ -34,9 +34,9 @@ import java.util.Map;
  */
 @Configuration
 @ControllerAdvice
-public class ApacheShiroConfig {
+public class ApacheShiroCustomConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApacheShiroConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApacheShiroCustomConfig.class);
 
     @Value("${users.session.timeout}")
     private String sessionTimeOut;//in milliseconds
@@ -102,7 +102,7 @@ public class ApacheShiroConfig {
      *
      * @return the instance of SecurityManager
      */
-    @Bean(name = "securityManager")
+    @Bean(name = "customSecurityManager")
     public SecurityManager securityManager() {
         SecurityManager securityManager = new DefaultWebSecurityManager(new SimpleAuthorizationRealm());
         SecurityUtils.setSecurityManager(securityManager);
