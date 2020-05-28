@@ -70,7 +70,7 @@ jacocoTestReport {
 		xml.enabled true
 		csv.enabled false
 		html.enabled = true
-		html.destination "${buildDir}/jacocoHtml"
+		html.destination file("${buildDir}/jacocoHtml")
 	}
 }
 
@@ -81,3 +81,5 @@ task scsbShiroJavadocs(type: Javadoc) {
 	String home = System.getProperty("user.home");
 	destinationDir =  new File(home+"/scsb-javadocs/scsb-shiro");
 }
+
+
