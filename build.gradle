@@ -57,6 +57,10 @@ dependencies {
 	implementation('org.apache.shiro:shiro-core:1.5.2')
 	implementation('org.apache.shiro:shiro-spring:1.5.2')
 	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.5.2')
+	implementation('org.projectlombok:lombok:1.18.12')
+	annotationProcessor('org.projectlombok:lombok:1.18.12')
+	testImplementation('org.projectlombok:lombok:1.18.12')
+	testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
 
 	runtime('mysql:mysql-connector-java')
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -81,5 +85,3 @@ task scsbShiroJavadocs(type: Javadoc) {
 	String home = System.getProperty("user.home");
 	destinationDir =  new File(home+"/scsb-javadocs/scsb-shiro");
 }
-
-

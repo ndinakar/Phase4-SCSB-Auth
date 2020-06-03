@@ -1,5 +1,7 @@
 package org.recap.model.jpa;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="roles_t",schema="recap",catalog="")
+@Data
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,51 +81,6 @@ public class RoleEntity {
     }
 
     /**
-     * Sets role id.
-     *
-     * @param roleId the role id
-     */
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    /**
-     * Gets role name.
-     *
-     * @return the role name
-     */
-    public String getRoleName() {
-        return roleName;
-    }
-
-    /**
-     * Sets role name.
-     *
-     * @param roleName the role name
-     */
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    /**
-     * Gets role description.
-     *
-     * @return the role description
-     */
-    public String getRoleDescription() {
-        return roleDescription;
-    }
-
-    /**
-     * Sets role description.
-     *
-     * @param roleDescription the role description
-     */
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription;
-    }
-
-    /**
      * Gets permissions.
      *
      * @return the permissions
@@ -138,77 +96,5 @@ public class RoleEntity {
      */
     public void setPermissions(Set<PermissionEntity> permissions) {
         this.permissions = permissions;
-    }
-
-    /**
-     * Gets created date.
-     *
-     * @return the created date
-     */
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    /**
-     * Sets created date.
-     *
-     * @param createdDate the created date
-     */
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    /**
-     * Gets created by.
-     *
-     * @return the created by
-     */
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    /**
-     * Sets created by.
-     *
-     * @param createdBy the created by
-     */
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    /**
-     * Gets last updated date.
-     *
-     * @return the last updated date
-     */
-    public Date getLastUpdatedDate() {
-        return lastUpdatedDate;
-    }
-
-    /**
-     * Sets last updated date.
-     *
-     * @param lastUpdatedDate the last updated date
-     */
-    public void setLastUpdatedDate(Date lastUpdatedDate) {
-        this.lastUpdatedDate = lastUpdatedDate;
-    }
-
-    /**
-     * Gets last updated by.
-     *
-     * @return the last updated by
-     */
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    /**
-     * Sets last updated by.
-     *
-     * @param lastUpdatedBy the last updated by
-     */
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
     }
 }
