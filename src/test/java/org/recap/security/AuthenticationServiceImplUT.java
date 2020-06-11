@@ -5,11 +5,10 @@ import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.UserForm;
-import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
-import org.recap.repository.InstitutionDetailsRepository;
-import org.recap.repository.RolesDetailsRepositorty;
+import org.recap.repository.jpa.InstitutionDetailsRepository;
+import org.recap.repository.jpa.RolesDetailsRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;

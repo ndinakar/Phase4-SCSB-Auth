@@ -3,8 +3,8 @@ package org.recap.security;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
-import org.recap.repository.InstitutionDetailsRepository;
-import org.recap.repository.UserDetailsRepository;
+import org.recap.repository.jpa.InstitutionDetailsRepository;
+import org.recap.repository.jpa.UserDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.recap.util.HelperUtil;
@@ -35,14 +35,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String[] user = UserManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
         InstitutionEntity institutionEntity = helperUtil.getInstitutionIdByCode(user[1]);
-        userForm.setInstitution(institutionEntity.getInstitutionId());
-        userForm = getCredential(institutionEntity.getInstitutionId(), user[0], userForm);
+        userForm.setInstitution(institutionEntity.getId());
+        userForm = getCredential(institutionEntity.getId(), user[0], userForm);
         return userForm;
     }
 
     private UserForm getCredential(Integer institution, String username, UserForm userForm) {
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionId(institution);
+        institutionEntity.setId(institution);
         userForm = UserManagementService.toUserForm(userDetailsRepository.findByLoginIdAndInstitutionEntity(username, institutionEntity), userForm);
         userForm.setPasswordMatcher(true);
         return userForm;

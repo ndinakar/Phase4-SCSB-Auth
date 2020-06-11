@@ -1,7 +1,7 @@
 package org.recap.util;
 
 import org.recap.model.jpa.InstitutionEntity;
-import org.recap.repository.InstitutionDetailsRepository;
+import org.recap.repository.jpa.InstitutionDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

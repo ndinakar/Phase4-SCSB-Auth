@@ -5,6 +5,8 @@ import org.recap.BaseTestCase;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
+import org.recap.repository.jpa.PermissionsRepository;
+import org.recap.repository.jpa.RolesDetailsRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
@@ -42,7 +44,7 @@ public class RolesDetailsRepositortyUT extends BaseTestCase {
        roleEntity.setLastUpdatedBy("superadmin");
        Set<UsersEntity> users=new HashSet<UsersEntity>();
        UsersEntity usersEntity=new UsersEntity();
-       usersEntity.setUserId(1);
+       usersEntity.setId(1);
        users.add(usersEntity);
        roleEntity.setUsers(users);
 
@@ -68,7 +70,7 @@ public class RolesDetailsRepositortyUT extends BaseTestCase {
     public PermissionEntity getPermissionEntity(){
         PermissionEntity permissionEntity = new PermissionEntity();
         permissionEntity.setPermissionDesc("Permission to create Request");
-        permissionEntity.setPermissionId(1);
+        permissionEntity.setId(1);
         permissionEntity.setPermissionName("CreateRequest");
         PermissionEntity savedPermission = permissionsRepository.saveAndFlush(permissionEntity);
         entityManager.refresh(savedPermission);
