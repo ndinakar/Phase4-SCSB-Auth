@@ -2,7 +2,6 @@ package org.recap.security;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
@@ -11,8 +10,8 @@ import org.recap.BaseTestCase;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
-import org.recap.repository.PermissionsRepository;
-import org.recap.repository.RolesDetailsRepositorty;
+import org.recap.repository.jpa.PermissionsRepository;
+import org.recap.repository.jpa.RolesDetailsRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;

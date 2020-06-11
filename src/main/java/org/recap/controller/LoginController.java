@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -14,8 +13,8 @@ import org.recap.RecapConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
-import org.recap.repository.InstitutionDetailsRepository;
-import org.recap.repository.UserDetailsRepository;
+import org.recap.repository.jpa.InstitutionDetailsRepository;
+import org.recap.repository.jpa.UserDetailsRepository;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.recap.security.UserService;
@@ -106,7 +105,7 @@ public class LoginController {
             if (values != null) {
                 userForm.setUsername(values[0]);
                 InstitutionEntity institutionEntity = helperUtil.getInstitutionIdByCode(values[1]);
-                userForm.setInstitution(institutionEntity.getInstitutionId());
+                userForm.setInstitution(institutionEntity.getId());
                 userForm.setUserInstitution(institutionEntity.getInstitutionCode());
                 isValid = loginValidator.validate(userForm);
             }

@@ -2,9 +2,9 @@ package org.recap.security;
 
 import org.recap.model.UserForm;
 import org.recap.model.jpa.PermissionEntity;
-import org.recap.repository.InstitutionDetailsRepository;
-import org.recap.repository.PermissionsRepository;
-import org.recap.repository.UserDetailsRepository;
+import org.recap.repository.jpa.InstitutionDetailsRepository;
+import org.recap.repository.jpa.PermissionsRepository;
+import org.recap.repository.jpa.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService{
 
         for(PermissionEntity permissionEntity:permissions)
         {
-            permissionsMap.put(permissionEntity.getPermissionId(),permissionEntity.getPermissionName());
+            permissionsMap.put(permissionEntity.getId(),permissionEntity.getPermissionName());
         }
 
         return permissionsMap;

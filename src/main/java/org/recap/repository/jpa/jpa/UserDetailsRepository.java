@@ -1,13 +1,12 @@
-package org.recap.repository;
+package org.recap.repository.jpa;
 
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.UsersEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Created by dharmendrag on 29/11/16.
  */
-public interface UserDetailsRepository extends JpaRepository<UsersEntity,Integer> {
+public interface UserDetailsRepository extends BaseRepository<UsersEntity> {
 
     /**
      * Gets users entity for the given login id.
@@ -25,16 +24,5 @@ public interface UserDetailsRepository extends JpaRepository<UsersEntity,Integer
      * @return the users entity
      */
     UsersEntity findByLoginIdAndInstitutionEntity(String loginId, InstitutionEntity institutionId);
-
-    /**
-     * Gets users entity for the given user id.
-     *
-     * @param userId the user id
-     * @return the users entity
-     */
-    UsersEntity findByUserId(Integer userId);
-
-
-
 
 }

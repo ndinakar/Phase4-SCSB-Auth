@@ -40,6 +40,12 @@ repositories {
 
 
 dependencies {
+	/*implementation('org.recap:phase4-scsb-common:1.0') {
+		version  {
+			branch = 'development'
+		}
+	}*/
+	compile fileTree(dir: 'lib', include: '*.jar')
 	implementation('commons-beanutils:commons-beanutils:1.9.4')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
@@ -53,7 +59,6 @@ dependencies {
 	implementation(group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0')
 	implementation('io.springfox:springfox-swagger-ui:2.9.2')
 	implementation('io.springfox:springfox-swagger2:2.9.2')
-	implementation('com.fasterxml.jackson.core:jackson-databind:2.11.0')
 	implementation('org.apache.shiro:shiro-core:1.5.2')
 	implementation('org.apache.shiro:shiro-spring:1.5.2')
 	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.5.2')
