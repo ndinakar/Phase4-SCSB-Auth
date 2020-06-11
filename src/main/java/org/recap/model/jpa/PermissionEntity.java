@@ -2,7 +2,9 @@ package org.recap.model.jpa;
 
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,13 +14,10 @@ import java.io.Serializable;
 @Cacheable(true)
 @Entity
 @Table(name="permissions_t",schema="recap",catalog="")
-@Data
-public class PermissionEntity implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="permission_id")
-    private int permissionId;
-
+@Getter
+@Setter
+@AttributeOverride(name = "id", column = @Column(name = "permission_id"))
+public class PermissionEntity extends AbstractEntity<Integer> {
     @Column(name="permission_name")
     private String permissionName;
 

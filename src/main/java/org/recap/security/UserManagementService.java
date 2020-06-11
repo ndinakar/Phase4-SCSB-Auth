@@ -8,14 +8,15 @@ import org.recap.model.UserForm;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
-import org.recap.repository.PermissionsRepository;
-import org.recap.repository.UserDetailsRepository;
+import org.recap.repository.jpa.PermissionsRepository;
+import org.recap.repository.jpa.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by akulak on 27/2/17.
@@ -43,11 +44,13 @@ public class UserManagementService {
      */
     public List<Integer> getRolesForUser(Integer userId){
         List<Integer> roleIds = new ArrayList<>();
-        UsersEntity usersEntity = userDetailsRepository.findByUserId(userId);
-        List<RoleEntity> userRole = usersEntity.getUserRole();
-        for (RoleEntity roleEntity : userRole) {
-            Integer roleId = roleEntity.getRoleId();
-            roleIds.add(roleId);
+        Optional<UsersEntity> usersEntity = userDetailsRepository.findById(userId);
+        if(usersEntity != null) {
+            List<RoleEntity> userRole = usersEntity.get().getUserRole();
+            for (RoleEntity roleEntity : userRole) {
+                Integer roleId = roleEntity.getId();
+                roleIds.add(roleId);
+            }
         }
         return roleIds;
     }
@@ -60,7 +63,7 @@ public class UserManagementService {
      */
     public Integer getPermissionId(String permissionName){
         PermissionEntity permissionEntity = permissionsRepository.findByPermissionName(permissionName);
-        return  permissionEntity.getPermissionId();
+        return  permissionEntity.getId();
     }
 
     /**
@@ -97,9 +100,9 @@ public class UserManagementService {
         if (userForm == null) {
             userForm = new UserForm();
         }
-        userForm.setUserId(userEntity.getUserId());
+        userForm.setUserId(userEntity.getId());
         userForm.setUsername(userEntity.getLoginId());
-        userForm.setInstitution(userEntity.getInstitutionEntity().getInstitutionId());
+        userForm.setInstitution(userEntity.getInstitutionEntity().getId());
         userForm.setUserInstitution(userEntity.getInstitutionEntity().getInstitutionCode());
         return userForm;
     }

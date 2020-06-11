@@ -8,13 +8,14 @@ import org.recap.RecapConstants;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
-import org.recap.repository.UserDetailsRepository;
+import org.recap.repository.jpa.UserDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -59,11 +60,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
-        UsersEntity usersEntity = userDetailsRepository.findByUserId(loginId);
+        Optional<UsersEntity> usersEntity = userDetailsRepository.findById(loginId);
         if (usersEntity == null) {
             return null;
         } else {
-            for (RoleEntity role : usersEntity.getUserRole()) {
+            for (RoleEntity role : usersEntity.get().getUserRole()) {
                 authorizationInfo.addRole(role.getRoleName());
                 for (PermissionEntity permissionEntity : role.getPermissions()) {
                     authorizationInfo.addStringPermission(permissionEntity.getPermissionName());
