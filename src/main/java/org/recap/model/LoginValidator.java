@@ -14,9 +14,6 @@ public class LoginValidator {
      * @return the boolean
      */
     public boolean validate(UserForm userForm) {
-        if (StringUtils.isBlank(userForm.getUsername()) || userForm.getInstitution() == 0) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(userForm.getUsername()) && userForm.getInstitution() != 0;
     }
 }
