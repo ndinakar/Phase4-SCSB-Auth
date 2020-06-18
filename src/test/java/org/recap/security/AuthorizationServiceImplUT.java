@@ -63,7 +63,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         String loginUser="HtcSuperAdmin:PUL";
         Subject loggedInSubject = loginSubject(loginUser);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getUserId());
+        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getId());
         Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
         assertTrue(permissions.contains("EditUser"));
 
