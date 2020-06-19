@@ -53,9 +53,4 @@ public class BaseControllerUT extends BaseTestCase {
         MockHttpInputMessage mockHttpInputMessage = new MockHttpInputMessage(json.getBytes());
         return this.mappingJackson2HttpMessageConverter.read(clazz, mockHttpInputMessage);
     }
-
-    @Test
-    public void loadContexts() {
-        System.out.println();
-    }
 }
