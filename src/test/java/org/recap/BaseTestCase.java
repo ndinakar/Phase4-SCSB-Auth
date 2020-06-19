@@ -88,11 +88,4 @@ public class BaseTestCase {
         Assert.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter);
     }
 
-    @Test
-    public void loadContexts() {
-        System.out.println();
-    }
-
-
-
 }

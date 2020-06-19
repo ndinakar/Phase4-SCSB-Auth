@@ -10,6 +10,8 @@ import org.apache.shiro.subject.Subject;
 import org.recap.RecapConstants;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
+
     @Autowired
     private AuthorizationServiceImpl authorizationService;
 
@@ -134,8 +139,8 @@ public class AuthorizationController {
         try {
             subject.getSession().touch();
             return true;
-        } catch (InvalidSessionException e) {
-            e.printStackTrace();
+        } catch (InvalidSessionException exp) {
+            logger.error("Exception {} ",  exp);
         }
         return false;
     }

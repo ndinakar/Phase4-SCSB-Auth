@@ -45,12 +45,13 @@ public class UserManagementService {
     public List<Integer> getRolesForUser(Integer userId){
         List<Integer> roleIds = new ArrayList<>();
         Optional<UsersEntity> usersEntity = userDetailsRepository.findById(userId);
-        if(usersEntity != null) {
-            List<RoleEntity> userRole = usersEntity.get().getUserRole();
-            for (RoleEntity roleEntity : userRole) {
-                Integer roleId = roleEntity.getId();
-                roleIds.add(roleId);
-            }
+        if(usersEntity.isEmpty())
+            return roleIds;
+
+        List<RoleEntity> userRole = usersEntity.get().getUserRole();
+        for (RoleEntity roleEntity : userRole) {
+            Integer roleId = roleEntity.getId();
+            roleIds.add(roleId);
         }
         return roleIds;
     }
@@ -74,7 +75,7 @@ public class UserManagementService {
      */
     public static final String[] userAndInstitution(String token)
     {
-        String[] values=new String[2];
+        String[] values;
         if(token.contains(RecapConstants.TOKEN_SPLITER))
         {
             values=token.split(RecapConstants.TOKEN_SPLITER);
