@@ -1,4 +1,4 @@
-package org.recap;
+package  org.recap;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

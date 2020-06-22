@@ -13,10 +13,7 @@ import org.recap.security.UserManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
-
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
 
     @Autowired
@@ -47,7 +43,7 @@ public class AuthorizationController {
      * @param token   the token
      * @return the boolean
      */
-    @RequestMapping(value="/search",method= RequestMethod.POST)
+    @PostMapping(value="/search")
     @ApiOperation(value="search authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "search authentication success")})
     public boolean searchRecords(HttpServletRequest request, @RequestBody UsernamePasswordToken token) {
@@ -60,7 +56,7 @@ public class AuthorizationController {
      * @param token the token
      * @return the boolean
      */
-    @RequestMapping(value="/request",method= RequestMethod.POST)
+    @PostMapping(value="/request")
     @ApiOperation(value="request authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "request authentication success")})
     public Boolean request(@RequestBody UsernamePasswordToken token) {
@@ -73,7 +69,7 @@ public class AuthorizationController {
      * @param token the token
      * @return the boolean
      */
-    @RequestMapping(value = "/collection", method = RequestMethod.POST)
+    @PostMapping(value = "/collection")
     @ApiOperation(value="collection authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "collection authentication success")})
     public Boolean collection(@RequestBody UsernamePasswordToken token) {
@@ -87,7 +83,7 @@ public class AuthorizationController {
      * @param usernamePasswordToken the username password token
      * @return the boolean
      */
-    @RequestMapping(value="/reports",method= RequestMethod.POST)
+    @PostMapping(value="/reports")
     @ApiOperation(value="reports authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "reports authentication success")})
     public boolean reports(@RequestBody UsernamePasswordToken usernamePasswordToken) {
@@ -101,7 +97,7 @@ public class AuthorizationController {
      * @param usernamePasswordToken the username password token
      * @return the boolean
      */
-    @RequestMapping(value="/userRoles",method= RequestMethod.POST)
+    @PostMapping(value="/userRoles")
     @ApiOperation(value="user authentication",notes="Used to Authorizer User for Users",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User & Role authentication success")})
     public boolean userRoles(@RequestBody UsernamePasswordToken usernamePasswordToken) {
@@ -115,7 +111,7 @@ public class AuthorizationController {
      * @param usernamePasswordToken the username password token
      * @return the boolean
      */
-    @RequestMapping(value="/roles",method= RequestMethod.POST)
+    @PostMapping(value="/roles")
     @ApiOperation(value="roles authentication",notes="Used to Authorizer User for Roles",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Role authentication success")})
     public boolean roles(@RequestBody UsernamePasswordToken usernamePasswordToken) {
@@ -131,7 +127,7 @@ public class AuthorizationController {
      * @param usernamePasswordToken the username password token
      * @return the boolean
      */
-    @RequestMapping(value="/touchExistingSession",method= RequestMethod.POST)
+    @PostMapping(value="/touchExistingSession")
     @ApiOperation(value="touch existing session",notes="Used to touch existing session for the user",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully extended the session")})
     public boolean touchExistingSession(@RequestBody UsernamePasswordToken usernamePasswordToken) {
@@ -139,13 +135,13 @@ public class AuthorizationController {
         try {
             subject.getSession().touch();
             return true;
-        } catch (InvalidSessionException exp) {
-            logger.error("Exception {} ",  exp);
+        } catch (InvalidSessionException e) {
+           logger.error("Invalid Session Exception",e);
         }
         return false;
     }
 
-    @RequestMapping(value="/bulkRequest",method= RequestMethod.POST)
+    @PostMapping(value="/bulkRequest")
     public boolean bulkRequest(@RequestBody UsernamePasswordToken usernamePasswordToken) {
         return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.BULK_REQUEST));
 
