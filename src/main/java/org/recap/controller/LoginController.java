@@ -24,10 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -90,7 +87,7 @@ public class LoginController {
      * @param error   the error
      * @return the map of the authorization values
      */
-    @RequestMapping(value = "/authService", method = RequestMethod.POST)
+    @PostMapping(value = "/authService")
     @ApiOperation(value = "authService", notes = "Used to Authenticate User", consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Session created successfully")})
     public Map<String, Object> createSession(@RequestBody UsernamePasswordToken token, HttpServletRequest request, BindingResult error) {
@@ -166,7 +163,7 @@ public class LoginController {
      *
      * @param token the token
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @PostMapping(value = "/logout")
     public void logoutUser(@RequestBody UsernamePasswordToken token) {
         logger.info("Subject Logged out");
         authorizationService.unAuthorized(token);

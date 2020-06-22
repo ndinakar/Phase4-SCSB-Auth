@@ -35,7 +35,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Autowired
     UserManagementService userManagementService;
 
-    private static final Map<String, Subject> tokenMap = new ConcurrentHashMap<>();
+    private static Map<String, Subject> tokenMap = new ConcurrentHashMap<>();
 
     /**
      * Get the subject for the giving usernamePasswordToken.
@@ -61,16 +61,16 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public AuthorizationInfo doAuthorizationInfo(SimpleAuthorizationInfo authorizationInfo, Integer loginId) {
         Optional<UsersEntity> usersEntity = userDetailsRepository.findById(loginId);
-
-        if(usersEntity.isEmpty()) {
-            return null;
-        }
-
-        for (RoleEntity role : usersEntity.get().getUserRole()) {
-            authorizationInfo.addRole(role.getRoleName());
-            for (PermissionEntity permissionEntity : role.getPermissions()) {
-                authorizationInfo.addStringPermission(permissionEntity.getPermissionName());
+        if (usersEntity.isPresent()) {
+            for (RoleEntity role : usersEntity.get().getUserRole()) {
+                authorizationInfo.addRole(role.getRoleName());
+                for (PermissionEntity permissionEntity : role.getPermissions()) {
+                    authorizationInfo.addStringPermission(permissionEntity.getPermissionName());
+                }
             }
+
+        } else {
+            return null;
         }
         return authorizationInfo;
     }
@@ -130,9 +130,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             if (!authorized) {
                 unAuthorized(token);
             }
-        } catch (Exception sessionExp) {
-            logger.error("Exception in AuthorizationServiceImpl  {0}", sessionExp);
-            logger.error("Exception in AuthorizationServiceImpl {}", sessionExp.getMessage());
+        } catch (Exception sessionExcp) {
+            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp);
+            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
 
@@ -140,7 +140,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private void timeOutExceptionCatch(UsernamePasswordToken token) {
-        logger.debug("Time out Exception thrown for token {} ", token);
+        logger.debug("Time out Exception thrown for token ",token);
         unAuthorized(token);
     }
 
