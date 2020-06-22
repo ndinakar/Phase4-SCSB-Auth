@@ -28,8 +28,9 @@ public class InstitutionDetailsRepositoryUT extends BaseTestCase {
         InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.save(institutionEntity);
         assertNotNull(savedInstitutionEntity);
         assertNotNull(savedInstitutionEntity.getId());
-        assertEquals(savedInstitutionEntity.getInstitutionCode(), "OXF");
-        assertEquals(savedInstitutionEntity.getInstitutionName(), "Oxford");
+        assertEquals( "OXF",savedInstitutionEntity.getInstitutionCode());
+        assertEquals("Oxford",savedInstitutionEntity.getInstitutionName());
+
 
         InstitutionEntity byInstitutionCode = institutionDetailsRepository.findByInstitutionCode("OXF");
         assertNotNull(byInstitutionCode);

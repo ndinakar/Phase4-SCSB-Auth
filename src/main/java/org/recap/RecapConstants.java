@@ -5,6 +5,7 @@ package org.recap;
  */
 public class RecapConstants {
 
+
     public static final String PERMISSION_MAP = "permissionsMap";
 
     public static final String USER_AUTHENTICATION = "isAuthenticated";
