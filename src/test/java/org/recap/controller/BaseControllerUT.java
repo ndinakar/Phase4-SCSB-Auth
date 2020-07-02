@@ -2,7 +2,6 @@ package org.recap.controller;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
