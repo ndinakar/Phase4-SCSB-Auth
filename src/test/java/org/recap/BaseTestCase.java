@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.recap.config.ApacheShiroCustomConfig;
 import org.recap.repository.jpa.InstitutionDetailsRepository;
 import org.recap.repository.jpa.PermissionsRepository;
@@ -56,7 +57,7 @@ public class BaseTestCase {
     @Autowired
     public SimpleAuthorizationRealm simpleAuthorizationRealm;
 
-    @Autowired
+    @Mock
     public AuthenticationService authenticationService;
 
     @Autowired
@@ -86,6 +87,10 @@ public class BaseTestCase {
     public void setConverters(HttpMessageConverter<?>[] converters) {
         this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
         Assert.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter);
+    }
+    @Test
+    public void loadContexts() {
+        System.out.println();
     }
 
 }

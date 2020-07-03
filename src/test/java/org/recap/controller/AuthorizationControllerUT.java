@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.config.ApacheShiroCustomConfig;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,6 @@ public class AuthorizationControllerUT extends BaseTestCase {
     @Mock
     HttpSession session;
 
-    @Mock
-    ApacheShiroCustomConfig apacheShiroConfig;
-
     @Autowired
     AuthorizationController authorizationController;
 
@@ -81,8 +77,8 @@ public class AuthorizationControllerUT extends BaseTestCase {
 
     @Test
     public void checkSearchPermission(){
-        boolean result=authorizationController.searchRecords(request,usernamePasswordToken);
-        assertTrue(result);
+       boolean result=authorizationController.searchRecords(request,usernamePasswordToken);
+       assertTrue(result);
     }
 
     @Test
@@ -108,9 +104,37 @@ public class AuthorizationControllerUT extends BaseTestCase {
 
     @Test
     public void checkUsersPermission(){
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
         boolean result=false;
         result=authorizationController.userRoles(usernamePasswordToken);
         assertTrue(result);
+    }
+    @Test
+    public void searchRecords(){
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        boolean result=false;
+        result=authorizationController.searchRecords(request,usernamePasswordToken);
+        assertTrue(result);
+    }
+    @Test
+    public void roles(){
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        boolean result=false;
+//        result = authorizationController.roles(usernamePasswordToken);
+   //     assertTrue(result);
+    }
+    @Test
+    public void touchExistingSession(){
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        boolean result=false;
+        result = authorizationController.touchExistingSession(usernamePasswordToken);
+        assertTrue(result);
+    }
+    @Test
+    public void bulkRequest(){
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        boolean result=false;
+        result = authorizationController.bulkRequest(usernamePasswordToken);
     }
 
 }
