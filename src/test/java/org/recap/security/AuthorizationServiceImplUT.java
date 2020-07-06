@@ -6,6 +6,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -64,6 +65,24 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     @Mock
     UsernamePasswordToken usernamePasswordToken;
 
+    @Autowired
+    private UserService userService;
+
+    Map<Integer,String> permissionMap=null;
+
+    @Before
+    public void setUp(){
+        permissionMap= userService.getPermissions();
+        DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
+        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        webSubjectContext.setAuthenticationToken(usernamePasswordToken);
+        Subject subject = securityManager.createSubject(webSubjectContext);
+        assertNotNull(subject);
+        Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
+        Session session=loggedInSubject.getSession();
+        session.setAttribute(RecapConstants.PERMISSION_MAP,permissionMap);
+    }
+
     @Test
     public void setSubject(){
         String loginUser="john";
@@ -82,11 +101,12 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         usersEntity.setLastUpdatedDate(new Date());
         usersEntity.setInstitutionId(1);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.of(usersEntity));
+        Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.empty());
         Mockito.doCallRealMethod().when(mockedauthorizationServiceimpl).doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-     //   AuthorizationInfo authorizationInfo=mockedauthorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-       // Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
+      //  AuthorizationInfo authorizationInfo=mockedauthorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,loginId);
+        //Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
        // assertTrue(permissions.contains("EditUser"));
+
     }
 
     @Test
@@ -99,11 +119,15 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     public void checkPrivilege(){
         int permissionId =2;
         String loginUser = "john";
+        try{
         UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
         usernamePasswordToken1.setRememberMe(true);
         Mockito.when(subject.getSession()).thenReturn(session);
         Mockito.when(session.getAttribute(RecapConstants.PERMISSION_MAP)).thenReturn("permissionsMap");
-//        authorizationServiceimpl.checkPrivilege(usernamePasswordToken1,permissionId);
+        authorizationServiceimpl.checkPrivilege(usernamePasswordToken1,permissionId);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }
     public Subject loginSubject(String loginUser){
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
