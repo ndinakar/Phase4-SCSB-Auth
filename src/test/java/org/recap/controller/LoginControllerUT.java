@@ -64,9 +64,10 @@ public class LoginControllerUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
+        Subject subject1;
         Assert.assertNotNull(subject);
         Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
         authorizationService.setSubject(usernamePasswordToken,loggedInSubject);
@@ -76,29 +77,36 @@ public class LoginControllerUT extends BaseTestCase {
     }
     @Test
     public void testCreateSession(){
-        String loginUser="john:CUL";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
+        String loginUser="rajeshtest:HTC";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
 
-        UserForm userForm = new UserForm();
-        userForm.setUsername("john");
-        userForm.setPassword("123");
+        /*UserForm userForm = new UserForm();
+        userForm.setUsername("rajeshtest");
+        userForm.setPassword("rajesh123");
         userForm.setUserInstitution("1");
         userForm.setPasswordMatcher(true);
         InstitutionEntity institutionEntity = new InstitutionEntity();
         institutionEntity.setId(1);
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setInstitutionId(institutionEntity.getId());
-        usersEntity.setInstitutionEntity(institutionEntity);
+        usersEntity.setInstitutionEntity(institutionEntity);*/
 
-        Mockito.when(userDetailsRepository.findByLoginIdAndInstitutionEntity(userForm.getUsername(), institutionEntity)).thenReturn(usersEntity);
-        Mockito.when(authenticationService.doAuthentication(usernamePasswordToken)).thenReturn(userForm);
-      //  Map<String,Object> map = loginController.createSession(usernamePasswordToken,httpServletRequest,bindingResult);
-      //  assertNotNull(map);
+        //Mockito.when(userDetailsRepository.findByLoginIdAndInstitutionEntity(userForm.getUsername(), institutionEntity)).thenReturn(usersEntity);
+       // Mockito.when(authenticationService.doAuthentication(usernamePasswordToken)).thenReturn(userForm);
+        Map<String,Object> map = loginController.createSession(usernamePasswordToken,httpServletRequest,bindingResult);
+        assertNotNull(map);
+    }
+    @Test
+    public void testCreateSessionIncorrectCredentialsException(){
+        String loginUser="rajeshtest";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
+        Map<String,Object> map = loginController.createSession(usernamePasswordToken,httpServletRequest,bindingResult);
+        assertNotNull(map);
     }
     @Test
     public void logoutUser(){
-        String loginUser="john";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "superadmin");
+        String loginUser="rajeshtest:HTC";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
         loginController.logoutUser(usernamePasswordToken);
     }
 
