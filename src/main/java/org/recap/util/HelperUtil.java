@@ -21,9 +21,11 @@ public class HelperUtil {
      * @return the institution id by code
      */
     public InstitutionEntity getInstitutionIdByCode(String value) {
-        InstitutionEntity institutionEntity = institutionDetailsRepository.findByInstitutionCode(value);
-        if(null != institutionEntity) {
-            return institutionEntity;
+        if (value != null) {
+            InstitutionEntity institutionEntity = institutionDetailsRepository.findByInstitutionCode(value);
+            if (null != institutionEntity) {
+                return institutionEntity;
+            }
         }
         return null;
     }

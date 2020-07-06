@@ -7,11 +7,9 @@ import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.UsersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.security.auth.Subject;
 import java.util.Date;
 import java.util.List;
-
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 public class UserManagementServiceUT extends BaseTestCase {
 
@@ -56,5 +54,13 @@ public class UserManagementServiceUT extends BaseTestCase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void userAndInstitutionWithoutSpliter(){
+        UserManagementService userManagementService = new UserManagementService();
+        String token = "john";
+        String[] values = userManagementService.userAndInstitution(token);
+        assertNull(values);
     }
 }
