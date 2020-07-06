@@ -16,7 +16,7 @@ public class ShiroTest extends BaseTestCase {
     public void loginSingleUser() throws Exception {
 
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -42,7 +42,7 @@ public class ShiroTest extends BaseTestCase {
     @Test
     public void loginConcurrentUser() throws Exception {
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
