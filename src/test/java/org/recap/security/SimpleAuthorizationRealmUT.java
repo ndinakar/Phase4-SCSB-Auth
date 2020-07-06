@@ -1,7 +1,10 @@
 package org.recap.security;
 
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.security.realm.SimpleAuthorizationRealm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,8 @@ SimpleAuthorizationRealm simpleAuthorizationRelam;
     public void doGetAuthenticationInfo(){
 
         String loginUser="john:CUL";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
-        //SimpleAuthorizationRealm simpleAuthorizationRelam = new SimpleAuthorizationRealm();
-        //simpleAuthorizationRelam.doGetAuthenticationInfo(usernamePasswordToken);
+        AuthenticationToken authenticationToken = null;
+        AuthenticationInfo authenticationInfo;
+       // authenticationInfo = simpleAuthorizationRelam.doGetAuthenticationInfo(authenticationToken);
     }
 }

@@ -1,6 +1,8 @@
 package org.recap.config;
 
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +20,7 @@ public class SwaggerInterceptorUT extends BaseTestCase {
     @Autowired
     SwaggerInterceptor swaggerInterceptor;
 
-    @Autowired
+    @Mock
     HttpServletRequest httpServletRequest;
 
     @Autowired
@@ -29,6 +31,13 @@ public class SwaggerInterceptorUT extends BaseTestCase {
         httpServletRequest.setAttribute("api_key","recap");
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(!continueExport);
+    }
+    @Test
+    public void testPreHandleRecap() throws Exception {
+        httpServletRequest.setAttribute("api_key","recap");
+        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("recap");
+        boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
+        assertTrue(continueExport);
     }
     @Test
     public void postHandle() throws Exception{
