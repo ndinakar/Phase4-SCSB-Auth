@@ -82,11 +82,12 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
         usersEntity.setLastUpdatedDate(new Date());
         usersEntity.setInstitutionId(1);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.of(usersEntity));
+        Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.empty());
         Mockito.doCallRealMethod().when(mockedauthorizationServiceimpl).doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-     //   AuthorizationInfo authorizationInfo=mockedauthorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-       // Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
+      //  AuthorizationInfo authorizationInfo=mockedauthorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,loginId);
+        //Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
        // assertTrue(permissions.contains("EditUser"));
+
     }
 
     @Test

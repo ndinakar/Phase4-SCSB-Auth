@@ -67,6 +67,7 @@ public class LoginControllerUT extends BaseTestCase {
         usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
+        Subject subject1;
         Assert.assertNotNull(subject);
         Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
         authorizationService.setSubject(usernamePasswordToken,loggedInSubject);
@@ -92,8 +93,8 @@ public class LoginControllerUT extends BaseTestCase {
 
         Mockito.when(userDetailsRepository.findByLoginIdAndInstitutionEntity(userForm.getUsername(), institutionEntity)).thenReturn(usersEntity);
         Mockito.when(authenticationService.doAuthentication(usernamePasswordToken)).thenReturn(userForm);
-      //  Map<String,Object> map = loginController.createSession(usernamePasswordToken,httpServletRequest,bindingResult);
-      //  assertNotNull(map);
+        Map<String,Object> map = loginController.createSession(usernamePasswordToken,httpServletRequest,bindingResult);
+        assertNotNull(map);
     }
     @Test
     public void logoutUser(){

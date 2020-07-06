@@ -57,7 +57,7 @@ public class UserServiceImplUT extends BaseTestCase{
         InstitutionEntity institutionEntity = new InstitutionEntity();
         institutionEntity.setId(1);
         Mockito.when(userDetailsRepository.findByLoginId(loginId)).thenReturn(usersEntity);
-        //Mockito.doCallRealMethod().when(userServiceImpl).findUser(loginId,userForm);
+        Mockito.doCallRealMethod().when(userServiceImpl).findUser(loginId,userForm);
         //userServiceImpl.findUser(loginId,userForm);
     }
     public UserForm getUserForm() {

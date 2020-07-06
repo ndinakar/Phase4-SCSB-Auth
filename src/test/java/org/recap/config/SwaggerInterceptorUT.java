@@ -3,6 +3,7 @@ package org.recap.config;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,5 +30,16 @@ public class SwaggerInterceptorUT extends BaseTestCase {
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(!continueExport);
     }
+    @Test
+    public void postHandle() throws Exception{
+        Object handler = new Object() ;
+        swaggerInterceptor.postHandle(httpServletRequest,httpServletResponse,handler,new ModelAndView());
+    }
+    @Test
+    public void afterCompletion() throws Exception{
+        Object handler = new Object() ;
+        swaggerInterceptor.afterCompletion(httpServletRequest,httpServletResponse,handler,new Exception());
+    }
+
 
 }

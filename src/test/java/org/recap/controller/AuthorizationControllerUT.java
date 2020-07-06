@@ -64,7 +64,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -120,8 +120,8 @@ public class AuthorizationControllerUT extends BaseTestCase {
     public void roles(){
         usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
         boolean result=false;
-//        result = authorizationController.roles(usernamePasswordToken);
-   //     assertTrue(result);
+        //result = authorizationController.roles(usernamePasswordToken);
+        //assertTrue(result);
     }
     @Test
     public void touchExistingSession(){
