@@ -1,12 +1,15 @@
 package org.recap.controller;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.security.AuthorizationServiceImpl;
@@ -56,9 +59,13 @@ public class AuthorizationControllerUT extends BaseTestCase {
     @Autowired
     AuthorizationController authorizationController;
 
+    @Mock
+    AuthorizationController mockAuthorizationController;
     UsernamePasswordToken usernamePasswordToken=null;
 
     Map<Integer,String> permissionMap=null;
+    @Mock
+    Subject subject;
 
     @Before
     public void setUp(){
@@ -128,6 +135,15 @@ public class AuthorizationControllerUT extends BaseTestCase {
         usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
         boolean result=false;
         result = authorizationController.touchExistingSession(usernamePasswordToken);
+        assertTrue(result);
+    }
+    @Test
+    public void touchExistingSessionException(){
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        boolean result=false;
+        //Mockito.doThrow(new InvalidSessionException()).when(subject).getSession().touch();
+        Mockito.doCallRealMethod().when(mockAuthorizationController).touchExistingSession(usernamePasswordToken);
+        result = mockAuthorizationController.touchExistingSession(usernamePasswordToken);
         assertTrue(result);
     }
     @Test

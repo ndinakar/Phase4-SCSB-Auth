@@ -132,6 +132,7 @@ public class AuthorizationController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully extended the session")})
     public boolean touchExistingSession(@RequestBody UsernamePasswordToken usernamePasswordToken) {
         Subject subject = authorizationService.getSubject(usernamePasswordToken);
+        System.out.println("Subject##############"+subject);
         try {
             subject.getSession().touch();
             return true;

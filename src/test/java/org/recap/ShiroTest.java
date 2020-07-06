@@ -46,8 +46,6 @@ public class ShiroTest extends BaseTestCase {
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
-
-//        DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
         UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken("danie:CUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken1);
         Subject subject1 = securityManager.createSubject(webSubjectContext);
@@ -65,7 +63,6 @@ public class ShiroTest extends BaseTestCase {
 
         boolean loggedInSubject2Authenticated = loggedInSubject2.isAuthenticated();
         assertTrue(loggedInSubject2Authenticated);
-
 
     }
 }
