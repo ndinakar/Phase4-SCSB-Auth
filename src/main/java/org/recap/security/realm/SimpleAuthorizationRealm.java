@@ -48,14 +48,13 @@ public class SimpleAuthorizationRealm extends AuthorizingRealm{
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) {
-        UsernamePasswordToken token = (UsernamePasswordToken) authToken;
-        UserForm userForm = authenticationService.doAuthentication(token);
-        if (userForm != null && userForm.isPasswordMatcher()) {
-            return new SimpleAuthenticationInfo(userForm.getUserId(), token.getPassword(), getName());
+        if (authToken != null) {
+            UsernamePasswordToken token = (UsernamePasswordToken) authToken;
+            UserForm userForm = authenticationService.doAuthentication(token);
+            if (userForm != null && userForm.isPasswordMatcher()) {
+                return new SimpleAuthenticationInfo(userForm.getUserId(), token.getPassword(), getName());
+            }
         }
         return null;
     }
-
-
-
 }

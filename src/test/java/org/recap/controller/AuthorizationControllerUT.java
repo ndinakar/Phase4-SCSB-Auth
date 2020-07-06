@@ -71,7 +71,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -111,35 +111,35 @@ public class AuthorizationControllerUT extends BaseTestCase {
 
     @Test
     public void checkUsersPermission(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
         result=authorizationController.userRoles(usernamePasswordToken);
         assertTrue(result);
     }
     @Test
     public void searchRecords(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
         result=authorizationController.searchRecords(request,usernamePasswordToken);
         assertTrue(result);
     }
     @Test
     public void roles(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
-//        result = authorizationController.roles(usernamePasswordToken);
-     //   assertTrue(result);
+       // result = authorizationController.roles(usernamePasswordToken);
+       // assertTrue(result);
     }
     @Test
     public void touchExistingSession(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
         result = authorizationController.touchExistingSession(usernamePasswordToken);
         assertTrue(result);
     }
     @Test
     public void touchExistingSessionException(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
         //Mockito.doThrow(new InvalidSessionException()).when(subject).getSession().touch();
         //Mockito.doCallRealMethod().when(mockAuthorizationController).touchExistingSession(usernamePasswordToken);
@@ -148,7 +148,7 @@ public class AuthorizationControllerUT extends BaseTestCase {
     }
     @Test
     public void bulkRequest(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:CUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         boolean result=false;
         result = authorizationController.bulkRequest(usernamePasswordToken);
     }

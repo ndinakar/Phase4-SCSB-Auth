@@ -133,7 +133,6 @@ public class AuthorizationController {
     public boolean touchExistingSession(@RequestBody UsernamePasswordToken usernamePasswordToken) {
         Subject subject = authorizationService.getSubject(usernamePasswordToken);
         logger.info("Subject##############"+subject);
-        System.out.println("Subject##############"+subject);
         try {
             subject.getSession().touch();
             return true;
