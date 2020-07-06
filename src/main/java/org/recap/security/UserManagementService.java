@@ -117,6 +117,4 @@ public class UserManagementService {
         Session session=subject.getSession();
         return (Map<Integer,String>)session.getAttribute(RecapConstants.PERMISSION_MAP);
     }
-
-
 }

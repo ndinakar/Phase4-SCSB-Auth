@@ -77,7 +77,7 @@ public class LoginControllerUT extends BaseTestCase {
     }
     @Test
     public void testCreateSession(){
-        String loginUser="john:CUL";
+        String loginUser="rajeshtest:CUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
 
         UserForm userForm = new UserForm();
