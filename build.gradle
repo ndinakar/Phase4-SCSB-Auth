@@ -77,6 +77,8 @@ dependencies {
 
 	runtime('mysql:mysql-connector-java')
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
+	testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
