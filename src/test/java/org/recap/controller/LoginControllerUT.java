@@ -35,8 +35,6 @@ import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.recap.security.UserService;
 import org.recap.util.HelperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 
 
