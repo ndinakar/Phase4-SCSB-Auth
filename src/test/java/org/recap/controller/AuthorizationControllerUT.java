@@ -142,16 +142,6 @@ public class AuthorizationControllerUT extends BaseTestCase {
         result = authorizationController.touchExistingSession(usernamePasswordToken);
         assertTrue(result);
     }
-    /*@Test
-    public void touchExistingSessionException(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
-        boolean result=false;
-        Mockito.when(mockedAuthorizationService.getSubject(usernamePasswordToken)).thenReturn(subject);
-        Mockito.doThrow(new InvalidSessionException()).when(subject).getSession();
-        Mockito.doCallRealMethod().when(mockAuthorizationController).touchExistingSession(usernamePasswordToken);
-        result = mockAuthorizationController.touchExistingSession(usernamePasswordToken);
-        assertTrue(result);
-    }*/
     @Test
     public void bulkRequest(){
         usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
