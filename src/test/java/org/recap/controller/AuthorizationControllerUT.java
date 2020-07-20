@@ -8,6 +8,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCase;
@@ -41,6 +42,9 @@ public class AuthorizationControllerUT extends BaseTestCase {
     @Autowired
     private AuthorizationServiceImpl authorizationService;
 
+    @Mock
+    private AuthorizationServiceImpl mockedAuthorizationService;
+
     @Autowired
     LoginController loginController;
 
@@ -59,8 +63,9 @@ public class AuthorizationControllerUT extends BaseTestCase {
     @Autowired
     AuthorizationController authorizationController;
 
-    @Mock
+    @InjectMocks
     AuthorizationController mockAuthorizationController;
+
     UsernamePasswordToken usernamePasswordToken=null;
 
     Map<Integer,String> permissionMap=null;
@@ -136,15 +141,6 @@ public class AuthorizationControllerUT extends BaseTestCase {
         boolean result=false;
         result = authorizationController.touchExistingSession(usernamePasswordToken);
         assertTrue(result);
-    }
-    @Test
-    public void touchExistingSessionException(){
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
-        boolean result=false;
-        //Mockito.doThrow(new InvalidSessionException()).when(subject).getSession().touch();
-        //Mockito.doCallRealMethod().when(mockAuthorizationController).touchExistingSession(usernamePasswordToken);
-       // result = mockAuthorizationController.touchExistingSession(usernamePasswordToken);
-      //  assertTrue(result);
     }
     @Test
     public void bulkRequest(){
