@@ -74,7 +74,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("john:CUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:PUL", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -85,8 +85,8 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
     @Test
     public void setSubject(){
-        String loginUser="john";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
+        String loginUser="rajeshtest";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
         Subject testSubject=authorizationServiceimpl.getSubject(usernamePasswordToken);
 
     }
@@ -95,11 +95,11 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     public void authorizationinfo(){
         int loginId = 2;
         UsersEntity usersEntity = new UsersEntity();
-        usersEntity.setLoginId("John");
+        usersEntity.setLoginId("rajeshtest");
         usersEntity.setUserDescription("test");
         usersEntity.setId(2);
         usersEntity.setLastUpdatedDate(new Date());
-        usersEntity.setInstitutionId(1);
+        usersEntity.setInstitutionId(4);
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.empty());
         Mockito.doCallRealMethod().when(mockedauthorizationServiceimpl).doAuthorizationInfo(simpleAuthorizationInfo,loginId);
@@ -111,16 +111,16 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
     @Test
     public void unAuthorized(){
-        String loginUser = "john";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
+        String loginUser = "rajeshtest";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
         authorizationServiceimpl.unAuthorized(usernamePasswordToken);
     }
     @Test
     public void checkPrivilege(){
         int permissionId =2;
-        String loginUser = "john";
+        String loginUser = "rajeshtest";
         try{
-        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
+        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "rajesh123");
         usernamePasswordToken1.setRememberMe(true);
         Mockito.when(subject.getSession()).thenReturn(session);
         Mockito.when(session.getAttribute(RecapConstants.PERMISSION_MAP)).thenReturn("permissionsMap");
@@ -131,7 +131,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     }
     public Subject loginSubject(String loginUser){
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
