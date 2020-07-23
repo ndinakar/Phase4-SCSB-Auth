@@ -44,7 +44,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @return the subject
      */
     public Subject getSubject(UsernamePasswordToken usernamePasswordToken) {
-        logger.info("test #####################"+ tokenMap.get(usernamePasswordToken.getUsername()));
         return tokenMap.get(usernamePasswordToken.getUsername());
     }
 

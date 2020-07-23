@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
@@ -30,7 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserForm doAuthentication(UsernamePasswordToken token) {
-        logger.info(token.getUsername());
         UserForm userForm = new UserForm();
         String[] user = UserManagementService.userAndInstitution(token.getUsername());
         userForm.setUsername(user[0]);
