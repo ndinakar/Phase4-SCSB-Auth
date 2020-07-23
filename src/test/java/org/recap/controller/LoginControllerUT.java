@@ -117,11 +117,11 @@ public class LoginControllerUT {
         UserForm userForm = new UserForm();
         userForm.setUsername("rajeshtest");
         userForm.setPassword("rajesh123");
-        userForm.setUserInstitution("CUL");
-        userForm.setInstitution(2);
+        userForm.setUserInstitution("HTC");
+        userForm.setInstitution(4);
         userForm.setPasswordMatcher(true);
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setId(2);
+        institutionEntity.setId(4);
         List<Integer> roleId = new ArrayList<>();
         roleId.add(2);
         UsersEntity usersEntity = new UsersEntity();
