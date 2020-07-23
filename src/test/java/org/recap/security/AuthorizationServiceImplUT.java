@@ -74,7 +74,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:PUL", "rajesh123");
+        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
