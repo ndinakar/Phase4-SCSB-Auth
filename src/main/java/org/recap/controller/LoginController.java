@@ -124,8 +124,12 @@ public class LoginController {
             List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
             boolean superAdminUser = (roleId.contains(1) && superAdminPermissionForInstitution.contains(userForm.getUserInstitution())) ? Boolean.TRUE : Boolean.FALSE;
             boolean recapUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED)));
+            boolean monitoring = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.MONITORING_PERMISSION_NAME)));
+            boolean logging = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.LOGGING_PERMISSION_NAME)));
             authMap.put(RecapConstants.SUPER_ADMIN_USER, superAdminUser);
             authMap.put(RecapConstants.RECAP_USER, recapUser);
+            authMap.put(RecapConstants.MONITORING, monitoring);
+            authMap.put(RecapConstants.LOGGING, logging);
             Collections.unmodifiableMap(authMap);
             Session session = subject.getSession();
             session.setAttribute(RecapConstants.PERMISSION_MAP, permissionMap);
