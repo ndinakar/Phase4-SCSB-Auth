@@ -146,4 +146,12 @@ public class AuthorizationController {
         return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.BULK_REQUEST));
 
     }
+    @PostMapping(value="/monitoring")
+    public boolean monitoring(@RequestBody UsernamePasswordToken usernamePasswordToken){
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.MONITORING_REQUEST));
+    }
+    @PostMapping(value="/logging")
+    public boolean logging(@RequestBody UsernamePasswordToken usernamePasswordToken){
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.LOGGING_REQUEST));
+    }
 }
