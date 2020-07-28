@@ -55,6 +55,10 @@ public class RecapConstants {
     public static final String SCSB_SEARCH_EXPORT = "Search";
     public static final String BARCODE_RESTRICTED = "Search (barcode number masked)";
     public static final String REQUEST_ITEMS = "Request Items";
+    public static final String MONITORING_PERMISSION_NAME = "View Monitoring";
+    public static final String LOGGING_PERMISSION_NAME = "View Logging";
+    public static final String MONITORING = "isMonitoring";
+    public static final String LOGGING = "isLogging";
     public static final String REQUEST_CANCEL_ALL = "Cancel all requests";
 
     public static final String TOKEN_SPLITER = ":";
