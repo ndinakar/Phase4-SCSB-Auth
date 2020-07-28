@@ -76,5 +76,7 @@ public class RecapConstants {
 
     public static final String RESUBMIT_REQUEST_PRIVILEGE = "isReSubmitRequestAllowed";
     public static final String RESUBMIT_REQUEST = "ReSubmit Request";
+    public static final String MONITORING_REQUEST = "View Monitoring";
+    public static final String LOGGING_REQUEST = "View Logging";
 
 }
