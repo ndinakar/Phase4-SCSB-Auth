@@ -70,57 +70,57 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
 
     Map<Integer,String> permissionMap=null;
 
-    @Before
-    public void setUp(){
-        permissionMap= userService.getPermissions();
-        DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        usernamePasswordToken = new UsernamePasswordToken("rajeshtest:HTC", "rajesh123");
-        webSubjectContext.setAuthenticationToken(usernamePasswordToken);
-        Subject subject = securityManager.createSubject(webSubjectContext);
-        assertNotNull(subject);
-        Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
-        Session session=loggedInSubject.getSession();
-        session.setAttribute(RecapConstants.PERMISSION_MAP,permissionMap);
-    }
 
     @Test
     public void setSubject(){
-        String loginUser="rajeshtest";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
+        UsersEntity usersEntity=new UsersEntity();
+        usersEntity.setLoginId("HtcSuperAdmin:PUL");
+        usersEntity.setEmailId("julius@example.org");
+        usersEntity.setUserDescription("super admin");
+        usersEntity.setInstitutionId(1);
+        usersEntity.setCreatedBy("superadmin");
+        usersEntity.setCreatedDate(new Date());
+        usersEntity.setLastUpdatedBy("superadmin");
+        usersEntity.setLastUpdatedDate(new Date());
+        userRoles(usersEntity);
+
+        UsersEntity savedUser=userRepo.saveAndFlush(usersEntity);
+        entityManager.refresh(savedUser);
+
+        assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
+        String loginUser="HtcSuperAdmin:PUL";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         Subject testSubject=authorizationServiceimpl.getSubject(usernamePasswordToken);
+
 
     }
 
     @Test
     public void authorizationinfo(){
-        int loginId = 2;
-        UsersEntity usersEntity = new UsersEntity();
-        usersEntity.setLoginId("rajeshtest");
-        usersEntity.setUserDescription("test");
-        usersEntity.setId(2);
-        usersEntity.setLastUpdatedDate(new Date());
-        usersEntity.setInstitutionId(4);
+        UsersEntity usersEntity = createUser("HtcSuperAdmin");
+        String loginUser="HtcSuperAdmin:PUL";
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        Mockito.when(userDetailsRepository.findById(loginId)).thenReturn(Optional.empty());
-        Mockito.doCallRealMethod().when(mockedauthorizationServiceimpl).doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-      //  AuthorizationInfo authorizationInfo=mockedauthorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,loginId);
-        //Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
-       // assertTrue(permissions.contains("EditUser"));
+        Mockito.when(userDetailsRepository.findById(usersEntity.getId())).thenReturn(Optional.of(usersEntity));
+        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getId());
+        Set<String> permissions= (Set<String>) authorizationInfo.getStringPermissions();
+        assertTrue(permissions.contains("EditUser"));
 
     }
 
     @Test
     public void unAuthorized(){
-        String loginUser = "rajeshtest";
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
+        UsersEntity usersEntity = createUser("HtcSuperAdmin");
+        String loginUser = "HtcSuperAdmin:PUL";
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         authorizationServiceimpl.unAuthorized(usernamePasswordToken);
     }
     @Test
     public void checkPrivilege(){
         int permissionId =2;
-        String loginUser = "rajeshtest";
+        UsersEntity usersEntity = createUser("HtcSuperAdmin");
+        String loginUser = "HtcSuperAdmin:PUL";
         try{
-        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "rajesh123");
+        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
         usernamePasswordToken1.setRememberMe(true);
         Mockito.when(subject.getSession()).thenReturn(session);
         Mockito.when(session.getAttribute(RecapConstants.PERMISSION_MAP)).thenReturn("permissionsMap");
@@ -131,7 +131,7 @@ public class AuthorizationServiceImplUT extends BaseTestCase {
     }
     public Subject loginSubject(String loginUser){
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
