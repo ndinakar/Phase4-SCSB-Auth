@@ -53,12 +53,23 @@ public class ShiroTest extends BaseTestCase {
     @Test
     public void loginConcurrentUser() throws Exception {
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
+        createUser("HtcSuperAdmin");
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
-        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken("Test:PUL", "12345");
+        UsersEntity usersEntity=new UsersEntity();
+        usersEntity.setLoginId("TestAdmin");
+        usersEntity.setEmailId("test@example.org");
+        usersEntity.setUserDescription("test admin");
+        usersEntity.setInstitutionId(4);
+        usersEntity.setCreatedBy("testadmin");
+        usersEntity.setCreatedDate(new Date());
+        usersEntity.setLastUpdatedBy("testadmin");
+        usersEntity.setLastUpdatedDate(new Date());
+        UsersEntity savedUser=userRepo.saveAndFlush(usersEntity);
+        entityManager.refresh(savedUser);
+        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken("TestAdmin:HTC", "12345");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken1);
         Subject subject1 = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject1);
