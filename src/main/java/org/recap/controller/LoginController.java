@@ -184,6 +184,7 @@ public class LoginController {
         authMap.put(RecapConstants.RESUBMIT_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.RESUBMIT_REQUEST))));
         authMap.put(RecapConstants.MONITORING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.MONITORING_PERMISSION_NAME))));
         authMap.put(RecapConstants.LOGGING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.LOGGING_PERMISSION_NAME))));
+        authMap.put(RecapConstants.DATA_EXPORT,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DATAEXPORT_PERMISSION_NAME))));
     }
 
 }
