@@ -2,7 +2,6 @@ package org.recap.IT.repository;
 
 import org.junit.Test;
 import org.recap.IT.BaseTestCase;
-import org.recap.controller.LoginController;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.jpa.InstitutionDetailsRepository;
 import org.slf4j.Logger;
@@ -28,24 +27,24 @@ public class InstitutionDetailsRepositoryIT extends BaseTestCase {
         InstitutionEntity institutionEntity = new InstitutionEntity();
         institutionEntity.setInstitutionCode("OXF");
         institutionEntity.setInstitutionName("Oxford");
-try {
-    InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.save(institutionEntity);
-    assertNotNull(savedInstitutionEntity);
-    assertNotNull(savedInstitutionEntity.getId());
-    assertEquals("OXF", savedInstitutionEntity.getInstitutionCode());
-    assertEquals("Oxford", savedInstitutionEntity.getInstitutionName());
-}catch (Exception e){
-    logger.error("Test Issue");
-    e.printStackTrace();
-}
+        try {
+            InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.save(institutionEntity);
+            assertNotNull(savedInstitutionEntity);
+            assertNotNull(savedInstitutionEntity.getId());
+            assertEquals("OXF", savedInstitutionEntity.getInstitutionCode());
+            assertEquals("Oxford", savedInstitutionEntity.getInstitutionName());
 
-        InstitutionEntity byInstitutionCode = institutionDetailsRepository.findByInstitutionCode("OXF");
-        assertNotNull(byInstitutionCode);
-        assertEquals("OXF",byInstitutionCode.getInstitutionCode());
-        assertEquals("Oxford",byInstitutionCode.getInstitutionName());
+            InstitutionEntity byInstitutionCode = institutionDetailsRepository.findByInstitutionCode("OXF");
+            assertNotNull(byInstitutionCode);
+            assertEquals("OXF", byInstitutionCode.getInstitutionCode());
+            assertEquals("Oxford", byInstitutionCode.getInstitutionName());
 
-        InstitutionEntity byInstitutionName = institutionDetailsRepository.findByInstitutionName("Oxford");
-        assertNotNull(byInstitutionName);
+            InstitutionEntity byInstitutionName = institutionDetailsRepository.findByInstitutionName("Oxford");
+            assertNotNull(byInstitutionName);
+        } catch (Exception e) {
+            logger.error("Test Issue");
+            e.printStackTrace();
+        }
     }
 
 }
