@@ -41,7 +41,7 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${recap-las.email.recap.assist.email.to}")
+    @Value("${scsb.email.assist.to}")
     private String recapAssistanceEmailTo;
 
     @Value("${superadmin.permission.institution}")
