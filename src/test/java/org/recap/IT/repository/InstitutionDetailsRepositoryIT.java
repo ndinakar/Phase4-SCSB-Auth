@@ -21,16 +21,13 @@ public class InstitutionDetailsRepositoryIT extends BaseTestCase {
     public void saveAndFind() throws Exception {
         assertNotNull(institutionDetailsRepository);
 
-        InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionCode("OXF");
-        institutionEntity.setInstitutionName("Oxford");
-
+        InstitutionEntity institutionEntity = getInstitutionEntity();
+        try{
         InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.save(institutionEntity);
         assertNotNull(savedInstitutionEntity);
         assertNotNull(savedInstitutionEntity.getId());
         assertEquals( "OXF",savedInstitutionEntity.getInstitutionCode());
         assertEquals("Oxford",savedInstitutionEntity.getInstitutionName());
-
 
         InstitutionEntity byInstitutionCode = institutionDetailsRepository.findByInstitutionCode("OXF");
         assertNotNull(byInstitutionCode);
@@ -39,6 +36,17 @@ public class InstitutionDetailsRepositoryIT extends BaseTestCase {
 
         InstitutionEntity byInstitutionName = institutionDetailsRepository.findByInstitutionName("Oxford");
         assertNotNull(byInstitutionName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private InstitutionEntity getInstitutionEntity() {
+        InstitutionEntity institutionEntity = new InstitutionEntity();
+        institutionEntity.setInstitutionCode("OXF");
+        institutionEntity.setInstitutionName("Oxford");
+        return institutionEntity;
     }
 
 }
