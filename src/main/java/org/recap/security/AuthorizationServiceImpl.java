@@ -80,13 +80,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      *
      * @param token the token
      */
-    public void unAuthorized(UsernamePasswordToken token) {
+    public boolean unAuthorized(UsernamePasswordToken token) {
         logger.debug("Session Time Out Call");
         Subject currentSubject = getSubject(token);
         tokenMap.remove(token.getUsername());
         if (currentSubject != null && currentSubject.getSession() != null) {
             currentSubject.logout();
         }
+        return false;
     }
 
     /**
