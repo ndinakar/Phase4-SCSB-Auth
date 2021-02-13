@@ -41,7 +41,7 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${recap-las.email.recap.assist.email.to}")
+    @Value("${scsb.email.assist.to}")
     private String recapAssistanceEmailTo;
 
     @Value("${superadmin.permission.institution}")
@@ -164,9 +164,9 @@ public class LoginController {
      * @param token the token
      */
     @PostMapping(value = "/logout")
-    public void logoutUser(@RequestBody UsernamePasswordToken token) {
+    public boolean logoutUser(@RequestBody UsernamePasswordToken token) {
         logger.info("Subject Logged out");
-        authorizationService.unAuthorized(token);
+        return authorizationService.unAuthorized(token);
     }
 
 

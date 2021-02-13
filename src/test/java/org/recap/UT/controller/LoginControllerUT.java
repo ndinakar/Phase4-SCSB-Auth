@@ -285,7 +285,7 @@ public class LoginControllerUT extends BaseTestCaseUT {
     public void logoutUser() {
         String loginUser = "rajeshtest:HTC";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "rajesh123");
-        Mockito.doNothing().when(authorizationService).unAuthorized(usernamePasswordToken);
+        Mockito.when(authorizationService.unAuthorized(usernamePasswordToken)).thenReturn(Boolean.TRUE);
         loginController.logoutUser(usernamePasswordToken);
     }
 }
