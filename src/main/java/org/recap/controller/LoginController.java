@@ -164,9 +164,9 @@ public class LoginController {
      * @param token the token
      */
     @PostMapping(value = "/logout")
-    public void logoutUser(@RequestBody UsernamePasswordToken token) {
+    public boolean logoutUser(@RequestBody UsernamePasswordToken token) {
         logger.info("Subject Logged out");
-        authorizationService.unAuthorized(token);
+        return authorizationService.unAuthorized(token);
     }
 
 
