@@ -80,5 +80,6 @@ public class RecapConstants {
     public static final String RESUBMIT_REQUEST = "ReSubmit Request";
     public static final String MONITORING_REQUEST = "View Monitoring";
     public static final String LOGGING_REQUEST = "View Logging";
+    public static final String DATAEXPORT_REQUEST = "Data Export";
 
 }
