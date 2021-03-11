@@ -154,4 +154,8 @@ public class AuthorizationController {
     public boolean logging(@RequestBody UsernamePasswordToken usernamePasswordToken){
         return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.LOGGING_REQUEST));
     }
+    @PostMapping(value="/dataExport")
+    public boolean dataExport(@RequestBody UsernamePasswordToken usernamePasswordToken){
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.DATAEXPORT_REQUEST));
+    }
 }
