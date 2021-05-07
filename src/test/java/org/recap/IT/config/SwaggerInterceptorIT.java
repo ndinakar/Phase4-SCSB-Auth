@@ -29,14 +29,14 @@ public class SwaggerInterceptorIT extends BaseTestCase {
 
     @Test
     public void testPreHandle() throws Exception {
-        httpServletRequest.setAttribute("api_key","recap");
+        httpServletRequest.setAttribute("api_key","test");
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(!continueExport);
     }
     @Test
-    public void testPreHandleRecap() throws Exception {
-        httpServletRequest.setAttribute("api_key","recap");
-        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("recap");
+    public void testPreHandleTest() throws Exception {
+        httpServletRequest.setAttribute("api_key","test");
+        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("test");
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(continueExport);
     }

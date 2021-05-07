@@ -3,7 +3,7 @@ package org.recap;
 /**
  * Created by akulak on 27/2/17.
  */
-public class RecapConstants {
+public class ScsbConstants {
 
 
     public static final String PERMISSION_MAP = "permissionsMap";

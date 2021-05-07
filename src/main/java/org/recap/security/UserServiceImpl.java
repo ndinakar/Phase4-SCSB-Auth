@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
      * @return the user form
      * @throws Exception the exception
      */
-    public UserForm findUser(String loginId,UserForm userForm)throws Exception
+    public UserForm findUser(String loginId, UserForm userForm)throws Exception
     {
         return UserManagementService.toUserForm(userDetailsRepository.findByLoginId(loginId),userForm);
     }

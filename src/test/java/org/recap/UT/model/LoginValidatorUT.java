@@ -1,13 +1,8 @@
 package org.recap.UT.model;
 
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 

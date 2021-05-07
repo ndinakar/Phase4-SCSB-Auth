@@ -7,7 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.subject.Subject;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class AuthorizationController {
     @ApiOperation(value="search authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "search authentication success")})
     public boolean searchRecords(HttpServletRequest request, @RequestBody UsernamePasswordToken token) {
-        return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT));
+        return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(ScsbConstants.SCSB_SEARCH_EXPORT));
     }
 
     /**
@@ -60,7 +60,7 @@ public class AuthorizationController {
     @ApiOperation(value="request authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "request authentication success")})
     public Boolean request(@RequestBody UsernamePasswordToken token) {
-        return authorizationService.checkPrivilege(token,userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE));
+        return authorizationService.checkPrivilege(token,userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE));
     }
 
     /**
@@ -73,7 +73,7 @@ public class AuthorizationController {
     @ApiOperation(value="collection authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "collection authentication success")})
     public Boolean collection(@RequestBody UsernamePasswordToken token) {
-        return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(RecapConstants.WRITE_GCD));
+        return authorizationService.checkPrivilege(token, userManagementService.getPermissionId(ScsbConstants.WRITE_GCD));
 
     }
 
@@ -87,7 +87,7 @@ public class AuthorizationController {
     @ApiOperation(value="reports authentication",notes="Used to Authenticate User",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "reports authentication success")})
     public boolean reports(@RequestBody UsernamePasswordToken usernamePasswordToken) {
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.VIEW_PRINT_REPORTS));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.VIEW_PRINT_REPORTS));
 
     }
 
@@ -101,7 +101,7 @@ public class AuthorizationController {
     @ApiOperation(value="user authentication",notes="Used to Authorizer User for Users",consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User & Role authentication success")})
     public boolean userRoles(@RequestBody UsernamePasswordToken usernamePasswordToken) {
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.CREATE_USER));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.CREATE_USER));
 
     }
 
@@ -143,19 +143,19 @@ public class AuthorizationController {
 
     @PostMapping(value="/bulkRequest")
     public boolean bulkRequest(@RequestBody UsernamePasswordToken usernamePasswordToken) {
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.BULK_REQUEST));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.BULK_REQUEST));
 
     }
     @PostMapping(value="/monitoring")
     public boolean monitoring(@RequestBody UsernamePasswordToken usernamePasswordToken){
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.MONITORING_REQUEST));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.MONITORING_REQUEST));
     }
     @PostMapping(value="/logging")
     public boolean logging(@RequestBody UsernamePasswordToken usernamePasswordToken){
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.LOGGING_REQUEST));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.LOGGING_REQUEST));
     }
     @PostMapping(value="/dataExport")
     public boolean dataExport(@RequestBody UsernamePasswordToken usernamePasswordToken){
-        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(RecapConstants.DATAEXPORT_REQUEST));
+        return authorizationService.checkPrivilege(usernamePasswordToken,userManagementService.getPermissionId(ScsbConstants.DATAEXPORT_REQUEST));
     }
 }

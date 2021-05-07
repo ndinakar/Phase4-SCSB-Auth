@@ -1,8 +1,10 @@
 package org.recap.config;
 
+import org.recap.ScsbCommonConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.recap.spring.SwaggerAPIProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +21,8 @@ public class SwaggerInterceptor implements HandlerInterceptor {
             throws Exception {
         boolean continueExport;
         String date = new Date().toString();
-        String key = request.getHeader("api_key");
-        if (key != null && "recap".equalsIgnoreCase(key)) {
+        String key = request.getHeader(ScsbCommonConstants.API_KEY);
+        if (key != null && SwaggerAPIProvider.getInstance().getSwaggerApiKey().equalsIgnoreCase(key)) {
             continueExport = true;
         } else {
             continueExport = false;

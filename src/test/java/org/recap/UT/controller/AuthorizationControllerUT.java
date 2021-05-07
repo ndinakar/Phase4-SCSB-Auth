@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.controller.AuthorizationController;
 import org.recap.model.jpa.PermissionEntity;
@@ -62,7 +62,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void searchRecords(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT)).thenReturn(1);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.SCSB_SEARCH_EXPORT)).thenReturn(1);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,1)).thenReturn(true);
         result=mockAuthorizationController.searchRecords(request,usernamePasswordToken);
         assertTrue(result);
@@ -71,7 +71,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void request(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE)).thenReturn(2);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE)).thenReturn(2);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,2)).thenReturn(true);
         result=mockAuthorizationController.request(usernamePasswordToken);
         assertTrue(result);
@@ -80,7 +80,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void collection(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.WRITE_GCD)).thenReturn(3);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.WRITE_GCD)).thenReturn(3);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,3)).thenReturn(true);
         result=mockAuthorizationController.collection(usernamePasswordToken);
         assertTrue(result);
@@ -89,7 +89,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void checkReportsPermission(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.VIEW_PRINT_REPORTS)).thenReturn(4);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.VIEW_PRINT_REPORTS)).thenReturn(4);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,4)).thenReturn(true);
         result=mockAuthorizationController.reports(usernamePasswordToken);
         assertTrue(result);
@@ -98,7 +98,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void userRoles(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.CREATE_USER)).thenReturn(5);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.CREATE_USER)).thenReturn(5);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,5)).thenReturn(true);
         result=mockAuthorizationController.userRoles(usernamePasswordToken);
         assertTrue(result);
@@ -134,7 +134,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void bulkRequest(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.BULK_REQUEST)).thenReturn(7);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.BULK_REQUEST)).thenReturn(7);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,7)).thenReturn(true);
         result = mockAuthorizationController.bulkRequest(usernamePasswordToken);
         assertTrue(result);
@@ -142,7 +142,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void monitoring(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.MONITORING_REQUEST)).thenReturn(8);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.MONITORING_REQUEST)).thenReturn(8);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,8)).thenReturn(true);
         result = mockAuthorizationController.monitoring(usernamePasswordToken);
         assertTrue(result);
@@ -150,7 +150,7 @@ public class AuthorizationControllerUT extends BaseTestCaseUT {
     @Test
     public void logging(){
         boolean result=false;
-        Mockito.when(userManagementService.getPermissionId(RecapConstants.LOGGING_REQUEST)).thenReturn(9);
+        Mockito.when(userManagementService.getPermissionId(ScsbConstants.LOGGING_REQUEST)).thenReturn(9);
         Mockito.when(authorizationService.checkPrivilege(usernamePasswordToken,9)).thenReturn(true);
         result = mockAuthorizationController.logging(usernamePasswordToken);
         assertTrue(result);

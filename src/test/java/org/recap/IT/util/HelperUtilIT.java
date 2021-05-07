@@ -2,14 +2,11 @@ package org.recap.IT.util;
 
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.recap.IT.BaseTestCase;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.jpa.InstitutionDetailsRepository;
 import org.recap.util.HelperUtil;
 
-
-import java.util.Collections;
 
 import static org.junit.Assert.assertNull;
 

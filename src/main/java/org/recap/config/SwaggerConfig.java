@@ -36,7 +36,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public Docket documentation() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.recap.controller"))
+                .apis(RequestHandlerSelectors.basePackage("org.scsb.controller"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .apiInfo(metadata());
@@ -44,8 +44,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo metadata() {
         return new ApiInfoBuilder()
-                .title("ReCAP APIs")
-                .description("APIs to interact with ReCAP middleware are RESTful and need an API_KEY for any call to be invoked. Further NCIP protocols are also supported.")
+                .title("SCSB APIs")
+                .description("APIs to interact with SCSB middleware are RESTful and need an API_KEY for any call to be invoked. Further NCIP protocols are also supported.")
                 .version("1.0.0")
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")

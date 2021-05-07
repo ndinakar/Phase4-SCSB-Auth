@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.IT.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.controller.AuthorizationController;
 import org.recap.controller.LoginController;
 import org.recap.model.jpa.PermissionEntity;
@@ -77,7 +77,7 @@ public class AuthorizationControllerIT extends BaseTestCase {
         Subject loggedInSubject = securityManager.login(subject, usernamePasswordToken);
         authorizationService.setSubject(usernamePasswordToken,loggedInSubject);
         Session session=loggedInSubject.getSession();
-        session.setAttribute(RecapConstants.PERMISSION_MAP,permissionMap);
+        session.setAttribute(ScsbConstants.PERMISSION_MAP,permissionMap);
     }
 
 

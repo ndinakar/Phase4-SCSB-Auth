@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
@@ -42,7 +42,7 @@ public class AuthenticationServiceImplUT extends BaseTestCaseUT {
         UsersEntity usersEntity = createUser();
         UserForm userForm = getUserForm();
         InstitutionEntity institutionEntity = getInstitutionEntity();
-        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ RecapConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
+        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ ScsbConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
         String[] user = UserManagementService.userAndInstitution(token.getUsername());
         Mockito.when(helperUtil.getInstitutionIdByCode(user[1])).thenReturn(institutionEntity);
         Mockito.when(userDetailsRepository.findByLoginIdAndInstitutionEntity(any(), any())).thenReturn(usersEntity);
