@@ -3,7 +3,7 @@ package org.recap.IT.security;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.junit.Test;
 import org.recap.IT.BaseTestCase;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by dharmendrag on 1/2/17.
  */
-public class AuthenticationServiceImplIT extends BaseTestCase{
+public class AuthenticationServiceImplIT extends BaseTestCase {
 
     @Autowired
     public InstitutionDetailsRepository institutionDetailsRepository;
@@ -48,7 +48,7 @@ public class AuthenticationServiceImplIT extends BaseTestCase{
         userForm.setUsername("htcsuperadmin");
         userForm.setInstitution(1);
         userForm.setPassword("12345");
-        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ RecapConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
+        UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ ScsbConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
         UserForm returnForm=authenticationService.doAuthentication(token);
 
         assertEquals(userForm.getUsername(),returnForm.getUsername());

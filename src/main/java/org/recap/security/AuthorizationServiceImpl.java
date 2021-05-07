@@ -4,7 +4,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
@@ -106,16 +106,16 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             currentSubject.getSession().touch();
             switch(permissionId){
 
-                case RecapConstants.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
-                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION)))) {
+                case ScsbConstants.EDIT_CGD_ID:{//to check Edit CGD & Deaccession
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(ScsbConstants.WRITE_GCD))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(ScsbConstants.DEACCESSION)))) {
                         authorized=true;
                     }
                     break;
                 }
 
-                case RecapConstants.REQUEST_PLACE_ID:{//to check Request
-                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))) ||
-                            currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS)))) {
+                case ScsbConstants.REQUEST_PLACE_ID:{//to check Request
+                    if (currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE))) || currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE_ALL))) ||
+                            currentSubject.isPermitted(permissions.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_ITEMS)))) {
                         authorized=true;
                     }
                     break;

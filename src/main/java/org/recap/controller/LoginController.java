@@ -9,7 +9,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
@@ -42,7 +42,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Value("${scsb.email.assist.to}")
-    private String recapAssistanceEmailTo;
+    private String scsbAssistanceEmailTo;
 
     @Value("${superadmin.permission.institution}")
     private String superAdminPermissionForInstitution;
@@ -95,7 +95,7 @@ public class LoginController {
         Map<String, Object> authMap = new HashMap<>();
         try {
             if (token == null) {
-                throw new CredentialsException(RecapConstants.ERROR_USER_TOKEN_EMPTY);
+                throw new CredentialsException(ScsbConstants.ERROR_USER_TOKEN_EMPTY);
             }
             String[] values = UserManagementService.userAndInstitution(token.getUsername());
             boolean isValid = false;
@@ -107,53 +107,53 @@ public class LoginController {
                 isValid = loginValidator.validate(userForm);
             }
             if (!isValid) {
-                throw new IncorrectCredentialsException(RecapConstants.ERROR_USER_TOKEN_VALIDATION_FAILED);
+                throw new IncorrectCredentialsException(ScsbConstants.ERROR_USER_TOKEN_VALIDATION_FAILED);
             }
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
             if (!subject.isAuthenticated()) {
-                throw new AuthenticationException(RecapConstants.ERROR_SUBJECT_AUTHENTICATION_FAILED);
+                throw new AuthenticationException(ScsbConstants.ERROR_SUBJECT_AUTHENTICATION_FAILED);
             }
             authorizationService.setSubject(token, subject);
             Map<Integer, String> permissionMap = userService.getPermissions();
             getPermissionsForUI(subject, authMap, permissionMap);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, true);
-            authMap.put(RecapConstants.USER_NAME, userForm.getUsername());
-            authMap.put(RecapConstants.USER_INSTITUTION, userForm.getInstitution());
-            authMap.put(RecapConstants.USER_ID, subject.getPrincipal());
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, true);
+            authMap.put(ScsbConstants.USER_NAME, userForm.getUsername());
+            authMap.put(ScsbConstants.USER_INSTITUTION, userForm.getInstitution());
+            authMap.put(ScsbConstants.USER_ID, subject.getPrincipal());
             List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
             boolean superAdminUser = (roleId.contains(1) && superAdminPermissionForInstitution.contains(userForm.getUserInstitution())) ? Boolean.TRUE : Boolean.FALSE;
-            boolean recapUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED)));
-            authMap.put(RecapConstants.SUPER_ADMIN_USER, superAdminUser);
-            authMap.put(RecapConstants.RECAP_USER, recapUser);
+            boolean imsUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.BARCODE_RESTRICTED)));
+            authMap.put(ScsbConstants.SUPER_ADMIN_USER, superAdminUser);
+            authMap.put(ScsbConstants.RECAP_USER, imsUser);
             Collections.unmodifiableMap(authMap);
             Session session = subject.getSession();
-            session.setAttribute(RecapConstants.PERMISSION_MAP, permissionMap);
-            session.setAttribute(RecapConstants.USER_ID, subject.getPrincipal());
+            session.setAttribute(ScsbConstants.PERMISSION_MAP, permissionMap);
+            session.setAttribute(ScsbConstants.USER_ID, subject.getPrincipal());
         } catch (UnknownAccountException uae) {
             logger.debug("Unknown Account Exception");
-            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, uae);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, MessageFormat.format(RecapConstants.ERROR_MESSAGE_USER_NOT_AVAILABLE, recapAssistanceEmailTo, recapAssistanceEmailTo));
+            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, uae);
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
+            authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, MessageFormat.format(ScsbConstants.ERROR_MESSAGE_USER_NOT_AVAILABLE, scsbAssistanceEmailTo, scsbAssistanceEmailTo));
         } catch (IncorrectCredentialsException ice) {
             logger.debug("Unknown Account Exception");
-            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ice);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
+            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ice);
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
+            authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (CredentialsException ce) {
             logger.debug("Credentials exception");
-            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ce);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
+            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ce);
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
+            authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (AuthenticationException ae) {
             logger.debug("Authentication exception");
-            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, ae);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, RecapConstants.ERROR_AUTHENTICATION_FAILED);
+            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ae);
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
+            authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (Exception e) {
-            logger.error(RecapConstants.EXCEPTION_IN_AUTHENTICATION, e);
-            authMap.put(RecapConstants.USER_AUTHENTICATION, false);
-            authMap.put(RecapConstants.USER_AUTH_ERRORMSG, e.getMessage());
+            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, e);
+            authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
+            authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, e.getMessage());
         }
         return authMap;
     }
@@ -171,20 +171,20 @@ public class LoginController {
 
 
     private void getPermissionsForUI(Subject subject,Map<String,Object> authMap,Map<Integer,String> permissionMap){
-        authMap.put(RecapConstants.REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE))));
-        authMap.put(RecapConstants.COLLECTION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.WRITE_GCD))));
-        authMap.put(RecapConstants.REPORTS_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.VIEW_PRINT_REPORTS))));
-        authMap.put(RecapConstants.SEARCH_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.SCSB_SEARCH_EXPORT))));
-        authMap.put(RecapConstants.USER_ROLE_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.CREATE_USER))));
-        authMap.put(RecapConstants.REQUEST_ALL_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_PLACE_ALL))));
-        authMap.put(RecapConstants.REQUEST_ITEM_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.REQUEST_ITEMS))));
-        authMap.put(RecapConstants.BARCODE_RESTRICTED_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BARCODE_RESTRICTED))));
-        authMap.put(RecapConstants.DEACCESSION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DEACCESSION))));
-        authMap.put(RecapConstants.BULK_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.BULK_REQUEST))));
-        authMap.put(RecapConstants.RESUBMIT_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.RESUBMIT_REQUEST))));
-        authMap.put(RecapConstants.MONITORING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.MONITORING_PERMISSION_NAME))));
-        authMap.put(RecapConstants.LOGGING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.LOGGING_PERMISSION_NAME))));
-        authMap.put(RecapConstants.DATA_EXPORT,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(RecapConstants.DATAEXPORT_PERMISSION_NAME))));
+        authMap.put(ScsbConstants.REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE))));
+        authMap.put(ScsbConstants.COLLECTION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.WRITE_GCD))));
+        authMap.put(ScsbConstants.REPORTS_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.VIEW_PRINT_REPORTS))));
+        authMap.put(ScsbConstants.SEARCH_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.SCSB_SEARCH_EXPORT))));
+        authMap.put(ScsbConstants.USER_ROLE_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.CREATE_USER))));
+        authMap.put(ScsbConstants.REQUEST_ALL_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_PLACE_ALL))));
+        authMap.put(ScsbConstants.REQUEST_ITEM_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_ITEMS))));
+        authMap.put(ScsbConstants.BARCODE_RESTRICTED_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.BARCODE_RESTRICTED))));
+        authMap.put(ScsbConstants.DEACCESSION_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.DEACCESSION))));
+        authMap.put(ScsbConstants.BULK_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.BULK_REQUEST))));
+        authMap.put(ScsbConstants.RESUBMIT_REQUEST_PRIVILEGE,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.RESUBMIT_REQUEST))));
+        authMap.put(ScsbConstants.MONITORING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.MONITORING_PERMISSION_NAME))));
+        authMap.put(ScsbConstants.LOGGING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.LOGGING_PERMISSION_NAME))));
+        authMap.put(ScsbConstants.DATA_EXPORT,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.DATAEXPORT_PERMISSION_NAME))));
     }
 
 }

@@ -1,7 +1,6 @@
 package org.recap.UT.model;
 
 import org.junit.Test;
-import org.recap.IT.BaseTestCase;
 import org.recap.model.UserForm;
 
 import java.util.Set;

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
@@ -88,23 +88,23 @@ public class UserManagementServiceUT extends BaseTestCaseUT {
     public void getPermissions(){
         Map<Integer, String> permissionMap = getPermissionMap();
         Mockito.when(subject.getSession()).thenReturn(session);
-        Mockito.when(session.getAttribute(RecapConstants.PERMISSION_MAP)).thenReturn(permissionMap);
+        Mockito.when(session.getAttribute(ScsbConstants.PERMISSION_MAP)).thenReturn(permissionMap);
         Map<Integer,String> map = userManagementService.getPermissions(subject);
         assertNotNull(map);
     }
     private Map<Integer, String> getPermissionMap() {
         Map<Integer, String> permissionMap = new HashMap<>();
-        permissionMap.put(1, RecapConstants.REQUEST_PLACE);
-        permissionMap.put(2,RecapConstants.WRITE_GCD);
-        permissionMap.put(3,RecapConstants.VIEW_PRINT_REPORTS);
-        permissionMap.put(4,RecapConstants.SCSB_SEARCH_EXPORT);
-        permissionMap.put(5,RecapConstants.CREATE_USER);
-        permissionMap.put(6,RecapConstants.REQUEST_PLACE_ALL);
-        permissionMap.put(7,RecapConstants.REQUEST_ITEMS);
-        permissionMap.put(8,RecapConstants.BARCODE_RESTRICTED);
-        permissionMap.put(9,RecapConstants.DEACCESSION);
-        permissionMap.put(10,RecapConstants.BULK_REQUEST);
-        permissionMap.put(11,RecapConstants.RESUBMIT_REQUEST);
+        permissionMap.put(1, ScsbConstants.REQUEST_PLACE);
+        permissionMap.put(2, ScsbConstants.WRITE_GCD);
+        permissionMap.put(3, ScsbConstants.VIEW_PRINT_REPORTS);
+        permissionMap.put(4, ScsbConstants.SCSB_SEARCH_EXPORT);
+        permissionMap.put(5, ScsbConstants.CREATE_USER);
+        permissionMap.put(6, ScsbConstants.REQUEST_PLACE_ALL);
+        permissionMap.put(7, ScsbConstants.REQUEST_ITEMS);
+        permissionMap.put(8, ScsbConstants.BARCODE_RESTRICTED);
+        permissionMap.put(9, ScsbConstants.DEACCESSION);
+        permissionMap.put(10, ScsbConstants.BULK_REQUEST);
+        permissionMap.put(11, ScsbConstants.RESUBMIT_REQUEST);
         return permissionMap;
     }
     private UsersEntity getUsersEntity() {

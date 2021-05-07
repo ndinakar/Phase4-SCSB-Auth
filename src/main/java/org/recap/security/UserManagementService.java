@@ -3,7 +3,7 @@ package org.recap.security;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.recap.RecapConstants;
+import org.recap.ScsbConstants;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
@@ -75,9 +75,9 @@ public class UserManagementService {
     public static final String[] userAndInstitution(String token)
     {
         String[] values=new String[2];
-        if(token.contains(RecapConstants.TOKEN_SPLITER))
+        if(token.contains(ScsbConstants.TOKEN_SPLITER))
         {
-            values=token.split(RecapConstants.TOKEN_SPLITER);
+            values=token.split(ScsbConstants.TOKEN_SPLITER);
         }else
         {
             return null;
@@ -95,7 +95,7 @@ public class UserManagementService {
      */
     public static UserForm toUserForm(UsersEntity userEntity, UserForm userForm) {
         if (userEntity == null) {
-            throw new UnknownAccountException(RecapConstants.ERROR_USER_NOT_AVAILABLE);
+            throw new UnknownAccountException(ScsbConstants.ERROR_USER_NOT_AVAILABLE);
         }
         if (userForm == null) {
             userForm = new UserForm();
@@ -115,6 +115,6 @@ public class UserManagementService {
      */
     public static Map<Integer,String> getPermissions(Subject subject){
         Session session=subject.getSession();
-        return (Map<Integer,String>)session.getAttribute(RecapConstants.PERMISSION_MAP);
+        return (Map<Integer,String>)session.getAttribute(ScsbConstants.PERMISSION_MAP);
     }
 }

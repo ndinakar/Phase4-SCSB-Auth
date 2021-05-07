@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.RecapConstants;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
