@@ -48,7 +48,7 @@ public class AuthorizationServiceImplUT extends BaseTestCaseUT {
 
     @Test
     public void getSubject(){
-        String loginUser="HtcSuperAdmin:PUL";
+        String loginUser="SupportSuperAdmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         Subject testSubject=authorizationServiceimpl.getSubject(usernamePasswordToken);
         assertNull(testSubject);
@@ -56,15 +56,15 @@ public class AuthorizationServiceImplUT extends BaseTestCaseUT {
 
     @Test
     public void setSubject(){
-        String loginUser="HtcSuperAdmin:PUL";
+        String loginUser="SupportSuperAdmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         authorizationServiceimpl.setSubject(usernamePasswordToken,subject);
     }
 
     @Test
     public void authorizationinfo(){
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        String loginUser="HtcSuperAdmin:PUL";
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        String loginUser="SupportSuperAdmin:PUL";
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         Mockito.when(userDetailsRepository.findById(usersEntity.getId())).thenReturn(Optional.of(usersEntity));
         AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getId());
@@ -75,16 +75,16 @@ public class AuthorizationServiceImplUT extends BaseTestCaseUT {
 
     @Test
     public void unAuthorized(){
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        String loginUser = "HtcSuperAdmin:PUL";
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        String loginUser = "SupportSuperAdmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         authorizationServiceimpl.unAuthorized(usernamePasswordToken);
     }
     @Test
     public void checkPrivilege(){
         int permissionId =2;
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        String loginUser = "HtcSuperAdmin:PUL";
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        String loginUser = "SupportSuperAdmin:PUL";
         try{
         UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
         usernamePasswordToken1.setRememberMe(true);

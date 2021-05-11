@@ -31,6 +31,7 @@ import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.recap.security.UserService;
 import org.recap.util.HelperUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,6 +92,9 @@ public class LoginControllerUT extends BaseTestCaseUT {
     @Mock
     UserManagementService userManagementService;
 
+    @Value("${scsb.support.institution}")
+    private String supportInstitution;
+
     UsernamePasswordToken usernamePasswordToken = null;
 
     @Before
@@ -100,15 +104,15 @@ public class LoginControllerUT extends BaseTestCaseUT {
 
     @Test
     public void testCreateSession() {
-        String loginUser = "testuser:HTC";
+        String loginUser = "testuser:" + supportInstitution;
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "test123");
-        superAdminPermissionForInstitution = "HTC";
+        superAdminPermissionForInstitution = supportInstitution;
         LoginValidator loginValidator = new LoginValidator();
         Map<Integer, String> permissionMap = getPermissionMap();
         UserForm userForm = new UserForm();
         userForm.setUsername("testuser");
         userForm.setPassword("test123");
-        userForm.setUserInstitution("HTC");
+        userForm.setUserInstitution(supportInstitution);
         userForm.setInstitution(4);
         userForm.setPasswordMatcher(true);
         InstitutionEntity institutionEntity = new InstitutionEntity();
@@ -166,9 +170,9 @@ public class LoginControllerUT extends BaseTestCaseUT {
     }
     @Test
     public void testCreateSessionAuthenticationException() {
-        String loginUser = "testuser:HTC";
+        String loginUser = "testuser:" + supportInstitution;
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "test123");
-        superAdminPermissionForInstitution = "HTC";
+        superAdminPermissionForInstitution = supportInstitution;
         Map<Integer, String> permissionMap = getPermissionMap();
         UserForm userForm = new UserForm();
         userForm.setUsername("testuser");
@@ -198,9 +202,9 @@ public class LoginControllerUT extends BaseTestCaseUT {
     }
     @Test
     public void testCreateSessionException() {
-        String loginUser = "testuser:HTC";
+        String loginUser = "testuser:" + supportInstitution;
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "test123");
-        superAdminPermissionForInstitution = "HTC";
+        superAdminPermissionForInstitution = supportInstitution;
         Map<Integer, String> permissionMap = null;
         UserForm userForm = new UserForm();
         userForm.setUsername("testuser");
@@ -248,9 +252,9 @@ public class LoginControllerUT extends BaseTestCaseUT {
     }
     @Test
     public void testCreateSessionUnknownAccountException() {
-        String loginUser = "testuser:HTC";
+        String loginUser = "testuser:" + supportInstitution;
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "test123");
-        superAdminPermissionForInstitution = "HTC";
+        superAdminPermissionForInstitution = supportInstitution;
         Map<Integer, String> permissionMap = getPermissionMap();
         UserForm userForm = new UserForm();
         userForm.setUsername("testuser");
@@ -277,7 +281,7 @@ public class LoginControllerUT extends BaseTestCaseUT {
     }
     @Test
     public void logoutUser() {
-        String loginUser = "testuser:HTC";
+        String loginUser = "testuser:" + supportInstitution;
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "test123");
         Mockito.when(authorizationService.unAuthorized(usernamePasswordToken)).thenReturn(Boolean.TRUE);
         loginController.logoutUser(usernamePasswordToken);

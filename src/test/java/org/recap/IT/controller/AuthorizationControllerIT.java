@@ -69,8 +69,8 @@ public class AuthorizationControllerIT extends BaseTestCase {
     public void setUp(){
         permissionMap= userService.getPermissions();
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -111,35 +111,35 @@ public class AuthorizationControllerIT extends BaseTestCase {
 
     @Test
     public void checkUsersPermission(){
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         boolean result=false;
         result=authorizationController.userRoles(usernamePasswordToken);
         assertTrue(true);
     }
     @Test
     public void searchRecords(){
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         boolean result=false;
         result=authorizationController.searchRecords(request,usernamePasswordToken);
         assertTrue(true);
     }
     @Test
     public void roles(){
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         boolean result=false;
        // result = authorizationController.roles(usernamePasswordToken);
        // assertTrue(result);
     }
     @Test
     public void touchExistingSession(){
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         boolean result=false;
         result = authorizationController.touchExistingSession(usernamePasswordToken);
         assertTrue(result);
     }
     @Test
     public void bulkRequest(){
-        usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         boolean result=false;
         result = authorizationController.bulkRequest(usernamePasswordToken);
     }
@@ -160,7 +160,7 @@ public class AuthorizationControllerIT extends BaseTestCase {
 
         assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
 
-        UsersEntity byLoginId=userRepo.findByLoginId("HtcSuperAdmin");
+        UsersEntity byLoginId=userRepo.findByLoginId("SupportSuperAdmin");
         return byLoginId;
 
     }

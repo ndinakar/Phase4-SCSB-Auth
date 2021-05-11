@@ -65,7 +65,7 @@ public class AuthorizationServiceImplIT extends BaseTestCase {
     @Test
     public void setSubject(){
         UsersEntity usersEntity=new UsersEntity();
-        usersEntity.setLoginId("HtcSuperAdmin:PUL");
+        usersEntity.setLoginId("SupportSuperAdmin:PUL");
         usersEntity.setEmailId("julius@example.org");
         usersEntity.setUserDescription("super admin");
         usersEntity.setInstitutionId(1);
@@ -79,7 +79,7 @@ public class AuthorizationServiceImplIT extends BaseTestCase {
         entityManager.refresh(savedUser);
 
         assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
-        String loginUser="HtcSuperAdmin:PUL";
+        String loginUser="SupportSuperAdmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         Subject testSubject=authorizationServiceimpl.getSubject(usernamePasswordToken);
 
@@ -88,8 +88,8 @@ public class AuthorizationServiceImplIT extends BaseTestCase {
 
     @Test
     public void unAuthorized(){
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        String loginUser = "HtcSuperAdmin:PUL";
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        String loginUser = "SupportSuperAdmin:PUL";
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(loginUser, "123");
         authorizationServiceimpl.unAuthorized(usernamePasswordToken);
     }
@@ -122,7 +122,7 @@ public class AuthorizationServiceImplIT extends BaseTestCase {
 
         assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
 
-        UsersEntity byLoginId=userRepo.findByLoginId("HtcSuperAdmin");
+        UsersEntity byLoginId=userRepo.findByLoginId("SupportSuperAdmin");
         return byLoginId;
 
     }

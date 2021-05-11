@@ -45,7 +45,7 @@ public class AuthenticationServiceImplIT extends BaseTestCase {
     public void testAuthentication()throws Exception{
         UsersEntity usersEntity = createUser();
         UserForm userForm = new UserForm();
-        userForm.setUsername("htcsuperadmin");
+        userForm.setUsername("SupportSuperAdmin");
         userForm.setInstitution(1);
         userForm.setPassword("12345");
         UsernamePasswordToken token=new UsernamePasswordToken(userForm.getUsername()+ ScsbConstants.TOKEN_SPLITER+"PUL",userForm.getPassword(),true);
@@ -59,7 +59,7 @@ public class AuthenticationServiceImplIT extends BaseTestCase {
 
     public UsersEntity createUser(){
         UsersEntity usersEntity=new UsersEntity();
-        usersEntity.setLoginId("htcsuperadmin");
+        usersEntity.setLoginId("SupportSuperAdmin");
         usersEntity.setEmailId("julius@example.org");
         usersEntity.setUserDescription("super admin");
         usersEntity.setInstitutionId(1);
@@ -74,7 +74,7 @@ public class AuthenticationServiceImplIT extends BaseTestCase {
 
         assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
 
-        UsersEntity byLoginId=userRepo.findByLoginId("htcsuperadmin");
+        UsersEntity byLoginId=userRepo.findByLoginId("SupportSuperAdmin");
         return byLoginId;
 
     }

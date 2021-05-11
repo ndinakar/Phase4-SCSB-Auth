@@ -10,6 +10,7 @@ import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.jpa.PermissionsRepository;
 import org.recap.repository.jpa.RolesDetailsRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,12 +32,15 @@ public class ShiroTest extends BaseTestCase {
     @Autowired
     PermissionsRepository permissionsRepository;
 
+    @Value("${scsb.support.institution}")
+    private String supportInstitution;
+
     @Test
     public void loginSingleUser() throws Exception {
 
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        UsersEntity usersEntity = createUser("HtcSuperAdmin");
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -62,8 +66,8 @@ public class ShiroTest extends BaseTestCase {
     @Test
     public void loginConcurrentUser() throws Exception {
         DefaultWebSubjectContext webSubjectContext = new DefaultWebSubjectContext();
-        createUser("HtcSuperAdmin");
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("HtcSuperAdmin:PUL", "123");
+        createUser("SupportSuperAdmin");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("SupportSuperAdmin:PUL", "123");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken);
         Subject subject = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject);
@@ -78,7 +82,7 @@ public class ShiroTest extends BaseTestCase {
         usersEntity.setLastUpdatedDate(new Date());
         UsersEntity savedUser=userRepo.saveAndFlush(usersEntity);
         entityManager.refresh(savedUser);
-        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken("TestAdmin:HTC", "12345");
+        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken("TestAdmin:" + supportInstitution, "12345");
         webSubjectContext.setAuthenticationToken(usernamePasswordToken1);
         Subject subject1 = securityManager.createSubject(webSubjectContext);
         assertNotNull(subject1);
@@ -114,7 +118,7 @@ public class ShiroTest extends BaseTestCase {
 
         assertEquals(usersEntity.getLoginId(),savedUser.getLoginId());
 
-        UsersEntity byLoginId=userRepo.findByLoginId("HtcSuperAdmin");
+        UsersEntity byLoginId=userRepo.findByLoginId("SupportSuperAdmin");
         return byLoginId;
 
     }

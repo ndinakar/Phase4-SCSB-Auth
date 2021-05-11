@@ -64,7 +64,7 @@ public class AuthenticationServiceImplUT extends BaseTestCaseUT {
 
     private UserForm getUserForm() {
         UserForm userForm = new UserForm();
-        userForm.setUsername("htcsuperadmin");
+        userForm.setUsername("SupportSuperAdmin");
         userForm.setInstitution(1);
         userForm.setPassword("12345");
         return userForm;
@@ -72,7 +72,7 @@ public class AuthenticationServiceImplUT extends BaseTestCaseUT {
 
     public UsersEntity createUser(){
         UsersEntity usersEntity=new UsersEntity();
-        usersEntity.setLoginId("htcsuperadmin");
+        usersEntity.setLoginId("SupportSuperAdmin");
         usersEntity.setEmailId("julius@example.org");
         usersEntity.setUserDescription("super admin");
         usersEntity.setInstitutionId(1);
