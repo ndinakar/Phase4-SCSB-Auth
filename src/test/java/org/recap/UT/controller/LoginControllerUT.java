@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.controller.LoginController;
@@ -92,7 +93,7 @@ public class LoginControllerUT extends BaseTestCaseUT {
     @Mock
     UserManagementService userManagementService;
 
-    @Value("${scsb.support.institution}")
+    @Value("${" + PropertyKeyConstants.SCSB_SUPPORT_INSTITUTION + "}")
     private String supportInstitution;
 
     UsernamePasswordToken usernamePasswordToken = null;

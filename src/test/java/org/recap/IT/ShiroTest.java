@@ -4,6 +4,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.junit.Test;
+import org.recap.PropertyKeyConstants;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
@@ -32,7 +33,7 @@ public class ShiroTest extends BaseTestCase {
     @Autowired
     PermissionsRepository permissionsRepository;
 
-    @Value("${scsb.support.institution}")
+    @Value("${" + PropertyKeyConstants.SCSB_SUPPORT_INSTITUTION + "}")
     private String supportInstitution;
 
     @Test
