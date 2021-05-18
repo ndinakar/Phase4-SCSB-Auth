@@ -39,7 +39,7 @@ public class ApacheShiroCustomConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ApacheShiroCustomConfig.class);
 
-    @Value("${" + PropertyKeyConstants.USERS_SESSION_TEMEOUT + "}")
+    @Value("${" + PropertyKeyConstants.USERS_SESSION_TIMEOUT + "}")
     private String sessionTimeOut;//in milliseconds
 
 
