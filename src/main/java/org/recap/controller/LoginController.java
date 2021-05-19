@@ -9,6 +9,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
+import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
@@ -41,10 +42,10 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${scsb.email.assist.to}")
+    @Value("${" + PropertyKeyConstants.SCSB_EMAIL_ASSIST_TO + "}")
     private String scsbAssistanceEmailTo;
 
-    @Value("${superadmin.permission.institution}")
+    @Value("${" + PropertyKeyConstants.SUPERADMIN_PERMISSION_INSTITUTION + "}")
     private String superAdminPermissionForInstitution;
 
     @Autowired

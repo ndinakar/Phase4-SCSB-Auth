@@ -13,6 +13,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
+import org.recap.PropertyKeyConstants;
 import org.recap.security.realm.SimpleAuthorizationRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class ApacheShiroCustomConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ApacheShiroCustomConfig.class);
 
-    @Value("${users.session.timeout}")
+    @Value("${" + PropertyKeyConstants.USERS_SESSION_TIMEOUT + "}")
     private String sessionTimeOut;//in milliseconds
 
 
