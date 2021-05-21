@@ -42,8 +42,9 @@ public class SwaggerInterceptorUT extends BaseTestCaseUT {
     }
     @Test
     public void testPreHandleTest() throws Exception {
+        PrintWriter printWriter = new PrintWriter(writer);
         httpServletRequest.setAttribute("api_key","test");
-        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("test");
+        Mockito.when(httpServletResponse.getWriter()).thenReturn(printWriter);
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(continueExport);
     }
