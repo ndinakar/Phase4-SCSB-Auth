@@ -36,7 +36,7 @@ public class SwaggerInterceptorIT extends BaseTestCase {
     @Test
     public void testPreHandleTest() throws Exception {
         httpServletRequest.setAttribute("api_key","test");
-        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("test");
+        Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("{SWAGGERAPIKEY}");
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
         assertTrue(continueExport);
     }
