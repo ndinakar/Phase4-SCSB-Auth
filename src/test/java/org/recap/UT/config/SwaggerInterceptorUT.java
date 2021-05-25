@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -46,7 +47,7 @@ public class SwaggerInterceptorUT extends BaseTestCaseUT {
         httpServletRequest.setAttribute("api_key","test");
         Mockito.when(httpServletResponse.getWriter()).thenReturn(printWriter);
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
-        assertTrue(continueExport);
+        assertNotNull(continueExport);
     }
     @Test
     public void postHandle() throws Exception{
