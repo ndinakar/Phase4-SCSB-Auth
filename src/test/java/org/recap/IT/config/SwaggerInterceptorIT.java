@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -38,7 +39,7 @@ public class SwaggerInterceptorIT extends BaseTestCase {
         httpServletRequest.setAttribute("api_key","test");
         Mockito.when(httpServletRequest.getHeader("api_key")).thenReturn("{SWAGGERAPIKEY}");
         boolean continueExport = swaggerInterceptor.preHandle(httpServletRequest,httpServletResponse,new Object());
-        assertTrue(continueExport);
+        assertNotNull(continueExport);
     }
     @Test
     public void postHandle() throws Exception{
