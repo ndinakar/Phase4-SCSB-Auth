@@ -33,8 +33,9 @@ public class ScsbConstants {
     public static final String DEACCESSION_PRIVILEGE = "isDeaccessionAllowed";
 
     public static final String SUPER_ADMIN_USER = "isSuperAdmin";
+    public static final String USER_ADMINISTRATOR = "isUserAdministrator";
 
-    public static final String RECAP_USER = "isRecapUser";
+    public static final String REPOSITORY = "isRepository";
 
     public static final String ROLE_ID = "roleId";
 
@@ -62,7 +63,6 @@ public class ScsbConstants {
     public static final String LOGGING = "isLogging";
     public static final String DATA_EXPORT = "isDataExport";
     public static final String REQUEST_CANCEL_ALL = "Cancel all requests";
-
     public static final String TOKEN_SPLITER = ":";
     public static final String USER_NAME = "userName";
     public static final String ERROR_AUTHENTICATION_FAILED = "SCSB authentication failed. Please try again.";
