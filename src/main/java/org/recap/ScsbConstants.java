@@ -34,6 +34,9 @@ public class ScsbConstants {
 
     public static final String SUPER_ADMIN_USER = "isSuperAdmin";
     public static final String USER_ADMINISTRATOR = "isUserAdministrator";
+    public static final String SUPER_ADMIN_ROLE = "Super Admin";
+    public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
+    public static final String REPOSITORY_ROLE = "Repository";
 
     public static final String REPOSITORY = "isRepository";
 
