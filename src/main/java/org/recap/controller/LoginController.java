@@ -124,9 +124,8 @@ public class LoginController {
             authMap.put(ScsbConstants.USER_ID, subject.getPrincipal());
             List<Integer> roleId = userManagementService.getRolesForUser((Integer) subject.getPrincipal());
             boolean superAdminUser = (roleId.contains(1) && superAdminPermissionForInstitution.contains(userForm.getUserInstitution())) ? Boolean.TRUE : Boolean.FALSE;
-            boolean imsUser = subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.BARCODE_RESTRICTED)));
             authMap.put(ScsbConstants.SUPER_ADMIN_USER, superAdminUser);
-            authMap.put(ScsbConstants.REPOSITORY, imsUser);
+            authMap.put(ScsbConstants.REPOSITORY,roleId.contains(5) );
             authMap.put(ScsbConstants.USER_ADMINISTRATOR,roleId.contains(2));
             Collections.unmodifiableMap(authMap);
             Session session = subject.getSession();
