@@ -56,6 +56,24 @@ public class UserManagementService {
     }
 
     /**
+     * Get roles for user Id.
+     *
+     * @param userId the user id
+     * @return the list of role names
+     */
+    public List<String> getRolesListForUser(Integer userId){
+        List<String> userRoles = new ArrayList<>();
+        Optional<UsersEntity> usersEntity = userDetailsRepository.findById(userId);
+        if(usersEntity.isPresent()) {
+            List<RoleEntity> userRole = usersEntity.get().getUserRole();
+            for (RoleEntity roleEntity : userRole) {
+                userRoles.add(roleEntity.getRoleName());
+            }
+        }
+        return userRoles;
+    }
+
+    /**
      * Get permission id integer.
      *
      * @param permissionName the permission name
