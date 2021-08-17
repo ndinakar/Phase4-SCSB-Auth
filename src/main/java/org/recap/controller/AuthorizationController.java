@@ -137,6 +137,8 @@ public class AuthorizationController {
             return true;
         } catch (InvalidSessionException e) {
            logger.error("Invalid Session Exception",e);
+        } catch (NullPointerException e){
+            logger.error("Exception null session sent to auth"+e.getMessage());
         }
         return false;
     }
