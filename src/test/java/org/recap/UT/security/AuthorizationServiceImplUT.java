@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.recap.UT.BaseTestCaseUT;
 import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
@@ -16,11 +17,11 @@ import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.jpa.UserDetailsRepository;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserService;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by dharmendrag on 1/2/17.
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 public class AuthorizationServiceImplUT extends BaseTestCaseUT {
 
     @InjectMocks
+    @Spy
     private AuthorizationServiceImpl authorizationServiceimpl;
 
     @Mock
@@ -74,6 +76,16 @@ public class AuthorizationServiceImplUT extends BaseTestCaseUT {
     }
 
     @Test
+    public void doAuthorizationInfo(){
+        UsersEntity usersEntity = createUser("SupportSuperAdmin");
+        String loginUser="SupportSuperAdmin:PUL";
+        SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
+        Mockito.when(userDetailsRepository.findById(usersEntity.getId())).thenReturn(Optional.empty());
+        AuthorizationInfo authorizationInfo=authorizationServiceimpl.doAuthorizationInfo(simpleAuthorizationInfo,usersEntity.getId());
+        assertNull(authorizationInfo);
+    }
+
+    @Test
     public void unAuthorized(){
         UsersEntity usersEntity = createUser("SupportSuperAdmin");
         String loginUser = "SupportSuperAdmin:PUL";
@@ -86,12 +98,22 @@ public class AuthorizationServiceImplUT extends BaseTestCaseUT {
         UsersEntity usersEntity = createUser("SupportSuperAdmin");
         String loginUser = "SupportSuperAdmin:PUL";
         try{
-        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
-        usernamePasswordToken1.setRememberMe(true);
-        authorizationServiceimpl.checkPrivilege(usernamePasswordToken1,permissionId);
-    } catch (Exception e) {
-        e.printStackTrace();
+            UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
+            usernamePasswordToken1.setRememberMe(true);
+            Mockito.when(authorizationServiceimpl.getSubject(usernamePasswordToken1)).thenReturn(subject);
+            Mockito.when(subject.getSession()).thenReturn(session);
+            boolean authorized = authorizationServiceimpl.checkPrivilege(usernamePasswordToken1,permissionId);
+            assertEquals(Boolean.FALSE,authorized);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Test
+    public void timeOutExceptionCatch(){
+        String loginUser = "SupportSuperAdmin:PUL";
+        UsernamePasswordToken usernamePasswordToken1 = new UsernamePasswordToken(loginUser, "123");
+        ReflectionTestUtils.invokeMethod(authorizationServiceimpl,"timeOutExceptionCatch",usernamePasswordToken1);
     }
 
     public UsersEntity createUser(String loginId){
