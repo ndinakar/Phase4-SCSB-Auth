@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.3.1.RELEASE'
-		set('springCloudVersion', "Hoxton.SR5")
+		springBootVersion = '2.5.8'
+		set('springCloudVersion', "2020.0.5")
 	}
 	repositories {
 		mavenCentral()
@@ -12,9 +12,9 @@ buildscript {
 }
 
 plugins {
-	id "org.sonarqube" version "2.8"
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id "org.sonarqube" version "3.3"
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.springframework.boot' version '2.5.8'
 }
 
 apply plugin: 'java'
@@ -41,44 +41,45 @@ repositories {
 
 
 dependencies {
-	compile fileTree(dir: '/data/commonjar', include: '*2.1.jar')
+	implementation fileTree(dir: '/data/commonjar', include: '*2.1.jar')
 	implementation('commons-beanutils:commons-beanutils:1.9.4')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web-services')
-	implementation('org.springframework.data:spring-data-solr:4.1.7.RELEASE')
+	implementation('org.springframework.data:spring-data-solr:4.3.15')
 			{exclude module: 'solr-solrj'; exclude module: 'solr-data-commons'; exclude module: 'spring-data-jpa'}
 	implementation('org.codehaus.jettison:jettison:1.4.1')
 	implementation('org.springframework.data:spring-data-commons')
 	implementation('org.springframework.data:spring-data-jpa')
 	implementation('info.freelibrary:freelib-marc4j:2.6.12')
 	implementation(group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0')
-	implementation('io.springfox:springfox-swagger-ui:2.9.2')
-	implementation('io.springfox:springfox-swagger2:2.9.2')
-	implementation('org.apache.shiro:shiro-core:1.5.2')
-	implementation('org.apache.shiro:shiro-spring:1.5.2')
-	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.5.2')
-	implementation('org.projectlombok:lombok:1.18.12')
+	implementation('io.springfox:springfox-swagger-ui:3.0.0')
+	implementation('io.springfox:springfox-swagger2:3.0.0')
+	implementation('org.apache.shiro:shiro-core:1.8.0')
+	implementation('org.apache.shiro:shiro-spring:1.8.0')
+	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.8.0')
+	implementation('org.projectlombok:lombok:1.18.22')
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'net.logstash.logback:logstash-logback-encoder:6.4'
-	annotationProcessor('org.projectlombok:lombok:1.18.12')
-	testImplementation('org.projectlombok:lombok:1.18.12')
-	testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
+	annotationProcessor('org.projectlombok:lombok:1.18.22')
+	testImplementation('org.projectlombok:lombok:1.18.22')
+	testAnnotationProcessor('org.projectlombok:lombok:1.18.22')
 
-	runtime('mysql:mysql-connector-java')
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
+	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
+	testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
-	testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
+
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
-	implementation 'org.json:json:20200518'
-	implementation 'com.google.code.gson:gson:2.8.6'
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	implementation group: 'org.json', name: 'json', version: '20211205'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.8'
 }
 
 configurations.all {
@@ -95,19 +96,30 @@ dependencyManagement {
 	}
 }
 
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
 jacocoTestReport {
-	group = "Reporting"
+	dependsOn test // tests are required to run before generating the report
+}
+
+jacocoTestReport {
 	reports {
-		xml.enabled true
-		csv.enabled false
-		html.enabled = true
-		html.destination file("${buildDir}/jacocoHtml")
+		xml.required = true
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
 	}
+}
+
+
+jacoco {
+	toolVersion = "0.8.7"
+	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
 task scsbShiroJavadocs(type: Javadoc) {
 	source = sourceSets.main.java
-	classpath = configurations.compile
+	classpath = configurations.implementation
 	options.addStringOption('Xdoclint:none', '-quiet')
 	String home = System.getProperty("user.home");
 	destinationDir =  new File(home+"/scsb-javadocs/scsb-shiro");
@@ -115,4 +127,9 @@ task scsbShiroJavadocs(type: Javadoc) {
 
 bootJar {
 	layered()
+}
+
+jar {
+	enabled = false
+	archiveClassifier = '' //use empty string
 }
