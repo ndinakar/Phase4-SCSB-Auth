@@ -1,6 +1,7 @@
 package org.recap.config;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.authz.AuthorizationException;
@@ -15,8 +16,6 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.subject.support.DefaultWebSubjectContext;
 import org.recap.PropertyKeyConstants;
 import org.recap.security.realm.SimpleAuthorizationRealm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,11 +32,12 @@ import java.util.Map;
 /**
  * Created by dharmendrag on 25/11/16.
  */
+@Slf4j
 @Configuration
 @ControllerAdvice
 public class ApacheShiroCustomConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApacheShiroCustomConfig.class);
+
 
     @Value("${" + PropertyKeyConstants.USERS_SESSION_TIMEOUT + "}")
     private String sessionTimeOut;//in milliseconds
@@ -164,7 +164,7 @@ public class ApacheShiroCustomConfig {
         try{
             subject=SecurityUtils.getSubject();
         }catch(Exception e){
-            logger.error("error-->",e);
+            log.error("error-->",e);
         }
         return subject;
     }

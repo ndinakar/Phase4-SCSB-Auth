@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -14,15 +15,12 @@ import org.recap.ScsbConstants;
 import org.recap.model.LoginValidator;
 import org.recap.model.UserForm;
 import org.recap.model.jpa.InstitutionEntity;
-import org.recap.model.jpa.RoleEntity;
 import org.recap.repository.jpa.InstitutionDetailsRepository;
 import org.recap.repository.jpa.UserDetailsRepository;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
 import org.recap.security.UserService;
 import org.recap.util.HelperUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
@@ -36,12 +34,12 @@ import java.util.*;
 /**
  * Created by dharmendrag on 25/11/16.
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/userAuth")
 @Api(value = "userAuth")
 public class LoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Value("${" + PropertyKeyConstants.SCSB_EMAIL_ASSIST_TO + "}")
     private String scsbAssistanceEmailTo;
@@ -133,27 +131,27 @@ public class LoginController {
             session.setAttribute(ScsbConstants.PERMISSION_MAP, permissionMap);
             session.setAttribute(ScsbConstants.USER_ID, subject.getPrincipal());
         } catch (UnknownAccountException uae) {
-            logger.debug("Unknown Account Exception");
-            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, uae);
+            log.debug("Unknown Account Exception");
+            log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, uae);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, MessageFormat.format(ScsbConstants.ERROR_MESSAGE_USER_NOT_AVAILABLE, scsbAssistanceEmailTo, scsbAssistanceEmailTo));
         } catch (IncorrectCredentialsException ice) {
-            logger.debug("Unknown Account Exception");
-            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ice);
+            log.debug("Unknown Account Exception");
+            log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ice);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (CredentialsException ce) {
-            logger.debug("Credentials exception");
-            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ce);
+            log.debug("Credentials exception");
+            log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ce);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (AuthenticationException ae) {
-            logger.debug("Authentication exception");
-            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ae);
+            log.debug("Authentication exception");
+            log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ae);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
         } catch (Exception e) {
-            logger.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, e);
+            log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, e);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, e.getMessage());
         }
@@ -167,7 +165,7 @@ public class LoginController {
      */
     @PostMapping(value = "/logout")
     public boolean logoutUser(@RequestBody UsernamePasswordToken token) {
-        logger.info("Subject Logged out");
+        log.info("Subject Logged out");
         return authorizationService.unAuthorized(token);
     }
 
