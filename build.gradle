@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.5.8'
-		set('springCloudVersion', "2020.0.5")
+		springBootVersion = '2.6.2'
+		set('springCloudVersion', "2021.0.0")
 	}
 	repositories {
 		mavenCentral()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
 	id "org.sonarqube" version "3.3"
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'org.springframework.boot' version '2.5.8'
+	id 'org.springframework.boot' version '2.6.2'
 }
 
 apply plugin: 'java'
@@ -32,8 +32,8 @@ jar {
 	archiveBaseName = 'phase4-scsb-auth'
 	archiveVersion = '0.0.1-SNAPSHOT'
 }
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = 1.17
+targetCompatibility = 1.17
 
 repositories {
 	mavenCentral()
@@ -53,8 +53,9 @@ dependencies {
 	implementation('org.springframework.data:spring-data-jpa')
 	implementation('info.freelibrary:freelib-marc4j:2.6.12')
 	implementation(group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0')
-	implementation('io.springfox:springfox-swagger-ui:3.0.0')
-	implementation('io.springfox:springfox-swagger2:3.0.0')
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	//implementation('io.springfox:springfox-swagger-ui:3.0.0')
+	//implementation('io.springfox:springfox-swagger2:3.0.0')
 	implementation('org.apache.shiro:shiro-core:1.8.0')
 	implementation('org.apache.shiro:shiro-spring:1.8.0')
 	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.8.0')
@@ -125,9 +126,9 @@ task scsbShiroJavadocs(type: Javadoc) {
 	destinationDir =  new File(home+"/scsb-javadocs/scsb-shiro");
 }
 
-bootJar {
+/* bootJar {
 	layered()
-}
+} */
 
 jar {
 	enabled = false
