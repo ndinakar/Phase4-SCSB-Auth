@@ -3,6 +3,7 @@ package org.recap.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.InvalidSessionException;
@@ -10,8 +11,6 @@ import org.apache.shiro.subject.Subject;
 import org.recap.ScsbConstants;
 import org.recap.security.AuthorizationServiceImpl;
 import org.recap.security.UserManagementService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +20,11 @@ import java.util.List;
 /**
  * Created by dharmendrag on 10/1/17.
  */
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
+
 
     @Autowired
     private AuthorizationServiceImpl authorizationService;
@@ -136,7 +136,7 @@ public class AuthorizationController {
             subject.getSession().touch();
             return true;
         } catch (InvalidSessionException e) {
-           logger.error("Invalid Session Exception",e);
+           log.error("Invalid Session Exception",e);
         }
         return false;
     }

@@ -1,5 +1,6 @@
 package org.recap.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -9,8 +10,6 @@ import org.recap.model.jpa.PermissionEntity;
 import org.recap.model.jpa.RoleEntity;
 import org.recap.model.jpa.UsersEntity;
 import org.recap.repository.jpa.UserDetailsRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by dharmendrag on 21/12/16.
  */
+@Slf4j
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
@@ -81,7 +80,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @param token the token
      */
     public boolean unAuthorized(UsernamePasswordToken token) {
-        logger.debug("Session Time Out Call");
+        log.debug("Session Time Out Call");
         Subject currentSubject = getSubject(token);
         tokenMap.remove(token.getUsername());
         if (currentSubject != null && currentSubject.getSession() != null) {
@@ -99,7 +98,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public boolean checkPrivilege(UsernamePasswordToken token, Integer permissionId) {
         Subject currentSubject = getSubject(token);
-        logger.debug("Authorization call for : {} & User {}",permissionId,token);
+        log.debug("Authorization call for : {} & User {}",permissionId,token);
         Map<Integer, String> permissions = UserManagementService.getPermissions(currentSubject);
         boolean authorized = false;
         try {
@@ -132,8 +131,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 unAuthorized(token);
             }
         } catch (Exception sessionExcp) {
-            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp);
-            logger.error("Exception in AuthorizationServiceImpl ",sessionExcp.getMessage());
+            log.error("Exception in AuthorizationServiceImpl ",sessionExcp);
+            log.error("Exception in AuthorizationServiceImpl ",sessionExcp.getMessage());
             timeOutExceptionCatch(token);
         }
 
@@ -141,7 +140,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private void timeOutExceptionCatch(UsernamePasswordToken token) {
-        logger.debug("Time out Exception thrown for token ",token);
+        log.debug("Time out Exception thrown for token ",token);
         unAuthorized(token);
     }
 
