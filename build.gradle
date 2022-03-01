@@ -41,7 +41,7 @@ repositories {
 
 
 dependencies {
-	compile fileTree(dir: '/data/commonjar', include: '*1.6.jar')
+	compile fileTree(dir: '/data/commonjar', include: '*2.1.jar')
 	implementation('commons-beanutils:commons-beanutils:1.9.4')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
@@ -79,6 +79,14 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.6'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		if (details.requested.group == 'org.apache.logging.log4j') {
+			details.useVersion '2.17.0'
+		}
+	}
 }
 
 dependencyManagement {
