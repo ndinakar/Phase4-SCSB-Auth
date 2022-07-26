@@ -14,7 +14,7 @@ buildscript {
 plugins {
 	id "org.sonarqube" version "3.3"
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'org.springframework.boot' version '2.5.12'
+	id 'org.springframework.boot' version '2.7.1'
 }
 
 apply plugin: 'java'
@@ -67,6 +67,8 @@ dependencies {
 	testAnnotationProcessor('org.projectlombok:lombok:1.18.22')
 
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
+
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.12.4'
 	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
 	testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
 
