@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -11,17 +12,26 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.AuthorizationScopeBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Created by hemalathas on 22/8/16.
@@ -31,23 +41,26 @@ import java.util.stream.Collectors;
 @EnableWebMvc
 public class SwaggerConfig implements WebMvcConfigurer {
 
-    /**
-     * The constant DEFAULT_INCLUDE_PATTERNS.
-     */
-    protected static final List<String> DEFAULT_INCLUDE_PATTERNS = Arrays.asList("/.*");
-
-    /**
-     * Register the Docket and initiate with values
-     *
-     * @return the instance of Docket
-     */
     @Bean
     public Docket documentation() {
+        AuthorizationScope[] authScopes = new AuthorizationScope[1];
+        authScopes[0] = new AuthorizationScopeBuilder().scope("global").description("full access").build();
+        SecurityReference securityReference = SecurityReference.builder().reference("API Key")
+                .scopes(authScopes).build();
+
+        ArrayList<SecurityContext> securityContexts = newArrayList(
+                SecurityContext.builder().securityReferences(newArrayList(securityReference)).build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("org.recap.controller"))
+                .paths(PathSelectors.any())
                 .build()
+                .pathMapping("/")
+                .genericModelSubstitutes(ResponseEntity.class)
                 .useDefaultResponseMessages(false)
+                .forCodeGeneration(true)
+                .securitySchemes(newArrayList(apiKey()))
+                .securityContexts(securityContexts)
                 .apiInfo(metadata());
     }
 
@@ -110,4 +123,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         };
     }
 
+    private ApiKey apiKey() {
+        return new ApiKey("API Key", "api_key", "header");
+    }
 }
