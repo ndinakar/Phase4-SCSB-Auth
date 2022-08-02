@@ -163,7 +163,7 @@ public class ApacheShiroCustomConfig {
         Subject subject=null;
         try{
             subject=SecurityUtils.getSubject();
-        }catch(Exception e){
+        }catch(RuntimeException e){
             log.error("error-->",e);
         }
         return subject;
