@@ -150,7 +150,7 @@ public class LoginController {
             log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, ae);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, ScsbConstants.ERROR_AUTHENTICATION_FAILED);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error(ScsbConstants.EXCEPTION_IN_AUTHENTICATION, e);
             authMap.put(ScsbConstants.USER_AUTHENTICATION, false);
             authMap.put(ScsbConstants.USER_AUTH_ERRORMSG, e.getMessage());
