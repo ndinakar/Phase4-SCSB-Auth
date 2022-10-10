@@ -185,6 +185,7 @@ public class LoginController {
         authMap.put(ScsbConstants.MONITORING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.MONITORING_PERMISSION_NAME))));
         authMap.put(ScsbConstants.LOGGING,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.LOGGING_PERMISSION_NAME))));
         authMap.put(ScsbConstants.DATA_EXPORT,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.DATAEXPORT_PERMISSION_NAME))));
+        authMap.put(ScsbConstants.REQUESTLOG,subject.isPermitted(permissionMap.get(userManagementService.getPermissionId(ScsbConstants.REQUEST_LOG_PERMISSION_NAME))));
     }
 
 }

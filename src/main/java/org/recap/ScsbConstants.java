@@ -62,6 +62,8 @@ public class ScsbConstants {
     public static final String MONITORING_PERMISSION_NAME = "View Monitoring";
     public static final String LOGGING_PERMISSION_NAME = "View Logging";
     public static final String DATAEXPORT_PERMISSION_NAME = "Data Export";
+    public static final String REQUEST_LOG_PERMISSION_NAME = "View Request Log";
+    public static final String REQUESTLOG = "isRequestLog";
     public static final String MONITORING = "isMonitoring";
     public static final String LOGGING = "isLogging";
     public static final String DATA_EXPORT = "isDataExport";
