@@ -48,7 +48,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web-services')
 	implementation('org.springframework.data:spring-data-solr:4.3.15')
 			{exclude module: 'solr-solrj'; exclude module: 'solr-data-commons'; exclude module: 'spring-data-jpa'}
-	implementation('org.codehaus.jettison:jettison:1.5.0')
+	implementation('org.codehaus.jettison:jettison:1.5.3')
 	implementation('org.springframework.data:spring-data-commons')
 	implementation('org.springframework.data:spring-data-jpa')
 	implementation('info.freelibrary:freelib-marc4j:2.6.12')
@@ -56,15 +56,15 @@ dependencies {
 	implementation('org.apache.shiro:shiro-core:1.8.0')
 	implementation('org.apache.shiro:shiro-spring:1.8.0')
 	implementation('org.apache.shiro:shiro-spring-boot-web-starter:1.8.0')
-	implementation('org.projectlombok:lombok:1.18.24')
+	implementation('org.projectlombok:lombok:1.18.26')
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
-	annotationProcessor('org.projectlombok:lombok:1.18.24')
-	testImplementation('org.projectlombok:lombok:1.18.24')
-	testAnnotationProcessor('org.projectlombok:lombok:1.18.24')
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+	annotationProcessor('org.projectlombok:lombok:1.18.26')
+	testImplementation('org.projectlombok:lombok:1.18.26')
+	testAnnotationProcessor('org.projectlombok:lombok:1.18.26')
 
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 
@@ -77,9 +77,9 @@ dependencies {
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
-	implementation group: 'org.json', name: 'json', version: '20220320'
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.12'
+	implementation group: 'org.json', name: 'json', version: '20230227'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.8'
 
     implementation('io.springfox:springfox-boot-starter:3.0.0')
 }
@@ -87,7 +87,7 @@ dependencies {
 configurations.all {
 	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
 		if (details.requested.group == 'org.apache.logging.log4j') {
-			details.useVersion '2.18.0'
+			details.useVersion '2.20.0'
 		}
 	}
 }
