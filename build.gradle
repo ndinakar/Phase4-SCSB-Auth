@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.7.15'
+		springBootVersion = '3.2.5'
 		set('springCloudVersion', "2021.0.8")
 	}
 	repositories {
